@@ -41,7 +41,12 @@ public class ItemDescription extends HttpServlet {
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
+		
 		String descr = request.getParameter("psJsonString");
+		String dataId = request.getParameter("dataID");
+		String dataDescr = request.getParameter("dataDescr");
+		String dataCode = request.getParameter("dataCode");
+		
 		System.out.println(descr); 
 		
 		

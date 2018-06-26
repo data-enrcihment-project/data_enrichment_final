@@ -237,9 +237,13 @@ var CallDataEnrichmentMethod = function(psItemID,pstype)
 
 var SaveEbayData = function (psJsonString)
 {
+	$("#ebayJsonDataID")[0].value =psId;
+	$("#ebayJsonDataDescr")[0].value =psDescr;
+	$("#ebayJsonDataCode")[0].value =pscode;
+	
 debugger;
 	$.ajax({
-		url : 'ItemDescription?psJsonString='+psJsonString,
+		url : 'ItemDescription?psJsonString='+psJsonString+'&dataID='+$("#ebayJsonDataID")[0].value+'&dataDescr='+$("#ebayJsonDataDescr")[0].value+'&dataCode='+$("#ebayJsonDataCode")[0].value,//
 		type: "POST",
 		success : function(data) {
 			debugger;

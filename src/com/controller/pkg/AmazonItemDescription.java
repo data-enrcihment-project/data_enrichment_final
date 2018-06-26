@@ -11,8 +11,11 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.codehaus.jackson.map.ObjectMapper;
 
+import com.ebay.services.finding.SearchItem;
 import com.models.pkg.AmazonCall;
 import com.models.pkg.EbayCallService;
+
+import am.ik.aws.apa.jaxws.Item;
 
 /**
  * Servlet implementation class AmazonItemDescription
@@ -73,6 +76,28 @@ public class AmazonItemDescription extends HttpServlet {
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
+		
+		String descr = request.getParameter("psJsonString");
+		String dataId = request.getParameter("dataID");
+		String dataDescr = request.getParameter("dataDescr");
+		String dataCode = request.getParameter("dataCode");
+		
+		System.out.println(descr); 
+		
+		
+		ObjectMapper mapper = new ObjectMapper();
+		Item obj = null;
+		try {
+		    // convert user object to json string and return it 
+			obj =  (Item) mapper.readValue(descr,Item.class);
+			
+			//Calling Save method over here
+			
+			//calling database update method to save these details
+		}catch(Exception e)
+		{			
+			throw e;
+		}
 		doGet(request, response);
 	}
 
