@@ -5,6 +5,13 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 <script src="scripts/jquery.js"></script> 
+
+
+<script src="scripts/jsgrid.min.js"></script>
+
+
+<script src="CSS/jsgrid.min.css"></script> 
+<script src="CSS/jsgrid-theme.min.css"></script> 
 <script src="scripts/CallingServlets.js"></script> 
 <title>Insert title here</title>
 </head>
@@ -12,8 +19,11 @@
 
 
 <input type="button" value="Call Connection" onclick="CallConnection();" />
+<div id="divProductDetailsaa">
+</div>
 
-
+<div id="divProductDetails">
+</div>
 
 </body>
 </html>

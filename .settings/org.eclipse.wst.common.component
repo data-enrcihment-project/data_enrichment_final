@@ -2,6 +2,9 @@
     <wb-module deploy-name="Data_Enrichment_final">
         <wb-resource deploy-path="/" source-path="/WebContent" tag="defaultRootSource"/>
         <wb-resource deploy-path="/WEB-INF/classes" source-path="/src"/>
+        <wb-resource deploy-path="/WEB-INF/classes" source-path="/Files"/>
+        <wb-resource deploy-path="/WEB-INF/classes" source-path="/src/main/java"/>
+        <wb-resource deploy-path="/WEB-INF/classes" source-path="/src/test/java"/>
         <property name="context-root" value="Data_Enrichment_final"/>
         <property name="java-output-path" value="/Data_Enrichment_final/build/classes"/>
     </wb-module>

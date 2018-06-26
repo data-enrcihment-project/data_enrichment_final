@@ -3,8 +3,13 @@ import java.sql.CallableStatement;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
+import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import me.xdrop.fuzzywuzzy.FuzzySearch;
 
@@ -17,7 +22,7 @@ public class DbMethods {
 
 	}
 	
-	public Connection DBConnection()
+	public static Connection DBConnection()
 	{	
 		
 		try {
@@ -30,18 +35,18 @@ public class DbMethods {
 			
 			///calling stored procedure
 			
-		    statement = conn.prepareCall("{call sp_test(?)}");
-		    String msg = "";
-			statement.setString(1, "0410");
-			ResultSet rs = statement.executeQuery();
-			
-			while(rs.next())
-			{
-			
-				
-				msg = rs.getInt("id")+" , "+rs.getString("company")+" , "+rs.getString("code")+" , "+rs.getString("description");
-				System.out.println(msg);
-			}
+//		    statement = conn.prepareCall("{call sp_test(?)}");
+//		    String msg = "";
+//			statement.setString(1, "0410");
+//			ResultSet rs = statement.executeQuery();
+//			
+//			while(rs.next())
+//			{
+//			
+//				
+//				msg = rs.getInt("id")+" , "+rs.getString("company")+" , "+rs.getString("code")+" , "+rs.getString("description");
+//				System.out.println(msg);
+//			}
 //			
 //			float getRatio = FuzzySearch.ratio("mynameisamir", "amir is amazing name and brilliant");
 			
@@ -60,7 +65,7 @@ public class DbMethods {
 		return null;
 	}
 	
-	public ResultSet QueryStatement(String query)
+	public static ResultSet QueryStatement(String query)
 	{
 		ResultSet rs;
 		try {
@@ -76,5 +81,19 @@ public class DbMethods {
 		return null;
 	}
 	
+	///Return rows from ResultSet
+	public static List<Map<String, Object>> resultSetToList(ResultSet rs) throws SQLException {
+	    ResultSetMetaData md = rs.getMetaData();
+	    int columns = md.getColumnCount();
+	    List<Map<String, Object>> rows = new ArrayList<Map<String, Object>>();
+	    while (rs.next()){
+	        Map<String, Object> row = new HashMap<String, Object>(columns);
+	        for(int i = 1; i <= columns; ++i){
+	            row.put(md.getColumnName(i), rs.getObject(i));
+	        }
+	        rows.add(row);
+	    }
+	    return rows;
+	}
 
 }
