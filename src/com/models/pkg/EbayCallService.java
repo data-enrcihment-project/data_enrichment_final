@@ -156,7 +156,7 @@ public class EbayCallService {
 		//create a service client       
 		 
 		
-		GetFeedbackRequestType req = new GetFeedbackRequestType();
+		//GetFeedbackRequestType req = new GetFeedbackRequestType();
 		 
 		///
 	    List<Map<String, Object>> rows = new ArrayList<Map<String, Object>>();
@@ -176,32 +176,22 @@ public class EbayCallService {
 	        for (SearchItem item : searchItems) {
 	        	
 	        	//itemID
-	        	req.setItemID(item.getItemId());
+	        	//req.setItemID(item.getItemId());
 
 	        	
 	        	//for categories of this item
 	        	//CategoryHistogram ch = new CategoryHistogram();
 	        	//ch.set
-	           String a = item.getSellerInfo().getFeedbackRatingStar();
+	           //String a = item.getSellerInfo().getFeedbackRatingStar();
 	        	//new object for every item
 	        	//Ebay Feedback from ebay sdk but in another .java file Trading api. GetFeedback
 	        	//Send Description of item to fuzzy mining and if it is more than 70 percent ratio then add to array list
 	        	Double  ratio= FuzzyWuzzyMining.GetItemDescrRatio(psDescr,item.getTitle().toString());
 	        	///or may be can which one i highest and select that and save those details to DB
-	        	filteredListCount++;
-	        	Map<Double, Object> rowratio2 = new HashMap<Double, Object>();
 	        	
-	        	rowratio2.put(ratio, item.getSellingStatus());
-	        	
-	        	ratioRow.add(rowratio2);
-	        	//row = null;
-	            
-	            
-	            //rowsadded.add((HashMap<Integer, Object>) row);
-	            
-	            //rows.add(row);
-	        	if(ratio >= 70)
+	        	if(ratio >= 69)
 	            {
+	        		filteredListCount++;
 	            	details.put(filteredListCount,item);
 	            	row.put(filteredListCount, item);
 	            }
@@ -210,11 +200,11 @@ public class EbayCallService {
 	        }
 	        //TODO: setting this List item to get highest item and the object
 	        //Object getObject = Collection.max(ratioRow);
-	        System.out.println(ratioRow);
 	        
+	        System.out.println(filteredListCount);
 	        try {
-	        	details.put(0,count);
-	        	row.put(0,count);
+	        	//details.put(0,count);
+	        	row.put(0,filteredListCount);//filtered
 	        	WriteSearchItemToXML(details, psDescr +filteredListCount+".xml");//WriteSearchItemToXML(details, psDescr +count1+".xml");
 			} catch (Exception e) {
 				// TODO Auto-generated catch block
@@ -259,12 +249,12 @@ public class EbayCallService {
 	
 	
 	@SuppressWarnings("unused")
-	public static SearchItem GetEbayItemPrice(String psDescription,String globalID) {
+	public static Double GetEbayItemPrice(String psDescription,String globalID) {
 		
 		Double previousRatio=0.0;
 		List<SearchItem> itemList = GetEbayItemObject(psDescription,globalID);
 		
-		SearchItem selectedItem = null;
+		Double selectedItem = null;
 		
 		for(SearchItem item : itemList) {           
 			 System.out.println(item.getItemId()); 
@@ -279,7 +269,7 @@ public class EbayCallService {
 			 }else if(previousRatio < ratio)
 			 {
 				 previousRatio = ratio;
-				 selectedItem = item;
+				 selectedItem = item.getSellingStatus().getCurrentPrice().getValue();
 			 }
 		 } 
 		return selectedItem;

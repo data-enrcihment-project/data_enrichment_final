@@ -165,13 +165,13 @@ var MapAmazonItemDescription = function(objData)
 			"<a href= '"+obj[i].detailPageURL+"' >View Item Url</a><br/>"+
 			"</td>"+
 			"</table>"+
-			"<td><input type='button' onclick=CallDataEnrichmentMethod('"+obj[i].asin+"','asin'); value='Product View URL' /></td>";
+			"<td><input type='button' onclick=CallDataEnrichmentMethod('"+obj[i].asin+"','obj[i].asin'); value='Product View URL' /></td>";
 		//$("#ulItemDetails").append("<li>").append(
 		$("#divProductItemDetails").append(sti);//.append("</li>");
 		
 		
 		i++;
-	}while(i<count);
+	}while(i<=count);
 	
 };
 
@@ -203,13 +203,13 @@ var MapItemDescription = function(objData)
 			"<a href= '"+obj[i].viewItemURL+"' >View Item Url</a><br/>"+
 			"</td>"+
 			"</table>"+
-			"<td><input type='button' text='Enrich Data' onclick=CallDataEnrichmentMethod('"+obj[i].itemId+"','itemId'); value='Product View URL' /></td>";
+			"<td><input type='button' text='Enrich Data' onclick=CallDataEnrichmentMethod('"+obj[i].itemId+"','obj[i].itemId'); value='Product View URL' /></td>";
 		//$("#ulItemDetails").append("<li>").append(
 		$("#divProductItemDetails").append(sti);//.append("</li>");
 		
 		
 		i++;
-	}while(i<count);
+	}while(i<=count);
 	
 };
 var CallDataEnrichmentMethod = function(psItemID,pstype)
@@ -221,7 +221,7 @@ var CallDataEnrichmentMethod = function(psItemID,pstype)
 	var ebayDataArr = new Array();
 	i=1;
 	do{
-		if(obj[i].eval(pstype) ==psItemID)
+		if(eval(pstype) ==psItemID)
 		{
 			ebayDataArr.push(obj[i]);
 			break;
@@ -237,9 +237,6 @@ var CallDataEnrichmentMethod = function(psItemID,pstype)
 
 var SaveEbayData = function (psJsonString)
 {
-	$("#ebayJsonDataID")[0].value =psId;
-	$("#ebayJsonDataDescr")[0].value =psDescr;
-	$("#ebayJsonDataCode")[0].value =pscode;
 	
 debugger;
 	$.ajax({

@@ -51,15 +51,27 @@ public class dataEnrichment_db extends HttpServlet {
 		System.out.println(request.getParameter("psDescr")); 
 		
 		
-		
 		Map<Integer, Object> dictionary = EbayCallService.GetEbayDataWithDescr(descr,"EBAY-DE");
 		
-		boolean isEmpty = dictionary.isEmpty();
+	
+		boolean isEmpty = true;
+		
+		
+		for (Map.Entry<Integer, Object> entry : dictionary.entrySet()) {
+			System.out.println(isEmpty+ " 222Final");
+			String val = entry.getValue().toString();
+			if(Integer.parseInt(val) > 0)
+			{
+				System.out.println(isEmpty+ " 2332Final");
+				isEmpty = true ;//false;
+				break;
+			}
+		}
 		
 		if(isEmpty)
 		{
-			
-			dictionary= EbayCallService.GetEbayDataWithDescr(descr,"EBAY-US");
+			System.out.println("2weFinal");
+			//dictionary= EbayCallService.GetEbayDataWithDescr(descr,"EBAY-US");
 		}
 		
 		ObjectMapper mapper = new ObjectMapper();

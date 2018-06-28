@@ -1,6 +1,8 @@
 package com.controller.pkg;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 import javax.servlet.ServletException;
@@ -13,6 +15,7 @@ import org.codehaus.jackson.map.ObjectMapper;
 
 import com.ebay.services.finding.SearchItem;
 import com.models.pkg.AmazonCall;
+import com.models.pkg.DbMethods;
 import com.models.pkg.EbayCallService;
 
 import am.ik.aws.apa.jaxws.Item;
@@ -84,6 +87,9 @@ public class AmazonItemDescription extends HttpServlet {
 		
 		System.out.println(descr); 
 		
+		String sql = "INSERT INTO enriched_data (course_code, course_desc, course_chair)" +
+		        "VALUES (?, ?, ?)";
+		
 		
 		ObjectMapper mapper = new ObjectMapper();
 		Item obj = null;
@@ -92,13 +98,28 @@ public class AmazonItemDescription extends HttpServlet {
 			obj =  (Item) mapper.readValue(descr,Item.class);
 			
 			//Calling Save method over here
+
+			ArrayList<String> paramsArray = new ArrayList<String>();
+			paramsArray.add("");
+			paramsArray.add("");
+			paramsArray.add("");
+			paramsArray.add("");
+			paramsArray.add("");
+			paramsArray.add("");
+			paramsArray.add("");
+			paramsArray.add("");
+			paramsArray.add("");
+			paramsArray.add("");
+			paramsArray.add("");
+			paramsArray.add("");
 			
+			//DbMethods.SaveUpdateQueryStatement("",paramsArray);
 			//calling database update method to save these details
 		}catch(Exception e)
 		{			
 			throw e;
 		}
-		doGet(request, response);
+		//doGet(request, response);
 	}
 
 }

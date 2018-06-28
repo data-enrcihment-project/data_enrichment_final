@@ -2,6 +2,7 @@ package com.models.pkg;
 import java.sql.CallableStatement;
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
@@ -22,12 +23,25 @@ public class DbMethods {
 
 	}
 	
+	public enum DataEnrichment{
+		
+		Ebay("1"),
+		Amazon("2");
+		
+		private String name;
+
+		DataEnrichment(String name)
+		{
+	        this.name = name;
+	    }
+	}
+	
 	public static Connection DBConnection()
 	{	
 		
 		try {
 			Class.forName("com.mysql.jdbc.Driver").newInstance();
-			String url = "jdbc:mysql://localhost:3306/enrich_data";
+			String url = "jdbc:mysql://localhost:3306/enrichment";
 			String username = "root";
 			String password = "";
 			
@@ -79,6 +93,45 @@ public class DbMethods {
 		}
 		
 		return null;
+	}
+	
+	public static String SaveUpdateQueryStatement(String sqlStatement,Map<String, String> param)
+	{
+		try {
+			PreparedStatement preparedStatement = DBConnection().prepareStatement(sqlStatement);
+			
+			int count = 0;
+			
+			for (Map.Entry<String,String> entry : param.entrySet()) 
+			{
+				count++;
+					System.out.println("Key = " + entry.getKey() +
+				                 ", Value = " + entry.getValue());
+					
+					switch(entry.getKey())
+					{
+					case "Int":
+						preparedStatement.setInt(count, Integer.parseInt(entry.getValue()));
+						break;
+						
+					case "String":
+						preparedStatement.setString(count, entry.getValue());
+						break;
+						
+					case "Double":
+						preparedStatement.setDouble(count, Double.parseDouble(entry.getValue()));
+						break;					
+					}
+			}
+			
+			preparedStatement.executeUpdate(); 
+			System.out.println("Done");
+			
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return "";
 	}
 	
 	///Return rows from ResultSet
