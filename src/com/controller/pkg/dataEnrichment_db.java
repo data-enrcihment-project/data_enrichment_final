@@ -54,7 +54,7 @@ public class dataEnrichment_db extends HttpServlet {
 		Map<Integer, Object> dictionary = EbayCallService.GetEbayDataWithDescr(descr,"EBAY-DE");
 		
 	
-		boolean isEmpty = true;
+		boolean isEmpty = false;
 		
 		
 		for (Map.Entry<Integer, Object> entry : dictionary.entrySet()) {
@@ -63,15 +63,17 @@ public class dataEnrichment_db extends HttpServlet {
 			if(Integer.parseInt(val) > 0)
 			{
 				System.out.println(isEmpty+ " 2332Final");
-				isEmpty = true ;//false;
+				
 				break;
+			}else {
+				isEmpty = true ;//false;
 			}
 		}
 		
 		if(isEmpty)
 		{
 			System.out.println("2weFinal");
-			//dictionary= EbayCallService.GetEbayDataWithDescr(descr,"EBAY-US");
+			dictionary= EbayCallService.GetEbayDataWithDescr(descr,"EBAY-US");
 		}
 		
 		ObjectMapper mapper = new ObjectMapper();

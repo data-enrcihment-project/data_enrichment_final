@@ -108,20 +108,22 @@ public class DbMethods {
 					System.out.println("Key = " + entry.getKey() +
 				                 ", Value = " + entry.getValue());
 					
-					switch(entry.getKey())
-					{
-					case "Int":
-						preparedStatement.setInt(count, Integer.parseInt(entry.getValue()));
-						break;
+					
+					preparedStatement.setString(count, entry.getValue());
+					//switch(entry.getKey())
+					//{
+					//case "Int":
+					//	preparedStatement.setInt(count, Integer.parseInt(entry.getValue()));
+					//	break;
+					//	
+					//case "String":
+					//	preparedStatement.setString(count, entry.getValue());
+					//	break;
 						
-					case "String":
-						preparedStatement.setString(count, entry.getValue());
-						break;
-						
-					case "Double":
-						preparedStatement.setDouble(count, Double.parseDouble(entry.getValue()));
-						break;					
-					}
+					//case "Double":
+					//	preparedStatement.setDouble(count, Double.parseDouble(entry.getValue()));
+					//	break;					
+					//}
 			}
 			
 			preparedStatement.executeUpdate(); 

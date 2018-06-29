@@ -184,6 +184,8 @@ var MapItemDescription = function(objData)
 	var count = obj[0];
 	i=1;
 	do{
+		if(count==0)
+			break;
 		
 		if(obj[i].sellingStatus==undefined || obj[i].sellingStatus==null)
 			break;

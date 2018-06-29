@@ -2,6 +2,7 @@ package com.controller.pkg;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -18,7 +19,10 @@ import com.models.pkg.AmazonCall;
 import com.models.pkg.DbMethods;
 import com.models.pkg.EbayCallService;
 
+import am.ik.aws.apa.jaxws.ImageSet;
 import am.ik.aws.apa.jaxws.Item;
+import am.ik.aws.apa.jaxws.Item.ImageSets;
+import am.ik.aws.apa.jaxws.Items;
 
 /**
  * Servlet implementation class AmazonItemDescription
@@ -49,7 +53,21 @@ public class AmazonItemDescription extends HttpServlet {
 		
 		Map<Integer, Object> dictionary = AmazonCall.CallAmazonApi(descr,"AMAZON-DE");
 		
-		boolean isEmpty = dictionary.isEmpty();
+		boolean isEmpty = false;
+		
+		
+		for (Map.Entry<Integer, Object> entry : dictionary.entrySet()) {
+			System.out.println(isEmpty+ " 222Final");
+			String val = entry.getValue().toString();
+			if(Integer.parseInt(val) > 0)
+			{
+				System.out.println(isEmpty+ " 2332Final");
+				
+				break;
+			}else {
+				isEmpty = true ;//false;
+			}
+		}		
 		
 		if(isEmpty)
 		{			
@@ -80,46 +98,63 @@ public class AmazonItemDescription extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
 		
-		String descr = request.getParameter("psJsonString");
+		String jsonData = request.getParameter("psJsonString");
 		String dataId = request.getParameter("dataID");
 		String dataDescr = request.getParameter("dataDescr");
 		String dataCode = request.getParameter("dataCode");
 		
-		System.out.println(descr); 
+		System.out.println(jsonData); 
 		
-		String sql = "INSERT INTO enriched_data (course_code, course_desc, course_chair)" +
-		        "VALUES (?, ?, ?)";
-		
+		String sql = "INSERT INTO enriched_data (E_Id,Enrich_ID, Item_no,Item_title,Item_Image,Item_Description,Item_Price,Item_URL,Item_Reviews,Type_ID,JSON_Text)" +
+		        "VALUES (?,?, ?, ?,?, ?, ?,?, ?, ?, ?)";
 		
 		ObjectMapper mapper = new ObjectMapper();
 		Item obj = null;
+		
+		obj =  (Item) mapper.readValue(jsonData,Item.class);
+		
+		//Calling Save method over here
+		//ArrayList<String> paramsArray = new ArrayList<String>();
+		
+		Map<String, String> paramsArray  = new HashMap<String, String>();
+		paramsArray.put("1", obj.getASIN()+1);
+		paramsArray.put("2", obj.getASIN());
+		paramsArray.put("3", dataId);
+	    paramsArray.put("4", obj.getItemAttributes().getTitle());
+	    
+	    for ( ImageSets ImageSets : obj.getImageSets()) {
+		    
+	    	for ( ImageSet ImageSet : ImageSets.getImageSet()) {
+	    		
+	    		paramsArray.put("5", ImageSet.getMediumImage().getURL());
+	    	}
+	    	
+	    }
+	    
+	    String summDescription = "";
+	    
+	    for(String feature : obj.getItemAttributes().getFeature())
+	    {
+	    	summDescription += feature.trim() +"------";
+	    }
+	   
+		paramsArray.put("6", summDescription);
+		paramsArray.put("7", obj.getOfferSummary().getLowestNewPrice().getFormattedPrice());
+		paramsArray.put("8", obj.getDetailPageURL());
+		paramsArray.put("9", "");
+		paramsArray.put("10", "1");
+		paramsArray.put("11",jsonData);//jsonData
+		
 		try {
-		    // convert user object to json string and return it 
-			obj =  (Item) mapper.readValue(descr,Item.class);
 			
-			//Calling Save method over here
-
-			ArrayList<String> paramsArray = new ArrayList<String>();
-			paramsArray.add("");
-			paramsArray.add("");
-			paramsArray.add("");
-			paramsArray.add("");
-			paramsArray.add("");
-			paramsArray.add("");
-			paramsArray.add("");
-			paramsArray.add("");
-			paramsArray.add("");
-			paramsArray.add("");
-			paramsArray.add("");
-			paramsArray.add("");
+			DbMethods.SaveUpdateQueryStatement(sql,paramsArray);
 			
-			//DbMethods.SaveUpdateQueryStatement("",paramsArray);
-			//calling database update method to save these details
+			System.out.println("Done");
+			
 		}catch(Exception e)
-		{			
-			throw e;
+		{
 		}
-		//doGet(request, response);
+		
 	}
 
 }

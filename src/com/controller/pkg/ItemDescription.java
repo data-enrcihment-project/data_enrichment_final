@@ -71,36 +71,41 @@ public class ItemDescription extends HttpServlet {
 			//Calling Save method over here
 			//ArrayList<String> paramsArray = new ArrayList<String>();
 			
-			//Map<String, String> paramsArray  = new HashMap<String, String>();
-			//paramsArray.put("Int1", obj.getItemId());
-			//paramsArray.put("Int2", dataId);
-			///paramsArray.put("String1", obj.getTitle());
-			//paramsArray.put("String2", obj.getGalleryURL());
-			//paramsArray.put("String3", "");
-			//paramsArray.put("Double1", Double.toString(obj.getSellingStatus().getCurrentPrice().getValue()));
-			//paramsArray.put("String4", obj.getViewItemURL());
-			//paramsArray.put("String5", "");
-			//paramsArray.put("Int3", "1");
-			//paramsArray.put("String6","");//jsonData
+			Map<String, String> paramsArray  = new HashMap<String, String>();
+			paramsArray.put("1", obj.getItemId()+1);
+			paramsArray.put("2", obj.getItemId());
+			paramsArray.put("3", dataId);
+		    paramsArray.put("4", obj.getTitle());
+			paramsArray.put("5", obj.getGalleryURL());
+			paramsArray.put("6", "");
+			paramsArray.put("7", Double.toString(obj.getSellingStatus().getCurrentPrice().getValue()));
+			paramsArray.put("8", obj.getViewItemURL());
+			paramsArray.put("9", "");
+			paramsArray.put("10", "1");
+			paramsArray.put("11",jsonData);//jsonData
 			
 			
 		
 			try {
-				PreparedStatement preparedStatement = DbMethods.DBConnection().prepareStatement(sql);
+				//PreparedStatement preparedStatement = DbMethods.DBConnection().prepareStatement(sql);
 				
-				preparedStatement.setInt(1, Integer.parseInt((obj.getItemId())));
-				preparedStatement.setString(2, (obj.getItemId()));
-				preparedStatement.setInt(3, Integer.parseInt(dataId));
-				preparedStatement.setString(4, obj.getTitle());
-				preparedStatement.setString(5, obj.getGalleryURL());
-				preparedStatement.setString(6, "");
-				preparedStatement.setDouble(7, Double.parseDouble(obj.getItemId()));
-				preparedStatement.setString(8, obj.getViewItemURL());
-				preparedStatement.setString(9, "");
-				preparedStatement.setInt(10, 1);
-				preparedStatement.setString(11, "");
+				//preparedStatement.setInt(1, Integer.parseInt((obj.getItemId())));
+				//preparedStatement.setString(2, (obj.getItemId()));
+				//preparedStatement.setInt(3, Integer.parseInt(dataId));
+				//preparedStatement.setString(4, obj.getTitle());
+				//preparedStatement.setString(5, obj.getGalleryURL());
+				//preparedStatement.setString(6, "");
+				//preparedStatement.setDouble(7, Double.parseDouble(obj.getItemId()));
+				//preparedStatement.setString(8, obj.getViewItemURL());
+				//preparedStatement.setString(9, "");
+				//preparedStatement.setInt(10, 1);
+				//preparedStatement.setString(11, "");
 				 
-				preparedStatement.executeUpdate(); 
+				//preparedStatement.executeUpdate(); 
+				
+				
+				DbMethods.SaveUpdateQueryStatement(sql,paramsArray);
+				
 				System.out.println("Done");
 				
 			}catch(Exception e)
@@ -114,13 +119,6 @@ public class ItemDescription extends HttpServlet {
 				}
 			}
 			 
-			
-			System.out.println(DbMethods.DataEnrichment.Ebay.toString());
-			//DbMethods.SaveUpdateQueryStatement(sql,paramsArray);
-			//calling database update method to save these details
-		//}catch(Exception e)
-		//{			
-		//	throw e;
 		}
 		
 		
