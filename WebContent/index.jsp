@@ -5,13 +5,21 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 <script src="scripts/jquery-1.11.1.min.js"></script> 
+<script src="scripts/jquery-ui.js"></script> 
 
+<link rel="stylesheet" type="text/css" href="CSS/jsgrid.css" />
+<link rel="stylesheet" type="text/css" href="CSS/theme.css" />
 
 <script src="scripts/jsgrid.min.js"></script>
 
+<script src="scripts/jsgrid.core.js"></script>
+<script src="scripts/jsgrid.load-indicator.js"></script>
+<script src="scripts/jsgrid.load-strategies.js"></script>
+<script src="scripts/jsgrid.sort-strategies.js"></script>
+<script src="scripts/jsgrid.field.js"></script>
+<script src="scripts/jsgrid.field.text.js"></script>
+<script src="scripts/jsgrid.field.control.js"></script>
 
-<script src="CSS/jsgrid.min.css"></script> 
-<script src="CSS/jsgrid-theme.min.css"></script> 
 <script src="scripts/CallingServlets.js"></script> 
 <title>Insert title here</title>
 </head>
