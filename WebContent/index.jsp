@@ -4,7 +4,7 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<script src="scripts/jquery.js"></script> 
+<script src="scripts/jquery-1.11.1.min.js"></script> 
 
 
 <script src="scripts/jsgrid.min.js"></script>
