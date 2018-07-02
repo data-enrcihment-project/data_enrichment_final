@@ -249,13 +249,16 @@ public class EbayCallService {
 	
 	
 	@SuppressWarnings("unused")
-	public static Double GetEbayItemPrice(String psDescription,String globalID) {
+	public static Map<String, Double> GetEbayItemPrice(String psDescription,String globalID) {
 		
 		Double previousRatio=0.0;
 		List<SearchItem> itemList = GetEbayItemObject(psDescription,globalID);
 		
-		Double selectedItem = null;
+		 Map<String, Double> pricingRow  = new HashMap<String, Double>();
 		
+		
+		Double selectedItem = null;
+		Integer rowCount = 0;
 		for(SearchItem item : itemList) {           
 			 System.out.println(item.getItemId()); 
 			 System.out.println(item.getSellingStatus().getCurrentPrice().getCurrencyId().toString());
@@ -263,16 +266,14 @@ public class EbayCallService {
 			 item.getSellingStatus().getCurrentPrice().getValue();
 			 
 			 Double  ratio= FuzzyWuzzyMining.GetItemDescrRatio(psDescription,item.getTitle().toString());
-			 if(previousRatio==0.0)
+			 if(previousRatio>60)
 			 { 
 				 previousRatio = ratio; 
-			 }else if(previousRatio < ratio)
-			 {
-				 previousRatio = ratio;
-				 selectedItem = item.getSellingStatus().getCurrentPrice().getValue();
+				 pricingRow.put( Integer.toString(rowCount++), item.getSellingStatus().getCurrentPrice().getValue());
 			 }
+			 
 		 } 
-		return selectedItem;
+		return pricingRow;
 	}
 
 }

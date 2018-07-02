@@ -20,6 +20,7 @@ import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 
+import com.dcommerce.app.App;
 import com.ebay.services.finding.SearchItem;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -106,7 +107,9 @@ public class dataEnrichment_db extends HttpServlet {
 		
 		//response.getWriter().write(json);
 		
-		ResultSet rs = DbMethods.QueryStatement("Select id,company,description,language_code,shop_code from shop_item");
+		App.CallPricingApplication();
+		
+		ResultSet rs = DbMethods.QueryStatement("Select item_no,company,description,language_code,shop_code from shop_item");
 		List<Map<String, Object>> rows = null;
 		try {
 			rows = DbMethods.resultSetToList(rs);

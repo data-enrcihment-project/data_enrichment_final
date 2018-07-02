@@ -31,55 +31,72 @@ var DisplayProductDetails = function(details)
  
         fields: [
             {title:"Company", name: "company", type: "text", width: 150 },
-            { title: "Description" ,name: "description", type: "text", width: 50 },
-            { title: "Email Address", name: "language_code", type: "text", width: 200 },
-            { title: "Shop Url", name: "shop_code", type: "text", width: 200 },
-            { type: "control", width: 100,
+            { title: "Description" ,name: "description", type: "text", width: 200 },
+            { title: "Shop Code", name: "shop_code", type: "text", width: 200 },
+            { title: "Enrich Data Using", type: "control", width: 100,
             	itemTemplate: function(ret, data) {
             		
                     var $result = jsGrid.fields.control.prototype.itemTemplate.apply(this, arguments);
                    
                   
-                    return $("<a>").attr("href", "AmazonItemDescription.jsp?psDescr="+data.description+"&shop_code="+data.shop_code+"&id="+data.id)
+                    /*return $("<a>").attr("href", "AmazonItemDescription.jsp?psDescr="+data.description+"&shop_code="+data.shop_code+"&id="+data.id)
                     .attr("target", "_blank")
-                    .text("Get Amazon Details");
-                    
+                    .text("Get Amazon Details");*/
+                    debugger;
+                    var self = this;
+                    var $customButton = $("<button>")
+                            .text("Click")
+                            .click(function (e) {
+                            	GetDetailsforItems("AmazonItemDescription","GET",data.id,data.shop_code,data.description,"Amazon");
+                                e.stopPropagation();
+                            });
+                    return $customButton;
+                                      
               
                 }
             },
-            { type: "control", width: 100,
+            { title: "Enrich Data Using", type: "control", width: 100,
             	itemTemplate: function(ret, data) {
             		
                     var $result = jsGrid.fields.control.prototype.itemTemplate.apply(this, arguments);
                    
-                    //var customHref = $("<a>").attr("href","itemDescription.jsp").text("Go To Item")
+                    //var customHref = $("<a>").attr("href","itemDescription.jsp").text("Go To Item")                  
+                    debugger;
+                   /*return $("<a>").on("click", GetDetailsforItems("ItemDescription","POST",data.id,data.shop_code,data.description,"Ebay"))
+                   .attr("target", "_blank")
+                   .text("Get Ebay Details");
+                  */
                    
+                   /*return $("<a>").attr("href",  function(e){
+                	debugger;
+                	   GetDetailsforItems("dataEnrichment_db","POST",data.id,data.shop_code,data.description,"Ebay");
+                	   
+                   	})
+                   .attr("target", "_blank")
+                   .text("Get Ebay Details");*/
+                   //  "ItemDescription.jsp?psDescr="+data.Ebay Item Description")
                     
-                   return $("<a>").attr("href", "ItemDescription.jsp?psDescr="+data.description+"&shop_code="+data.shop_code+"&id="+data.id)
-                    .attr("target", "_blank")
-                    .text("Get Ebay Details");
+                    var self = this;
+                    var $customButton = $("<button>")
+                            .text("Click")
+                            .click(function (e) {
+                            	GetDetailsforItems("dataEnrichment_db","POST",data.id,data.shop_code,data.description,"Ebay");
+                                e.stopPropagation();
+                            });
+                    return $customButton;
                     
-                  /*  
-                    var $customButton = $("<button type='submit'>")
-                    	.text("Click")
-                    	.href(function(e) {
-                    		debugger;
-                    		GetEbayDetailsforItems(data.id,data.shop_code,data.description);
-                            e.stopPropagation();
-                        });s
-                    //return $("<div>").append("<a type='submit' href=ItemDescription.jsp?psDescr="+data.description+ "text='Get Ebay Details' ></a>");
-
-                    return $result.add($customButton);*/
+                   
                 }
             },
             //onclick='GetEbayDetailsforItems(id,code);'
             
-            { title: "Check for product details", type: "text" , template: "<a type='button' href='ItemDescription?psDescr=' text='Get Ebay Details' ></a>", width: 200 }
+            //{ title: "Check for product details", type: "text" , template: "<a type='button' href='ItemDescription?psDescr=' text='Get Ebay Details' ></a>", width: 200 }
             //{ name: "Married", type: "checkbox", title: "Is Married", sorting: false },
             //{ type: "control" }
         ]
     });
 };
+///////
 
 var GetEbayDetailsforItems = function(psId,pscode,psDescr)
 {
@@ -111,6 +128,39 @@ var GetEbayDetailsforItems = function(psId,pscode,psDescr)
 };
 
 
+////////
+var GetDetailsforItems = function(psURL,urlType,psId,pscode,psDescr,type)
+{
+	////Post method have to be changed to get and itemdescription	
+	alert('asd');
+	debugger;
+	
+	$("#ebayJsonDataID")[0].value =psId;
+	$("#ebayJsonDataDescr")[0].value =psDescr;
+	$("#ebayJsonDataCode")[0].value =pscode;
+	
+	debugger;
+	$.ajax({
+		url : psURL+ '?psDescr='+psDescr,//'ItemDescription.jsp?psDescr='+psDescr,//
+		//data: JSON.stringify({ psDescr: psDescr}) ,
+		type: urlType,
+		success : function(data) {
+			debugger;
+			
+					if(type=="Amazon")
+					{
+						MapAmazonItemDescription(data);
+					}else{
+						
+						MapItemDescription(data);							
+					}
+			
+			alert(data+"asdsa");	
+		}
+	});
+};
+
+
 var GetAmazonDetailsforItems = function(psId,pscode,psDescr)
 {
 	////Post method have to be changed to get and itemdescription
@@ -123,7 +173,7 @@ var GetAmazonDetailsforItems = function(psId,pscode,psDescr)
 	debugger;
 	$.ajax({
 		url : 'AmazonItemDescription?psDescr='+psDescr,//'ItemDescription.jsp?psDescr='+psDescr,//
-		type: "GEt",
+		type: "GET",
 		success : function(data) {
 			debugger;
 			
@@ -194,7 +244,7 @@ var MapItemDescription = function(objData)
 		var shipLoc = obj[i].shippingInfo.shipToLocations[0];
 		var paymethod = obj[i].paymentMethod[0];
 		
-		var sti = "<table><td><h1>Title :"+ obj[i].title+"</h1><br/>" +
+		var sti = "<table class='table table-bordered table-striped'><td><h1>Title :"+ obj[i].title+"</h1><br/>" +
 		"<h1>Condition : " + obj[i].condition.conditionDisplayName +
 		"</h1><br/> Item Image: <img src='"+ obj[i].galleryURL +"' /><br/><label text= "+obj[i].location+"></label><br/>"+
 			"Payment Method: "+ obj[i].paymentMethod[0]+"<br/>"+
@@ -204,8 +254,9 @@ var MapItemDescription = function(objData)
 			"payment Method :"+paymethod+"<br/>"+
 			"<a href= '"+obj[i].viewItemURL+"' >View Item Url</a><br/>"+
 			"</td>"+
-			"</table>"+
-			"<td><input type='button' text='Enrich Data' onclick=CallDataEnrichmentMethod('"+obj[i].itemId+"','obj[i].itemId'); value='Product View URL' /></td>";
+			
+			"<td><input type='button' text='Enrich Data' onclick=CallDataEnrichmentMethod('"+obj[i].itemId+"','obj[i].itemId'); value='Product View URL' /></td>" +
+			"</table>";
 		//$("#ulItemDetails").append("<li>").append(
 		$("#divProductItemDetails").append(sti);//.append("</li>");
 		

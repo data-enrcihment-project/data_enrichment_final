@@ -267,19 +267,25 @@ public class AmazonCall {
 		 return response.getItems(); 
 	}
 	
-	public static Item GetAmazonItemPrice(String psDescription,String globalID) {
+	public static Map<String, Double> GetAmazonItemPrice(String psDescription,String globalID) {
 		
 		Double previousRatio=0.0;
 		List<Items> itemLists = GetAmazonItemObject(psDescription,globalID);
-		
+		 Map<String, Double> pricingRow  = new HashMap<String, Double>();
 		Item selectedItem = null;
+		Integer rowCount = 0;
 		
 		 for (Items itemList : itemLists) {
 				
 			    for (Item itemObj : itemList.getItem()) { 
 			        
 			        Double  ratio= FuzzyWuzzyMining.GetItemDescrRatio(psDescription,itemObj.getItemAttributes().getTitle().toString());
-			        if(previousRatio==0.0)
+			        if(previousRatio>60)
+					 { 
+						 previousRatio = ratio; 
+						 pricingRow.put(Integer.toString(rowCount++), Double.parseDouble(itemObj.getOfferSummary().getLowestNewPrice().getFormattedPrice()));
+					 }
+			        /*if(previousRatio==0.0)
 					 { 
 						 previousRatio = ratio; 
 					 }
@@ -287,11 +293,10 @@ public class AmazonCall {
 					 {
 						 previousRatio = ratio;
 						 selectedItem = itemObj;//itemObj.getOfferSummary().getLowestNewPrice().getFormattedPrice() 
-					 }
-			        
+					 }*/			        
 			    }
 			}
-		return selectedItem;
+		return pricingRow;
 	}
 	
 	@SuppressWarnings("null")

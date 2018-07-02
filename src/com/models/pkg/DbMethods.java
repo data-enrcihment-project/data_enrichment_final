@@ -84,7 +84,9 @@ public class DbMethods {
 		ResultSet rs;
 		try {
 			Statement st = DBConnection().createStatement();
+			
 			rs = st.executeQuery(query);
+			DBConnection().close();
 			return rs;
 			
 		} catch (SQLException e) {
