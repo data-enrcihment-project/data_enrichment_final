@@ -4,6 +4,8 @@ import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
+
+import com.dcommerce.scrapper.EbayCallService;
 import com.dcommerce.scrapper.Entry;
 import com.dcommerce.similarity.JaccardIndex;
 import com.dcommerce.database.*;
@@ -23,44 +25,25 @@ public class SmartPricing {
 			while ((line = br.readLine()) != null) {
 				// use comma as separator
 				String[] product = line.split(cvsSplitBy);
-				// read the item_no also and save it
-				item_no = product[1];
 				text1 = product[0];
-				System.out.println("Similar products for: " + text1); // TODO : delete
-				// I can store the name and the id here
-				//But how to pass???
+				item_no = product[1];
+				System.out.println("Similar products for: " + text1 + " with item_no: " + item_no ); // TODO : delete
 				
+				String psDescription = text1;
+				String globalID = "EBAY-DE";
+				entry = EbayCallService.GetEbayPrice(psDescription, globalID);
+					
 				for (int i = 0; i < entry.size(); i++) {
 					Entry st = entry.get(i);
 					text2 = st.getTitle();
 					double result = JaccardIndex.getJaccardIndex(text1, text2);
 					st.setScore(result); // Assignment of the similarity score
 				}
-				//SmartPricing.suggestPrice(entry);
-				DatabaseQuery.insertData(entry,item_no);//Here we can pass the item_no
+				
+				DatabaseQuery.insertData(entry,item_no);
 			}
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
 	}
-
-	
-//	public static void suggestPrice(ArrayList<Entry> entry) {
-//		// sorting the product list according to their similarity score
-//		Collections.sort(entry, Entry.ScoreDiff);
-//
-//		// taking only first 10 similar items
-//		//TODO: change the var i into a meaningful name like max
-//		for (int i = 0; i < 10; i++) {
-//			Entry str = entry.get(i);
-//			//System.out.println(str.getTitle() + " " + str.getScore() + " " + str.getPrice1() + " " + str.getPrice2());
-//			// here the data will be inserted 
-//			String title = str.getTitle();
-//			double base_price = str.getPrice1();
-//			double discount_price = str.getPrice2();
-//			String Statement = "INSERT INTO pricing_module (description, base_price, discount_price) VALUES ('"+title+"', '"+base_price+"', '"+discount_price+"')"; 
-//			
-//			//DatabaseQuery.insertData(Statement);
-//		}
-//	}
 }

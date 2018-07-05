@@ -34,7 +34,7 @@ public class ConnectionPool {
 
 		// creates an instance of GenericObjectPool that holds the pool of connection
 		gPool = new GenericObjectPool();
-		gPool.setMaxActive(10);
+		gPool.setMaxActive(20);
 
 		// creates a ConnectionFactory object which will be used by the pool 
 		// to create the connection object!
@@ -43,7 +43,7 @@ public class ConnectionPool {
 		// creates a PoolableConnectionFactory that wraps the connection object
 		// to add object pooling functionality!
 		PoolableConnectionFactory pcf = new PoolableConnectionFactory(cf,gPool, null, null, false, true);
-		return new PoolingDataSource();
+		return new PoolingDataSource(gPool);
 	}
 
 	public GenericObjectPool getConnectionPool() {

@@ -15,7 +15,7 @@ public class Eisen extends Thread {
 		String Statement = "SELECT shop_item.description, shop_item.item_no FROM shop_item INNER JOIN shop_item_has_category "
 				+ "ON shop_item.item_no = shop_item_has_category.item_no "
 				+ "WHERE shop_item_has_category.category_line_no = 22500 ";
-		String File = "Eisen.csv";
+		String File = "data/Eisen.csv";
 		try {
 			DatabaseQuery.returnResult(Statement, File);
 		} catch (IOException e) {
@@ -23,6 +23,7 @@ public class Eisen extends Thread {
 			e.printStackTrace();
 		}
 
+		
 		//	web-scraping
 		ArrayList<Entry> entry = new ArrayList<Entry>();
 		try {

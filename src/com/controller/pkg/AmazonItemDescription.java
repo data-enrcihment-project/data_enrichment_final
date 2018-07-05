@@ -105,8 +105,8 @@ public class AmazonItemDescription extends HttpServlet {
 		
 		System.out.println(jsonData); 
 		
-		String sql = "INSERT INTO enriched_data (E_Id,Enrich_ID, Item_no,Item_title,Item_Image,Item_Description,Item_Price,Item_URL,Item_Reviews,Type_ID,JSON_Text)" +
-		        "VALUES (?,?, ?, ?,?, ?, ?,?, ?, ?, ?)";
+		String sql = "INSERT INTO enrichment_project (Enrich_ID, Item_ID,Item_title,Item_Image,Item_Description,Item_Price,Item_URL,Item_Reviews,Type_ID,JSON_Text)" +
+		        "VALUES (?, ?, ?,?, ?, ?,?, ?, ?, ?)";
 		
 		ObjectMapper mapper = new ObjectMapper();
 		Item obj = null;
@@ -117,16 +117,15 @@ public class AmazonItemDescription extends HttpServlet {
 		//ArrayList<String> paramsArray = new ArrayList<String>();
 		
 		Map<String, String> paramsArray  = new HashMap<String, String>();
-		paramsArray.put("1", obj.getASIN()+1);
+		paramsArray.put("1", dataId);
 		paramsArray.put("2", obj.getASIN());
-		paramsArray.put("3", dataId);
-	    paramsArray.put("4", obj.getItemAttributes().getTitle());
+	    paramsArray.put("3", obj.getItemAttributes().getTitle());
 	    
 	    for ( ImageSets ImageSets : obj.getImageSets()) {
 		    
 	    	for ( ImageSet ImageSet : ImageSets.getImageSet()) {
 	    		
-	    		paramsArray.put("5", ImageSet.getMediumImage().getURL());
+	    		paramsArray.put("4", ImageSet.getMediumImage().getURL());
 	    	}
 	    	
 	    }
@@ -138,12 +137,12 @@ public class AmazonItemDescription extends HttpServlet {
 	    	summDescription += feature.trim() +"------";
 	    }
 	   
-		paramsArray.put("6", summDescription);
-		paramsArray.put("7", obj.getOfferSummary().getLowestNewPrice().getFormattedPrice());
-		paramsArray.put("8", obj.getDetailPageURL());
-		paramsArray.put("9", "");
-		paramsArray.put("10", "1");
-		paramsArray.put("11",jsonData);//jsonData
+		paramsArray.put("5", summDescription);
+		paramsArray.put("6", obj.getOfferSummary().getLowestNewPrice().getFormattedPrice());
+		paramsArray.put("7", obj.getDetailPageURL());
+		paramsArray.put("8", "");
+		paramsArray.put("9", "1");
+		paramsArray.put("10",jsonData);//jsonData
 		
 		try {
 			

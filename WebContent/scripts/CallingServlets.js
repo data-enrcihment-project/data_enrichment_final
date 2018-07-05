@@ -1,9 +1,12 @@
-var CallConnection = function ()
+var CallConnection = function (psType)
 {
-
+	debugger;
+	
 	$.ajax({
 		url : 'dataEnrichment_db',
 		type: "GET",
+		//dataType:'json',
+		//data : {type: psType},
 		success : function(data) {
 			debugger;
 			alert(data+"asdsa");	
@@ -14,6 +17,28 @@ var CallConnection = function ()
 	});
 	
 };
+
+//divProductDetailSelect
+var OnChangeProdCombo = function(obj)
+{
+	debugger;
+	//obj.options[el.selectedIndex].value]();
+	if(obj.value == "")
+		return;
+	
+	var choices = ["one", "two"];
+
+	function addInput(divName) {
+	    var select = $("<select/>")
+	    $.each(choices, function(a, b) {
+	        select.append($("<option/>").attr("value", b).text(b));
+	    });
+	    $("#" + divName).append(select);
+	}
+	
+	CallConnection(obj.value);
+}
+
 
 var DisplayProductDetails = function(details)
 {
@@ -80,7 +105,7 @@ var DisplayProductDetails = function(details)
                     var $customButton = $("<button>")
                             .text("Click")
                             .click(function (e) {
-                            	GetDetailsforItems("dataEnrichment_db","POST",data.id,data.shop_code,data.description,"Ebay");
+                            	GetDetailsforItems("ItemDescription","GET",data.id,data.shop_code,data.description,"Ebay");//item_no
                                 e.stopPropagation();
                             });
                     return $customButton;
@@ -199,6 +224,9 @@ var MapAmazonItemDescription = function(objData)
 	var count = obj[0];
 	i=1;
 	do{
+		if(count==0)
+			break;
+		
 		if(obj[i].offerSummary==undefined || obj[i].offerSummary==null)
 			break;
 		
@@ -215,7 +243,9 @@ var MapAmazonItemDescription = function(objData)
 			"<a href= '"+obj[i].detailPageURL+"' >View Item Url</a><br/>"+
 			"</td>"+
 			"</table>"+
-			"<td><input type='button' onclick=CallDataEnrichmentMethod('"+obj[i].asin+"','obj[i].asin'); value='Product View URL' /></td>";
+			"<td><input type='button' onclick=CallDataEnrichmentMethod('"+obj[i].asin+"','obj[i].asin','AmazonItemDescription'); value='Product View URL' /></td>"
+			+"<td><embed src='"+obj[i].customerReviews.iframeURL+"' width='400' height='200'  /></td>"+
+			+"</table>";
 		//$("#ulItemDetails").append("<li>").append(
 		$("#divProductItemDetails").append(sti);//.append("</li>");
 		
@@ -255,7 +285,8 @@ var MapItemDescription = function(objData)
 			"<a href= '"+obj[i].viewItemURL+"' >View Item Url</a><br/>"+
 			"</td>"+
 			
-			"<td><input type='button' text='Enrich Data' onclick=CallDataEnrichmentMethod('"+obj[i].itemId+"','obj[i].itemId'); value='Product View URL' /></td>" +
+			"<td><input type='button' text='Enrich Data' onclick=CallDataEnrichmentMethod('"+obj[i].itemId+"','obj[i].itemId','ItemDescription'); value='Product View URL' /></td>" +
+			
 			"</table>";
 		//$("#ulItemDetails").append("<li>").append(
 		$("#divProductItemDetails").append(sti);//.append("</li>");
@@ -265,36 +296,39 @@ var MapItemDescription = function(objData)
 	}while(i<=count);
 	
 };
-var CallDataEnrichmentMethod = function(psItemID,pstype)
+var CallDataEnrichmentMethod = function(psItemID,pstype,psURL)
 {
 	debugger;
 	var jsonData = $("#ebayJsonData").val();
 	var obj= $.parseJSON(jsonData);
 	var count = obj[0];
-	var ebayDataArr = new Array();
+	var enrichDataArr = new Array();
 	i=1;
 	do{
 		if(eval(pstype) ==psItemID)
 		{
-			ebayDataArr.push(obj[i]);
+			enrichDataArr.push(obj[i]);
 			break;
 		}
 		
 		i++;
 	}while(i<=count);
 	
-	var jsonString = JSON.stringify(ebayDataArr[0]);
-	SaveEbayData(jsonString);
+	var jsonString = JSON.stringify(enrichDataArr[0]);
+	
+	SaveEbayData(jsonString,psURL);
 	
 };
 
-var SaveEbayData = function (psJsonString)
+var SaveEbayData = function (psJsonString,psURL)
 {
-	
-debugger;
+	debugger;
 	$.ajax({
-		url : 'ItemDescription?psJsonString='+psJsonString+'&dataID='+$("#ebayJsonDataID")[0].value+'&dataDescr='+$("#ebayJsonDataDescr")[0].value+'&dataCode='+$("#ebayJsonDataCode")[0].value,//
-		type: "POST",
+		url : psURL ,//
+		type: "POST",		
+		dataType:'json',
+        data:{"psJsonString":psJsonString,"dataID":$("#ebayJsonDataID")[0].value,"dataDescr":$("#ebayJsonDataDescr")[0].value,"dataCode":$("#ebayJsonDataCode")[0].value},
+       
 		success : function(data) {
 			debugger;
 			alert(data+"asdsa");	

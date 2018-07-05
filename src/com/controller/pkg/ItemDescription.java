@@ -19,6 +19,7 @@ import com.ebay.services.finding.SearchItem;
 import com.ebay.services.finding.SearchResult;
 import com.models.pkg.AmazonCall;
 import com.models.pkg.DbMethods;
+import com.models.pkg.EbayCallService;
 
 import am.ik.aws.apa.jaxws.Item;
 
@@ -42,7 +43,50 @@ public class ItemDescription extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
-		response.getWriter().append("Served at: ").append(request.getContextPath());
+		
+		String descr = request.getParameter("psDescr");
+		System.out.println(request.getParameter("psDescr")); 
+		
+		
+		Map<Integer, Object> dictionary = EbayCallService.GetEbayDataWithDescr(descr,"EBAY-DE");
+		
+	
+		boolean isEmpty = false;
+		
+		
+		for (Map.Entry<Integer, Object> entry : dictionary.entrySet()) {
+			System.out.println(isEmpty+ " 222Final");
+			String val = entry.getValue().toString();
+			if(Integer.parseInt(val) > 0)
+			{
+				System.out.println(isEmpty+ " 2332Final");
+				
+				break;
+			}else {
+				isEmpty = true ;//false;
+			}
+		}
+		
+		if(isEmpty)
+		{
+			System.out.println("2weFinal");
+			dictionary= EbayCallService.GetEbayDataWithDescr(descr,"EBAY-US");
+		}
+		ObjectMapper mapper = 
+				new ObjectMapper();
+		String json = "";
+		try {
+		    // convert user object to json string and return it 
+		     json =  mapper.writeValueAsString(dictionary);
+		}catch(Exception e)
+		{			
+			throw e;
+		}
+        request.setAttribute("dictionary", json);
+		
+		response.getWriter().write(json);
+		
+		//response.getWriter().append("Served at: ").append(request.getContextPath());
 	}
 
 	/**
@@ -58,8 +102,8 @@ public class ItemDescription extends HttpServlet {
 		
 		System.out.println(jsonData); 
 		
-		String sql = "INSERT INTO enriched_data (E_Id,Enrich_ID, Item_no,Item_title,Item_Image,Item_Description,Item_Price,Item_URL,Item_Reviews,Type_ID,JSON_Text)" +
-		        "VALUES (?,?, ?, ?,?, ?, ?,?, ?, ?, ?)";
+		String sql = "INSERT INTO enrichment_project (Enrich_ID, Item_ID,Item_title,Item_Image,Item_Description,Item_Price,Item_URL,Item_Reviews,Type_ID,JSON_Text)" +
+		        "VALUES (?, ?, ?,?, ?, ?,?, ?, ?, ?)";
 		
 		
 		ObjectMapper mapper = new ObjectMapper();
@@ -72,37 +116,19 @@ public class ItemDescription extends HttpServlet {
 			//ArrayList<String> paramsArray = new ArrayList<String>();
 			
 			Map<String, String> paramsArray  = new HashMap<String, String>();
-			paramsArray.put("1", obj.getItemId()+1);
+			
+			paramsArray.put("1", dataId);
 			paramsArray.put("2", obj.getItemId());
-			paramsArray.put("3", dataId);
-		    paramsArray.put("4", obj.getTitle());
-			paramsArray.put("5", obj.getGalleryURL());
-			paramsArray.put("6", "");
-			paramsArray.put("7", Double.toString(obj.getSellingStatus().getCurrentPrice().getValue()));
-			paramsArray.put("8", obj.getViewItemURL());
-			paramsArray.put("9", "");
-			paramsArray.put("10", "1");
-			paramsArray.put("11",jsonData);//jsonData
+		    paramsArray.put("3", obj.getTitle());
+			paramsArray.put("4", obj.getGalleryURL());
+			paramsArray.put("5", "");
+			paramsArray.put("6", Double.toString(obj.getSellingStatus().getCurrentPrice().getValue()));
+			paramsArray.put("7", obj.getViewItemURL());
+			paramsArray.put("8", "");
+			paramsArray.put("9", "1");
+			paramsArray.put("10",jsonData);
 			
-			
-		
 			try {
-				//PreparedStatement preparedStatement = DbMethods.DBConnection().prepareStatement(sql);
-				
-				//preparedStatement.setInt(1, Integer.parseInt((obj.getItemId())));
-				//preparedStatement.setString(2, (obj.getItemId()));
-				//preparedStatement.setInt(3, Integer.parseInt(dataId));
-				//preparedStatement.setString(4, obj.getTitle());
-				//preparedStatement.setString(5, obj.getGalleryURL());
-				//preparedStatement.setString(6, "");
-				//preparedStatement.setDouble(7, Double.parseDouble(obj.getItemId()));
-				//preparedStatement.setString(8, obj.getViewItemURL());
-				//preparedStatement.setString(9, "");
-				//preparedStatement.setInt(10, 1);
-				//preparedStatement.setString(11, "");
-				 
-				//preparedStatement.executeUpdate(); 
-				
 				
 				DbMethods.SaveUpdateQueryStatement(sql,paramsArray);
 				
@@ -120,12 +146,6 @@ public class ItemDescription extends HttpServlet {
 			}
 			 
 		}
-		
-		
-		
-		
-		
-		
 		
 	}
 

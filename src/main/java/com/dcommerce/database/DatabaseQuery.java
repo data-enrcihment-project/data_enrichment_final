@@ -1,6 +1,7 @@
 package com.dcommerce.database;
 
 import java.io.BufferedWriter;
+import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.sql.Connection;
@@ -8,11 +9,8 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.Collections;
-
 import javax.sql.DataSource;
-
 import com.dcommerce.scrapper.Entry;
-import com.models.pkg.DbMethods;
 
 /**
  * This class takes a connection from the connection pool and performs 
@@ -40,9 +38,9 @@ public class DatabaseQuery {
 			DataSource dataSource = jdbcObj.setUpPool();
 			jdbcObj.printDbStatus(); // TODO: delete
 
-			connObj = DbMethods.DBConnection();//dataSource.getConnection();
+			connObj = dataSource.getConnection();
 			jdbcObj.printDbStatus(); // TODO: delete
-System.out.println("DB Call");
+
 			// performing database query
 			pstmtObj = connObj.prepareStatement(Statement);
 			rsObj = pstmtObj.executeQuery();
@@ -55,6 +53,7 @@ System.out.println("DB Call");
 				Nb.append(rsObj.getString("description") + "," + rsObj.getString("item_no") + "\n");
 				bw.write(Nb.toString());
 			}
+			System.out.println(new File(File).getAbsolutePath());
 			// closing BufferWriter object
 			bw.close();
 
@@ -85,7 +84,7 @@ System.out.println("DB Call");
 	 * @param entry
 	 *            Arraylist of similar items
 	 */
-	public static void insertData(ArrayList<Entry> entry,String item_no) throws IOException {
+	public static void insertData(ArrayList<Entry> entry, String item_no) throws IOException {
 
 		Connection connObj = null;
 		PreparedStatement pstmtObj = null;
@@ -94,21 +93,24 @@ System.out.println("DB Call");
 		try {
 			DataSource dataSource = jdbcObj.setUpPool();
 
-			connObj =  DbMethods.DBConnection();//dataSource.getConnection();
+			connObj = dataSource.getConnection();
 
 			// sorting the product list according to their similarity score
 			Collections.sort(entry, Entry.ScoreDiff);
+			
 			//taking the first 5 similar items.
-			for (int i = 0; i < 5; i++) {
+			int max = 5;
+			if(entry.size()<5) {
+				max = entry.size();
+			}
+			for (int i = 0; i < max ; i++) {
 				Entry str = entry.get(i);
 				//System.out.println(str.getTitle() + " " + str.getScore() + " " + str.getPrice1() + " " + str.getPrice2());
-			
 				String title = str.getTitle();
 				double base_price = str.getPrice1();
 				double discount_price = str.getPrice2();
-				//String item_no = item_no;
 				//add the column in the database and change the statement
-				String Statement = "INSERT INTO pricing_module (item_no,description, base_price, discount_price) VALUES ('"+item_no+"','"+title+"', '"+base_price+"', '"+discount_price+"')"; 
+				String Statement = "INSERT INTO pricing_module (item_no, description, base_price, discount_price) VALUES ('"+item_no+"','"+title+"', '"+base_price+"', '"+discount_price+"')"; 
 				pstmtObj = connObj.prepareStatement(Statement);
 				pstmtObj.executeUpdate();
 			}

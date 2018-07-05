@@ -26,6 +26,9 @@ import am.ik.aws.apa.jaxws.ItemSearch;
 import am.ik.aws.apa.jaxws.ItemSearchRequest;
 import am.ik.aws.apa.jaxws.ItemSearchResponse;
 import am.ik.aws.apa.jaxws.Items;
+import am.ik.aws.apa.jaxws.SimilarityLookup;
+import am.ik.aws.apa.jaxws.SimilarityLookupRequest;
+import am.ik.aws.apa.jaxws.SimilarityLookupResponse;
 
 
 
@@ -68,7 +71,8 @@ public class AmazonCall {
 		itemRequest.getResponseGroup().add("ItemAttributes");
 		itemRequest.getResponseGroup().add("Offers");
 		itemRequest.getResponseGroup().add("Images");
-		//itemRequest.getResponseGroup().add("Reviews");//ItemLookup
+		itemRequest.getResponseGroup().add("Reviews");//ItemLookup
+		itemRequest.getResponseGroup().add("EditorialReview");//ItemLookup
 		//itemRequest.getResponseGroup().add("Similarities");//ItemLookup Discover
 		//itemRequest.getResponseGroup().add("RelatedItems");//ItemLookup Related items
 		itemRequest.setItemPage(BigInteger.valueOf(1L));
@@ -108,9 +112,10 @@ public class AmazonCall {
 		 return row;
 	}
 	
-	@SuppressWarnings({ "null" })
-	public static String CallItemLookUp(String psDescription,String globalID,String asin)
+	
+	public static String CallItemLookUp(String psResponseGroup,String asin)//String psDescription,String globalID,String asin
 	{
+		///for related or similar items
 		String awsAccessKeyID = "AKIAJGNN4WCXDEYYLG6A";
 		String test = "md074c-21"; 
 
@@ -119,7 +124,7 @@ public class AmazonCall {
 
 		AWSECommerceServicePortType port = null;
 		
-		if(globalID.equals("AMAZON-DE"))
+		/*if(globalID.equals("AMAZON-DE"))
 		{
 			System.out.println("For DE");
 			port = service.getAWSECommerceServicePortDE();			
@@ -128,17 +133,20 @@ public class AmazonCall {
 		{
 			System.out.println("FOR US");
 			port = service.getAWSECommerceServicePort();
-		}
+		}*/
+		port = service.getAWSECommerceServicePortDE();
+		
 		
 		ItemLookupRequest lookupReq = new ItemLookupRequest();
 		//lookupReq.setSearchIndex(psDescription);
 		//lookupReq.getItemId().add(asin);
+		lookupReq.setSearchIndex("All");
 		lookupReq.setIdType("ASIN");
 		lookupReq.getItemId().add(asin);
 		//lookupReq.getResponseGroup().add("Small");
-		//lookupReq.getResponseGroup().add("Reviews");//ItemLookup
-		//lookupReq.getResponseGroup().add("Images");
-		lookupReq.getResponseGroup().add("Offers");
+		//lookupReq.getResponseGroup().add("Offers");
+		lookupReq.getResponseGroup().add(psResponseGroup);//ItemLookup Discover incl. related item and similar items
+		
 		
 		ItemLookup lookupitem = new ItemLookup();
 		lookupitem.setAWSAccessKeyId(awsAccessKeyID);
@@ -151,7 +159,7 @@ public class AmazonCall {
 		int count = responseLook.getItems().size();
 		List<Items> itemsLookUp = responseLook.getItems();
 		
-			
+			System.out.println(itemsLookUp);
 		Map<Integer, Object> row = null;
 		
 		//try {
@@ -182,6 +190,7 @@ public class AmazonCall {
 		     try {
 				json =  mapper.writeValueAsString(row);
 				System.out.println(json);
+				return json;
 			} catch (JsonGenerationException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -194,7 +203,100 @@ public class AmazonCall {
 			}
 		
 		
-		return "";
+		     
+		     
+		return json;
+	}
+	
+	public static String CallItemSimilarLookUp(String psResponseGroup,String asin)//String psDescription,String globalID,String asin
+	{
+		///for related or similar items
+		String awsAccessKeyID = "AKIAJGNN4WCXDEYYLG6A";
+		String test = "md074c-21"; 
+
+		AWSECommerceService service = new AWSECommerceService();
+		service.setHandlerResolver(new AwsHandlerResolver("in+WiNhkEcTJY8NF1rozgORBiE4VdgUnrx7dSWhw"));
+
+		AWSECommerceServicePortType port = null;
+		
+		/*if(globalID.equals("AMAZON-DE"))
+		{
+			System.out.println("For DE");
+			port = service.getAWSECommerceServicePortDE();			
+		}
+		else if(globalID.equals("AMAZON-US"))
+		{
+			System.out.println("FOR US");
+			port = service.getAWSECommerceServicePort();
+		}*/
+		port = service.getAWSECommerceServicePort();
+		
+		SimilarityLookupRequest simlarReq = new SimilarityLookupRequest();
+		//simlarReq.setIdType("ASIN");
+		simlarReq.getItemId().add(asin);
+		simlarReq.getResponseGroup().add("Small");
+		//lookupReq.getResponseGroup().add("Offers");
+		//lookupReq.getResponseGroup().add(psResponseGroup);//ItemLookup Discover incl. related item and similar items
+		
+		
+		SimilarityLookup lookupitem = new SimilarityLookup();
+		lookupitem.setAWSAccessKeyId(awsAccessKeyID);
+		lookupitem.setAssociateTag(test);
+		lookupitem.getRequest().add(simlarReq);
+		
+		SimilarityLookupResponse responseLook =port.similarityLookup(lookupitem);
+		 
+		System.out.println(responseLook);
+		int count = responseLook.getItems().size();
+		List<Items> itemsLookUp = responseLook.getItems();
+		
+			System.out.println(itemsLookUp);
+		Map<Integer, Object> row = null;
+		
+		//try {
+			//row = resultSetToList(itemsLookUp,count,psDescription);
+		//} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			//e.printStackTrace();
+		//}
+		List<Object> obj = new ArrayList<Object>();
+		///////////////
+		
+		for (Items itemList : itemsLookUp) {
+			
+			System.out.println(itemList.getItem().toString());
+		    for (Item itemObj : itemList.getItem()) {
+		        
+		    
+		        System.out.println(itemObj.getCustomerReviews());
+		        
+		        obj.add(itemObj);
+		    }
+		}
+		
+		ObjectMapper mapper = new ObjectMapper();
+		String json = "";
+		
+		    // convert user object to json string and return it 
+		     try {
+				json =  mapper.writeValueAsString(row);
+				System.out.println(json);
+				return json;
+			} catch (JsonGenerationException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (JsonMappingException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		
+		
+		     
+		     
+		return json;
 	}
 	
 	public static List<Items> GetAmazonItemObject(String psDescription,String globalID)
@@ -299,7 +401,7 @@ public class AmazonCall {
 		return pricingRow;
 	}
 	
-	@SuppressWarnings("null")
+
 	public static Map<Integer, Object> resultSetToList(List<Items> searchItems,int count, String psDescr) throws SQLException {
 	    
 	    ////Important Arrays
@@ -316,9 +418,13 @@ public class AmazonCall {
 	    /////////
 	    for (Items itemList : searchItems) {
 			
+	    	
+	    	
 	    	itemCount = itemList.getTotalResults();
 			System.out.println(itemList.getItem().toString());
 		    for (Item itemObj : itemList.getItem()) {
+		    	
+		    	
 		        /*System.out.println(itemObj.getItemAttributes().getBrand());
 		        System.out.println(itemObj.getItemAttributes().getIssuesPerYear());
 		        

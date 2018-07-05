@@ -35,19 +35,6 @@
 <body>
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
     <div id="wrapper">
 
         <!-- Navigation -->
@@ -77,7 +64,7 @@
                                         <em>Yesterday</em>
                                     </span>
                                 </div>
-                                <div>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque eleifend...</div>
+                                <div></div>
                             </a>
                         </li>
                         <li class="divider"></li>
@@ -89,7 +76,7 @@
                                         <em>Yesterday</em>
                                     </span>
                                 </div>
-                                <div>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque eleifend...</div>
+                                <div></div>
                             </a>
                         </li>
                         <li class="divider"></li>
@@ -101,7 +88,7 @@
                                         <em>Yesterday</em>
                                     </span>
                                 </div>
-                                <div>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque eleifend...</div>
+                                <div></div>
                             </a>
                         </li>
                         <li class="divider"></li>
@@ -312,58 +299,45 @@
                             <ul class="nav nav-second-level">
                                 
 								<li>
-                                    <a href="MD_test_Pricing_module.html">Pricing Dashboard</a>
+                                    <a href="http://localhost/MD_Dashboard/pages/MD_test_Pricing_module.html">Pricing Dashboard</a>
                                 </li>
-                               <!--
-							   <li>
-                                    <a href="morris.html">Enriched data reviews</a>
-                                </li>-->
+                             
                             </ul>
                             <!-- /.nav-second-level -->
                         </li>
                         <li>
-                            <a href="#"><i class="fa fa-bar-chart-o fa-fw"></i> Review Module<span class="fa arrow"></span></a>
+                            <a href="ReviewModule.jsp"><i class="fa fa-bar-chart-o fa-fw"></i> Review Module<span class="fa arrow"></span></a>
 							
 							
                             <ul class="nav nav-second-level">
                                 <li>
-                                    <a href="blank.html">Review Dashboard</a>
+                                    <a href="ReviewModule.jsp">Review Dashboard</a>
                                 </li>
                                 
 								
                             </ul>
-                            <!-- /.nav-second-level -->
+                            
                         </li>
                         <li>
-                            <a href="tables.html"><i class="fa fa-table fa-fw"></i> Performed jobs<span class="fa arrow"></span></a>
+                            <a href="Performed_Jobs.jsp"><i class="fa fa-table fa-fw"></i> Performed jobs<span class="fa arrow"></span></a>
 							
 							<ul class="nav nav-second-level">
 							
 								<li>
-                                    <a href="morris.html">All<!-- <span class="fa arrow"> --></span></a>
-									<!-- <ul class="nav nav-second-level">
-							
-									<li>
-                                    <a href="morris.html">Ascending to descending (Year)</a>
-									</li>
-									
-									<li>
-                                    <a href="morris.html">Descending to ascending(Year)</a>
-									</li>
-                                
-								</ul> -->
+                                    <a >All</a>
+								
                                 </li>
                                 <li>
-                                    <a href="flot.html">Today</a>
+                                    <a >Today</a>
                                 </li>
                                 <li>
-                                    <a href="morris.html">This week</a>
+                                    <a >This week</a>
                                 </li>
 								<li>
-                                    <a href="morris.html">This month</a>								
+                                    <a >This month</a>								
                                 </li>
 								<li>
-                                    <a href="morris.html">Last 6 months</a>
+                                    <a>Last 6 months</a>
                                 </li>
 								
                             </ul>
@@ -455,7 +429,10 @@
 						
                             <div class="table-responsive">
 							<input type="button" value="Call Connection" onclick="CallConnection();" />
-									<div id="divProductDetailsaa">
+									<div id="divProductDetailSelect">
+									<!-- <select id="cboProdCategory" onchange="OnChangeProdCombo(this);">
+										<option value="">Select combo</option>
+									</select> -->
 									</div>
 
 									<div id="divProductDetails">
@@ -478,7 +455,7 @@
                         <div class="panel-body">
                             <h3>Result set:</h3>
                             <p> Below is the set of result based on the <b>Enrichment operation</b> chosen above.</p>
-                            <dic id="divProductItemDetails" >
+                            <div id="divProductItemDetails" >
                             </div>
                                 <!-- <button type="button" onclick="alert('Hello world!')">Save to database</button> <button type="button" onclick="alert('Hello world!')">Refresh result</button> <button type="button" onclick="alert('Hello world!')">Clear</button> <button type="button" onclick="alert('Hello world!')">Download</button> -->
                             </div>

@@ -31,6 +31,7 @@ import com.ebay.services.finding.FindItemsByKeywordsResponse;
 import com.ebay.services.finding.FindItemsByProductRequest;
 import com.ebay.services.finding.FindItemsByProductResponse;
 import com.ebay.services.finding.FindingServicePortType;
+import com.ebay.services.finding.OutputSelectorType;
 import com.ebay.services.finding.PaginationInput;
 import com.ebay.services.finding.ProductId;
 import com.ebay.services.finding.SearchItem;
@@ -38,6 +39,7 @@ import com.ebay.services.finding.SearchResult;
 
 import com.ebay.sdk.*;
 import com.ebay.sdk.call.GetFeedbackCall;
+import com.ebay.sdk.call.GetItemCall;
 import com.ebay.soap.eBLBaseComponents.*;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
@@ -64,6 +66,7 @@ public class EbayCallService {
 		
 		 Double db =0.0;
 		 
+		
 		 return res.getSearchResult().getItem();
 	}
 	
@@ -77,8 +80,12 @@ public class EbayCallService {
 		//create a service client       
 		 FindingServicePortType serviceClient = FindingServiceClientFactory.getServiceClient(config);    
 		 //create request object  
+		 
+		 
 		 FindItemsAdvancedRequest request =new FindItemsAdvancedRequest();
 		 request.setKeywords("MSI GP72");
+		 
+		 
 		 
 		 FindItemsAdvancedResponse res= serviceClient.findItemsAdvanced(request);
 		
@@ -106,6 +113,52 @@ public class EbayCallService {
 		}
 		return null;
 	}
+	
+	public static List<SearchItem> GetEbayItemObjectFast()
+	{
+		 ClientConfig config = new ClientConfig();         
+		 config.setApplicationId("AmirMans-DataEnri-PRD-32cc7bc3a-9d32c231");
+		 config.setGlobalId("EBAY-US");
+		//create a service client       
+		 FindingServicePortType serviceClient = FindingServiceClientFactory.getServiceClient(config);    
+		 //create request object  
+		 FindItemsByKeywordsRequest request =new FindItemsByKeywordsRequest();
+		 request.setKeywords("Harry Potter Order of pheonix");
+		 
+		 
+		 request.getOutputSelector().add(OutputSelectorType.SELLER_INFO);
+		 FindItemsByKeywordsResponse res= serviceClient.findItemsByKeywords(request);
+		
+		 Double db =0.0;
+		 
+		 List<Object> list =null;
+		
+		 for(SearchItem item :res.getSearchResult().getItem() )
+		 {
+			 
+			 ObjectMapper mapper = new ObjectMapper();
+				String json = "";
+				try {
+				    // convert user object to json string and return it 
+				     json =  mapper.writeValueAsString(item);
+				     System.out.println(json);
+				}catch(Exception e)
+				{
+					
+					try {
+						throw e;
+					} catch (Exception e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					}
+				}
+		 }
+		 
+		 
+		 return res.getSearchResult().getItem();
+	}
+	
+	
 	public static Map<Integer, Object> GetEbayDataWithDescr(String psDescription,String globalID)
 	{ 
 		try {
@@ -117,8 +170,10 @@ public class EbayCallService {
 		 FindingServicePortType serviceClient = FindingServiceClientFactory.getServiceClient(config);    
 		 //create request object  
 		 FindItemsAdvancedRequest request =new FindItemsAdvancedRequest();
-		 request.setKeywords(psDescription);
-		 		 
+		 request.setKeywords(psDescription);		 
+		 request.getOutputSelector().add(OutputSelectorType.SELLER_INFO);		 
+		 request.getOutputSelector().add(OutputSelectorType.STORE_INFO);
+		 
 		 FindItemsAdvancedResponse res= serviceClient.findItemsAdvanced(request);
 		
 		 Double db =0.0;
@@ -132,7 +187,7 @@ public class EbayCallService {
 		 
 		 
 		 ////
-		 
+		 //FindItemsByProductRequest prodReq = new FindItemsByProductRequest();
 		 
 		 
 		 return row;
@@ -188,6 +243,21 @@ public class EbayCallService {
 	        	//Send Description of item to fuzzy mining and if it is more than 70 percent ratio then add to array list
 	        	Double  ratio= FuzzyWuzzyMining.GetItemDescrRatio(psDescr,item.getTitle().toString());
 	        	///or may be can which one i highest and select that and save those details to DB
+	        	/*
+	        	
+	        	try {
+	        		System.out.println("Calling Feedback");
+					EbayFeedback.getFeedback(item.getItemId());
+				} catch (ApiException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				} catch (SdkException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				} catch (Exception e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}*/
 	        	
 	        	if(ratio >= 69)
 	            {
