@@ -9,7 +9,10 @@
 
 <link rel="stylesheet" type="text/css" href="CSS/jsgrid.css" />
 <link rel="stylesheet" type="text/css" href="CSS/theme.css" />
-
+<link rel="stylesheet" type="text/css" href="CSS/bootstrap.min.css" />
+<link rel="stylesheet" type="text/css" href="CSS/metisMenu.min.css" />
+<link rel="stylesheet" type="text/css" href="CSS/sb-admin-2.min.css" />
+<link rel="stylesheet" type="text/css" href="CSS/font-awesome.min.css" />
 <script src="scripts/jsgrid.min.js"></script>
 
 <script src="scripts/jsgrid.core.js"></script>
@@ -23,13 +26,29 @@
 <script src="scripts/CallingServlets.js"></script> 
 
 
-<link rel="stylesheet" type="text/css" href="CSS/bootstrap.min.css" />
-<link rel="stylesheet" type="text/css" href="CSS/metisMenu.min.css" />
-<link rel="stylesheet" type="text/css" href="CSS/sb-admin-2.min.css" />
-<link rel="stylesheet" type="text/css" href="CSS/font-awesome.min.css" />
+
 <script src="scripts/html5shiv.js"></script>
 <script src="scripts/respond.min.js"></script>
 
+<style>
+
+.makeScroll{
+overflow-y: scroll;
+min-width: 200px;
+height: 600px;
+}
+
+</style>
+
+<script type="text/javascript">
+
+$(document).ready(function(){
+	
+	CallConnection();
+});
+
+
+</script>
 <title>Insert title here</title>
 </head>
 <body>
@@ -274,34 +293,38 @@
                             </div>
                             <!-- /input-group -->
                         </li>
-                        <li>
-                            <a href="MD_test_API_workaround.html"><i class="fa fa-dashboard fa-fw"></i> API Work-around <small>(Amazon and eBay)</small><span class="fa arrow"></span></a>
+                        <li><!-- href="MD_test_API_workaround.html" -->
+                            <a ><i class="fa fa-dashboard fa-fw"></i> API Work-around <small>(Amazon and eBay)</small><span class="fa arrow"></span></a>
 							<ul class="nav nav-second-level">
 							
-								
-									
 							   <li>
-                                    <a href="MD_test_API_workaround.html">API Dashboard</a>
+                                    <a href="index.jsp">API Dashboard</a>
                                 </li>
-                               <!-- <li>
-                                    <a href="morris.html">eBay API</a>
+                               <li>
+                                    <a href="SimilarItemsModule.jsp">Similar Items For Ebay and Amazon</a>
                                 </li>
-								<!-- <li>
-                                    <a href="morris.html">Combined API</a>
-                                </li> -->
+								
                             </ul>
                         </li>
 						
 						 <li>
-                            <a href="#"><i class="fa fa-bar-chart-o fa-fw"></i> Pricing Module<span class="fa arrow"></span></a>
+                            <a href="PricingChart.jsp"><i class="fa fa-bar-chart-o fa-fw"></i> Pricing Module<span class="fa arrow"></span></a>
 							
 							
                             <ul class="nav nav-second-level">
                                 
 								<li>
-                                    <a href="http://localhost/MD_Dashboard/pages/MD_test_Pricing_module.html">Pricing Dashboard</a>
+                                    <a href="price_module.jsp">Pricing Dashboard</a>
                                 </li>
-                             
+                               <li>
+                                    <a href="shop1_products.jsp">Pricing Shop 1</a>
+                                </li>
+                                <li>
+                                    <a href="shop2_products.jsp">Pricing Shop 2</a>
+                                </li>
+                                <li>
+                                    <a href="PricingChart.jsp">Pricing Chart</a>
+                                </li>
                             </ul>
                             <!-- /.nav-second-level -->
                         </li>
@@ -344,65 +367,7 @@
 							
 							
                         </li>
-                        <!-- <li>
-                            <a href="forms.html"><i class="fa fa-edit fa-fw"></i> Forms</a>
-                        </li> -->
-                       <!--  <li>
-                            <a href="#"><i class="fa fa-wrench fa-fw"></i> UI Elements<span class="fa arrow"></span></a>
-                            <ul class="nav nav-second-level">
-                                <li>
-                                    <a href="panels-wells.html">Panels and Wells</a>
-                                </li>
-                                <li>
-                                    <a href="buttons.html">Buttons</a>
-                                </li>
-                                <li>
-                                    <a href="notifications.html">Notifications</a>
-                                </li>
-                                <li>
-                                    <a href="typography.html">Typography</a>
-                                </li>
-                                <li>
-                                    <a href="icons.html"> Icons</a>
-                                </li>
-                                <li>
-                                    <a href="grid.html">Grid</a>
-                                </li>
-                            </ul>
-							
-						</li> -->
-                            <!-- /.nav-second-level -->
-                        
-                       <!--  <li>
-                            <a href="#"><i class="fa fa-sitemap fa-fw"></i> Multi-Level Dropdown<span class="fa arrow"></span></a>
-                            <ul class="nav nav-second-level">
-                                <li>
-                                    <a href="#">Second Level Item</a>
-                                </li>
-                                <li>
-                                    <a href="#">Second Level Item</a>
-                                </li>
-                                <li>
-                                    <a href="#">Third Level <span class="fa arrow"></span></a>
-                                    <ul class="nav nav-third-level">
-                                        <li>
-                                            <a href="#">Third Level Item</a>
-                                        </li>
-                                        <li>
-                                            <a href="#">Third Level Item</a>
-                                        </li>
-                                        <li>
-                                            <a href="#">Third Level Item</a>
-                                        </li>
-                                        <li>
-                                            <a href="#">Third Level Item</a>
-                                        </li>
-                                    </ul>
-                                    
-                                </li>
-                            </ul>
-						</li> -->
-                            <!-- /.nav-second-level -->
+                       
                         
                         
                     </ul>
@@ -428,7 +393,7 @@
                             <p>This is the data extracted from the database.</p>
 						
                             <div class="table-responsive">
-							<input type="button" value="Call Connection" onclick="CallConnection();" />
+							<!-- <input type="button" value="Call Connection" onclick="CallConnection();" /> -->
 									<div id="divProductDetailSelect">
 									<!-- <select id="cboProdCategory" onchange="OnChangeProdCombo(this);">
 										<option value="">Select combo</option>
@@ -437,7 +402,7 @@
 
 									<div id="divProductDetails">
 									</div>
-								<button type="button" onclick="alert('Hello world!')">Refresh database</button>
+								<!-- <button type="button" onclick="alert('Hello world!')">Refresh database</button> -->
                             </div>
                             <!-- <p>Grid classes apply to devices with screen widths greater than or equal to the breakpoint sizes, and override grid classes targeted at smaller devices. Therefore, applying any
                                 <code>.col-md-</code> class to an element will not only affect its styling on medium devices but also on large devices if a
@@ -455,7 +420,7 @@
                         <div class="panel-body">
                             <h3>Result set:</h3>
                             <p> Below is the set of result based on the <b>Enrichment operation</b> chosen above.</p>
-                            <div id="divProductItemDetails" >
+                            <div id="divProductItemDetails"  class="makeScroll">
                             </div>
                                 <!-- <button type="button" onclick="alert('Hello world!')">Save to database</button> <button type="button" onclick="alert('Hello world!')">Refresh result</button> <button type="button" onclick="alert('Hello world!')">Clear</button> <button type="button" onclick="alert('Hello world!')">Download</button> -->
                             </div>

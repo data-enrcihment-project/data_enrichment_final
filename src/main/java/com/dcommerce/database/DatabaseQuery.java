@@ -44,7 +44,6 @@ public class DatabaseQuery {
 			// performing database query
 			pstmtObj = connObj.prepareStatement(Statement);
 			rsObj = pstmtObj.executeQuery();
-
 			// writing the results in corresponding csv file
 			BufferedWriter bw = new BufferedWriter(new FileWriter(File));
 
@@ -78,14 +77,30 @@ public class DatabaseQuery {
 			}
 		}
 	}
-	
+
+	public static ResultSet returnFrontEnd(String Statement) throws IOException {
+
+		ResultSet rsObj = null;
+		Connection connObj = null;
+		PreparedStatement pstmtObj = null;
+		ConnectionPool jdbcObj = new ConnectionPool();
+
+		try {
+			DataSource dataSource = jdbcObj.setUpPool();
+			connObj = dataSource.getConnection();
+			pstmtObj = connObj.prepareStatement(Statement);
+			rsObj = pstmtObj.executeQuery();
+		} catch (Exception sqlException) {
+			sqlException.printStackTrace();
+		} 
+		return rsObj;
+	}
 	/**This method inserts enriched data in the database.
 	 * 
 	 * @param entry
 	 *            Arraylist of similar items
 	 */
 	public static void insertData(ArrayList<Entry> entry, String item_no) throws IOException {
-
 		Connection connObj = null;
 		PreparedStatement pstmtObj = null;
 		ConnectionPool jdbcObj = new ConnectionPool();

@@ -3,11 +3,6 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
-<style>
-embed:focus { 
-    outline: none;
-}
-</style>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 
 <script src="scripts/jquery-1.11.1.min.js"></script> 
@@ -37,7 +32,7 @@ embed:focus {
 <script src="scripts/respond.min.js"></script>
 
 
-<script src="scripts/ReviewModule.js"></script> 
+<script src="scripts/SimilaritemModule.js"></script> 
 
 <title>Insert title here</title>
 </head>
@@ -287,26 +282,26 @@ embed:focus {
                             <!-- /input-group -->
                         </li>
                         <li>
-                            <a href="index.html"><i class="fa fa-dashboard fa-fw"></i> API Work-around <small>(Amazon and eBay)</small><span class="fa arrow"></span></a>
+                            <a ><i class="fa fa-dashboard fa-fw"></i> API Work-around <small>(Amazon and eBay)</small><span class="fa arrow"></span></a>
 							<ul class="nav nav-second-level">
-                                <li>
-                                    <a href="flot.html">Amazon API</a>
+							
+							   <li>
+                                    <a href="index.jsp">API Dashboard</a>
                                 </li>
-                                <li>
-                                    <a href="morris.html">eBay API</a>
+                               <li>
+                                    <a href="SimilarItemsModule.jsp">Similar Items For Ebay and Amazon</a>
                                 </li>
-								<!-- <li>
-                                    <a href="morris.html">Combined API</a>
-                                </li> -->
+								
                             </ul>
                         </li>
 						
 						 <li>
-                            <a href="#"><i class="fa fa-bar-chart-o fa-fw"></i> Pricing Module<span class="fa arrow"></span></a>
+                            <a href="PricingChart.jsp"><i class="fa fa-bar-chart-o fa-fw"></i> Pricing Module<span class="fa arrow"></span></a>
 							
 							
                             <ul class="nav nav-second-level">
-                                <li>
+                                
+								<li>
                                     <a href="price_module.jsp">Pricing Dashboard</a>
                                 </li>
                                <li>
@@ -324,7 +319,11 @@ embed:focus {
                         <li>
                             <a href="#"><i class="fa fa-bar-chart-o fa-fw"></i> Review Module<span class="fa arrow"></span></a>
 							
-							<ul class="nav nav-second-level">
+							
+                           <a href="ReviewModule.jsp"><i class="fa fa-bar-chart-o fa-fw"></i> Review Module<span class="fa arrow"></span></a>
+							
+							
+                            <ul class="nav nav-second-level">
                                 <li>
                                     <a href="ReviewModule.jsp">Review Dashboard</a>
                                 </li>
@@ -334,7 +333,7 @@ embed:focus {
                             <!-- /.nav-second-level -->
                         </li>
                         <li>
-                            <a href="tables.html"><i class="fa fa-table fa-fw"></i> Performed jobs<span class="fa arrow"></span></a>
+                            <a href="Performed_Jobs.jsp"><i class="fa fa-table fa-fw"></i> Performed jobs<span class="fa arrow"></span></a>
 							
 							<ul class="nav nav-second-level">
 							
@@ -362,16 +361,7 @@ embed:focus {
                       
                         
                         <li>
-                            <a href="#"><i class="fa fa-files-o fa-fw"></i> Database <span class="fa arrow"></span></a>
-                            <ul class="nav nav-second-level">
-                                <li>
-                                    <a >Blank Page</a>
-                                </li>
-                                <li>
-                                    <a>Login Page</a>
-                                </li>
-                            </ul>
-                            <!-- /.nav-second-level -->
+                           
                         </li>
                     </ul>
                 </div>
@@ -383,7 +373,7 @@ embed:focus {
         <div id="page-wrapper">
             <div class="row">
                 <div class="col-lg-12">
-                    <h1 class="page-header">Review Module</h1>
+                    <h1 class="page-header">Get Similar Items Using Ebay and Amazon</h1>
                 </div>
                 <!-- /.col-lg-12 -->
             </div>
@@ -395,26 +385,23 @@ embed:focus {
                             <h3>Master Data</h3>
                             <p>This is the data extracted from the database.</p>
 						
-									<select id="cboProdReview" onchange="OnChangeReviewCombo(this);">
+									<select id="cboProdReview" onchange="OnChangesimilarItemCombo(this);">
 										<option value="">Select combo</option>
-										<option value="1">Review Grid of Ebay Performed Items</option>
-										<option value="2">Review Grid of Amazon Performed Items</option>
+										<option value="1">Similar Items of Ebay Performed Items</option>
+										<option value="2">Similar Items of Amazon Performed Items</option>
 									</select>
 						
                             <div class="table-responsive">
 							 
-<div id="divPerformedJobsReview">
-</div>
-<iframe id="embedReviewUrl" width="100%" height="500"  ></iframe>
+								<div id="divPerformedSimilarItems">
+
+								</div>
+								<div id="divSimilarItemsDetail">
+
+									
+								</div>
 							 
-<div id="divReviewModule">
-
-
-</div>
                             </div>
-                           
-
-
                            
                         </div>
                     </div>
@@ -449,7 +436,9 @@ embed:focus {
         </div>
         <!-- /#page-wrapper -->
 
-    
+    </div>
+
+
 
 
 

@@ -1,34 +1,71 @@
-var CallCanvasChart = function ()
+var CallCanvasChart = function (psType)
 {
-
-	var options = {
-		title: {
-			text: "Pricing Ratio"
-		},
-		subtitles: [{
-			text: "Pricing Ratio Comparison"
-		}],
-		animationEnabled: true,
-		data: [{
-			type: "pie",
-			startAngle: 40,
-			toolTipContent: "<b>{label}</b>: {y}%",
-			showInLegend: "true",
-			legendText: "{label}",
-			indexLabelFontSize: 16,
-			indexLabel: "{label} - {y}%",
-			dataPoints: [
-				{ y: 48.36, label: "Windows 7" },
-				{ y: 26.85, label: "Windows 10" },
-				{ y: 1.49, label: "Windows 8" },
-				{ y: 6.98, label: "Windows XP" },
-				{ y: 6.53, label: "Windows 8.1" },
-				{ y: 2.45, label: "Linux" },
-				{ y: 3.32, label: "Mac OS X 10.12" },
-				{ y: 4.03, label: "Others" }
-			]
-		}]
-	};
-	$("#chartContainer").CanvasJSChart(options);
-	
+	$.ajax({
+		url : 'PricingChart',
+		type: "GET",
+		//dataType:'json',
+		data : {selectTypeNo: psType},
+		success : function(data) {
+			
+			data = $.parseJSON(data);
+			if(psType=="")
+			{
+				FillCombo(data);
+			}else{
+				//method for mapping product details
+				MapPricingChart(data);
+			}
+			
+		}
+	});
 };
+
+var FillCombo = function(poData)
+{
+	
+	var options="";
+	$.each(poData, function(index, item) {
+        options += '<option value="' + item.item_no + '">' + item.description + '</option>';
+	});
+	
+	$('#cboPricingChartCat').html(options);
+};
+var cboPricingChartCat = function(obj)
+{
+	CallCanvasChart(obj.value);
+};
+
+var MapPricingChart = function(obj)
+{
+	var array= new Array();
+	var i=0;
+	do{
+		array.push({y: obj[i].base_price,label:obj[i].description +" -- discount price "+obj[i].discount_price +" with Item No"+ obj[i].item_no});
+		
+		i++;
+	}while(i<obj.length);
+	
+	
+	
+	
+	var options = {
+			title: {
+				text: "Pricing Ratio"
+			},
+			subtitles: [{
+				text: "Pricing Ratio Comparison"
+			}],
+			animationEnabled: true,
+			data: [{
+				type: "pie",
+				startAngle: 40,
+				toolTipContent: "<b>{label}</b>: {y}%",
+				showInLegend: "true",
+				legendText: "{label}",
+				indexLabelFontSize: 16,
+				indexLabel: "{label} - {y}%",
+				dataPoints: array 
+			}]
+		};
+		$("#chartContainer").CanvasJSChart(options);	
+}

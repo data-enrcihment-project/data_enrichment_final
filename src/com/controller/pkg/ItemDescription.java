@@ -1,8 +1,12 @@
 package com.controller.pkg;
 
 import java.io.IOException;
+import java.lang.reflect.Type;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.time.ZonedDateTime;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -17,6 +21,7 @@ import org.codehaus.jackson.map.ObjectMapper;
 
 import com.ebay.services.finding.SearchItem;
 import com.ebay.services.finding.SearchResult;
+import com.google.gson.Gson;
 import com.models.pkg.AmazonCall;
 import com.models.pkg.DbMethods;
 import com.models.pkg.EbayCallService;
@@ -99,11 +104,14 @@ public class ItemDescription extends HttpServlet {
 		String dataId = request.getParameter("dataID");
 		String dataDescr = request.getParameter("dataDescr");
 		String dataCode = request.getParameter("dataCode");
+		String categoryName = request.getParameter("categoryName");
+		String images_Json = request.getParameter("images_URL");
+		 
 		
 		System.out.println(jsonData); 
 		
-		String sql = "INSERT INTO enrichment_project (Enrich_ID, Item_ID,Item_title,Item_Image,Item_Description,Item_Price,Item_URL,Item_Reviews,Type_ID,JSON_Text)" +
-		        "VALUES (?, ?, ?,?, ?, ?,?, ?, ?, ?)";
+		String sqlSave = "INSERT INTO enrichment_module (Enrich_ID, Item_no,Item_title,Item_Image,Item_Description,Item_Price,Item_URL,Item_Reviews,Type_ID,JSON_Text,CategoryName,Images_URL) " +
+		        "VALUES (?, ?, ?,?, ?, ?,?, ?, ?, ?, ?, ?)";
 		
 		
 		ObjectMapper mapper = new ObjectMapper();
@@ -112,8 +120,10 @@ public class ItemDescription extends HttpServlet {
 		    // convert user object to json string and return it 
 			obj =  (SearchItem) mapper.readValue(jsonData,SearchItem.class);
 			
+			ResultSet rsetCount = DbMethods.QueryStatement("Select E_ID from enrichment_module where Enrich_ID="+dataId +"&Item_no="+obj.getItemId());
+					
+			String sqlUpdateQuery =  ("UPDATE enrichment_module SET Item_title = ?, Item_Image = ?, Item_Description = ?, Item_Price = ?, Item_URL = ?, Item_Reviews = ?, JSON_Text = ?,CategoryName = ?,Images_URL = ? WHERE Enrich_ID ="+dataId +"&Item_no="+obj.getItemId());
 			//Calling Save method over here
-			//ArrayList<String> paramsArray = new ArrayList<String>();
 			
 			Map<String, String> paramsArray  = new HashMap<String, String>();
 			
@@ -121,17 +131,67 @@ public class ItemDescription extends HttpServlet {
 			paramsArray.put("2", obj.getItemId());
 		    paramsArray.put("3", obj.getTitle());
 			paramsArray.put("4", obj.getGalleryURL());
-			paramsArray.put("5", "");
+			//Description from httpget
+			paramsArray.put("5", dataDescr);
 			paramsArray.put("6", Double.toString(obj.getSellingStatus().getCurrentPrice().getValue()));
-			paramsArray.put("7", obj.getViewItemURL());
-			paramsArray.put("8", "");
+			paramsArray.put("7", obj.getViewItemURL().toString());
+			
+			String sellerRatingReviews = mapper.writeValueAsString(obj.getSellerInfo());
+			
+			paramsArray.put("8", sellerRatingReviews);
 			paramsArray.put("9", "1");
 			paramsArray.put("10",jsonData);
+			//////
+			paramsArray.put("11", categoryName);//category name
+			paramsArray.put("12",images_Json);//images json
+			
+			
+			//Update Array
+			Map<String, String> paramsArrayUpdate  = new HashMap<String, String>();
+		
+			paramsArrayUpdate.put("1", obj.getTitle());
+			paramsArrayUpdate.put("2", obj.getGalleryURL());
+			
+			paramsArrayUpdate.put("3", dataDescr);
+			paramsArrayUpdate.put("4", Double.toString(obj.getSellingStatus().getCurrentPrice().getValue()));
+			paramsArrayUpdate.put("5", obj.getViewItemURL());
+			
+			String sellerRatingReviewsUpdate = mapper.writeValueAsString(obj.getSellerInfo());
+			
+			paramsArrayUpdate.put("6", sellerRatingReviewsUpdate);
+			
+			paramsArrayUpdate.put("7",jsonData);
+			paramsArrayUpdate.put("8", categoryName);//category name
+			paramsArrayUpdate.put("9",images_Json);//images json
 			
 			try {
 				
-				DbMethods.SaveUpdateQueryStatement(sql,paramsArray);
-				
+				if(DbMethods.GetRecordCount(rsetCount)>0)
+				{
+					Map<String, String> paramsArrayPerformedModule  = new HashMap<String, String>();
+					
+					System.out.println("Insert Query");
+					String sqlSavePerformed = "INSERT INTO performed_jobs_module (Item_no,Enrich_ID,Type_ID,Time_Stamp)" +
+					        "  VALUES (?,?,?,?)";		
+					
+					paramsArrayPerformedModule.put("1", obj.getItemId());
+					paramsArrayPerformedModule.put("2", dataId);
+					paramsArrayPerformedModule.put("3", "1");
+					paramsArrayPerformedModule.put("4", DbMethods.GetdateTime());
+					
+					DbMethods.SaveUpdateQueryStatement(sqlSave,paramsArray);
+					
+					DbMethods.SaveUpdateQueryStatement(sqlSavePerformed,paramsArrayPerformedModule);
+				}
+				else {
+					//update
+					System.out.println("Update Query");
+					String sqlSavePerformedUpdate = "UPDATE performed_jobs_module SET Time_Stamp='"+ZonedDateTime.now()+"' where Item_no="+obj.getItemId()+ "  AND Enrich_ID="+dataId;
+					
+					DbMethods.SaveUpdateQueryStatement(sqlUpdateQuery,paramsArrayUpdate);
+					
+					DbMethods.QueryStatement(sqlSavePerformedUpdate);
+				}
 				System.out.println("Done");
 				
 			}catch(Exception e)

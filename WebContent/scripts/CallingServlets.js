@@ -8,9 +8,8 @@ var CallConnection = function (psType)
 		//dataType:'json',
 		//data : {type: psType},
 		success : function(data) {
-			debugger;
-			alert(data+"asdsa");	
-			
+			//debugger;
+		
 			//method for mapping product details
 			DisplayProductDetails($.parseJSON(data));
 		}
@@ -21,7 +20,7 @@ var CallConnection = function (psType)
 //divProductDetailSelect
 var OnChangeProdCombo = function(obj)
 {
-	debugger;
+	//debugger;
 	//obj.options[el.selectedIndex].value]();
 	if(obj.value == "")
 		return;
@@ -42,7 +41,7 @@ var OnChangeProdCombo = function(obj)
 
 var DisplayProductDetails = function(details)
 {
-	debugger;
+	//debugger;
 	$("#divProductDetails").jsGrid({
         width: "100%",
         height: "400px",
@@ -70,7 +69,7 @@ var DisplayProductDetails = function(details)
                     debugger;
                     var self = this;
                     var $customButton = $("<button>")
-                            .text("Click")
+                            .text("Get Selected Amazon Items")
                             .click(function (e) {
                             	GetDetailsforItems("AmazonItemDescription","GET",data.id,data.shop_code,data.description,"Amazon");
                                 e.stopPropagation();
@@ -86,7 +85,7 @@ var DisplayProductDetails = function(details)
                     var $result = jsGrid.fields.control.prototype.itemTemplate.apply(this, arguments);
                    
                     //var customHref = $("<a>").attr("href","itemDescription.jsp").text("Go To Item")                  
-                    debugger;
+                   // debugger;
                    /*return $("<a>").on("click", GetDetailsforItems("ItemDescription","POST",data.id,data.shop_code,data.description,"Ebay"))
                    .attr("target", "_blank")
                    .text("Get Ebay Details");
@@ -103,7 +102,7 @@ var DisplayProductDetails = function(details)
                     
                     var self = this;
                     var $customButton = $("<button>")
-                            .text("Click")
+                            .text("Get Selected Ebay Items")
                             .click(function (e) {
                             	GetDetailsforItems("ItemDescription","GET",data.id,data.shop_code,data.description,"Ebay");//item_no
                                 e.stopPropagation();
@@ -132,22 +131,13 @@ var GetEbayDetailsforItems = function(psId,pscode,psDescr)
 	$("#ebayJsonDataDescr")[0].value =psDescr;
 	$("#ebayJsonDataCode")[0].value =pscode;
 	
-	debugger;
+	//debugger;
 	$.ajax({
 		url : 'dataEnrichment_db?psDescr='+psDescr,//'ItemDescription.jsp?psDescr='+psDescr,//
 		type: "POST",
 		success : function(data) {
-			debugger;
-			
-					
-					alert('asd');
-					
-			//$("#divProductItemDetails").append("<a type='button' href='ItemDescription?psDescr=1212' text='Get Ebay Details' ></a>")
-//			document.navigate.action="/ItemDescriptipn.jsp?psDescr="+psDescr;
-//			document.navigate.submit();
-			
+			//debugger;
 			MapItemDescription((data));
-			alert(data+"asdsa");	
 		}
 	});
 };
@@ -157,8 +147,6 @@ var GetEbayDetailsforItems = function(psId,pscode,psDescr)
 var GetDetailsforItems = function(psURL,urlType,psId,pscode,psDescr,type)
 {
 	////Post method have to be changed to get and itemdescription	
-	alert('asd');
-	debugger;
 	
 	$("#ebayJsonDataID")[0].value =psId;
 	$("#ebayJsonDataDescr")[0].value =psDescr;
@@ -166,11 +154,12 @@ var GetDetailsforItems = function(psURL,urlType,psId,pscode,psDescr,type)
 	
 	debugger;
 	$.ajax({
-		url : psURL+ '?psDescr='+psDescr,//'ItemDescription.jsp?psDescr='+psDescr,//
+		url : psURL,//'ItemDescription.jsp?psDescr='+psDescr,//
 		//data: JSON.stringify({ psDescr: psDescr}) ,
 		type: urlType,
+		data: {"psDescr" : psDescr},
 		success : function(data) {
-			debugger;
+			//debugger;
 			
 					if(type=="Amazon")
 					{
@@ -190,17 +179,17 @@ var GetAmazonDetailsforItems = function(psId,pscode,psDescr)
 {
 	////Post method have to be changed to get and itemdescription
 	alert('asdsdCall');
-	debugger;
+	//debugger;
 	$("#ebayJsonDataID")[0].value =psId;
 	$("#ebayJsonDataDescr")[0].value =psDescr;
 	$("#ebayJsonDataCode")[0].value =pscode;
 	
-	debugger;
+	//debugger;
 	$.ajax({
 		url : 'AmazonItemDescription?psDescr='+psDescr,//'ItemDescription.jsp?psDescr='+psDescr,//
 		type: "GET",
 		success : function(data) {
-			debugger;
+			//debugger;
 			
 					
 					alert('asd');
@@ -218,7 +207,7 @@ var GetAmazonDetailsforItems = function(psId,pscode,psDescr)
 var MapAmazonItemDescription = function(objData)
 {
 	$("#divProductItemDetails").html("");
-	debugger;
+	//debugger;
 	$("#ebayJsonData").val(objData);
 	var obj= $.parseJSON(objData)
 	var count = obj[0];
@@ -233,18 +222,18 @@ var MapAmazonItemDescription = function(objData)
 		var price = obj[i].offerSummary.lowestNewPrice.formattedPrice;
 		var shipLoc = obj[i].offers.offer[0].offerListing[0].availability;
 		
-		var sti = "<table><td><h1>Title :"+ obj[i].itemAttributes.title +"</h1><br/>" +
-		"<h1>Condition : " + obj[i].offers.offer[0].offerAttributes.condition +
-		"</h1><br/> Item Image: <img src='"+ obj[i].imageSets[0].imageSet[0].mediumImage.url +"' /><br/><label text= "+obj[i].location+"></label><br/>"+
+		var sti = "<table><tr><td><h1>Title :"+ obj[i].itemAttributes.title +"</h1><br/></td></tr>" +
+		"<tr><td><h1>Condition : " + obj[i].offers.offer[0].offerAttributes.condition +"</td></tr>"+
+		"<tr><td> Item Image: <img src='"+ obj[i].imageSets[0].imageSet[0].mediumImage.url +"' /><br/>" +
+				"<tr><td><label text= "+obj[i].location+"></label><br/></td></tr>"+
 			
 
-			"</br> Selling Price :'"+ price+"'<br/>"+
-			"Ship To Location : " +shipLoc+"<br/>"+
-			"<a href= '"+obj[i].detailPageURL+"' >View Item Url</a><br/>"+
-			"</td>"+
-			"</table>"+
-			"<td><input type='button' onclick=CallDataEnrichmentMethod('"+obj[i].asin+"','obj[i].asin','AmazonItemDescription'); value='Product View URL' /></td>"
-			+"<td><embed src='"+obj[i].customerReviews.iframeURL+"' width='400' height='200'  /></td>"+
+			"<tr><td></br> Selling Price :'"+ price+"'<br/></td></tr>"+
+			"<tr><td>Ship To Location : " +shipLoc+"<br/></td></tr>"+
+			"<tr><td><a href= '"+obj[i].detailPageURL+"' >View Item Url</a><br/></td></tr>"+
+			
+			"<tr><td><input type='button' onclick=CallDataEnrichmentMethod('"+obj[i].asin+"','obj[i].asin','AmazonItemDescription','Amazon'); value='Product View URL' /></td></tr>"
+			//+"<td><embed src='"+obj[i].customerReviews.iframeURL+"' width='400' height='200'  /></td>"+
 			+"</table>";
 		//$("#ulItemDetails").append("<li>").append(
 		$("#divProductItemDetails").append(sti);//.append("</li>");
@@ -257,7 +246,7 @@ var MapAmazonItemDescription = function(objData)
 
 var MapItemDescription = function(objData)
 {
-	debugger;
+	//debugger;
 	$("#divProductItemDetails").html("");
 	$("#ebayJsonData").val(objData);
 	var obj= $.parseJSON(objData)
@@ -274,18 +263,18 @@ var MapItemDescription = function(objData)
 		var shipLoc = obj[i].shippingInfo.shipToLocations[0];
 		var paymethod = obj[i].paymentMethod[0];
 		
-		var sti = "<table class='table table-bordered table-striped'><td><h1>Title :"+ obj[i].title+"</h1><br/>" +
-		"<h1>Condition : " + obj[i].condition.conditionDisplayName +
-		"</h1><br/> Item Image: <img src='"+ obj[i].galleryURL +"' /><br/><label text= "+obj[i].location+"></label><br/>"+
-			"Payment Method: "+ obj[i].paymentMethod[0]+"<br/>"+
+		var sti = "<table class='table table-bordered table-striped'><tr><td><h1>Title :"+ obj[i].title+"</h1><br/></td></tr>" +
+		"<tr><td><h1>Condition : " + obj[i].condition.conditionDisplayName +"</td></tr>"+
+		"<tr><td></h1><br/> Item Image: <img src='"+ obj[i].galleryURL +"' /><br/></td></tr>" +
+				"<tr><td><label text= "+obj[i].location+"></label><br/></td></tr>"+
+			"<tr><td>Payment Method: "+ obj[i].paymentMethod[0]+"<br/></td></tr>"+
 
-			"</br> Selling Price :"+ price+"<br/>"+
-			"Ship To Location : " +shipLoc+"<br/>"+
-			"payment Method :"+paymethod+"<br/>"+
-			"<a href= '"+obj[i].viewItemURL+"' >View Item Url</a><br/>"+
-			"</td>"+
+			"<tr><td></br> Selling Price :"+ price+"<br/></td></tr>"+
+			"<tr><td>Ship To Location : " +shipLoc+"<br/></td></tr>"+
+			"<tr><td>payment Method :"+paymethod+"<br/></td></tr>"+
+			"<tr><td><a href= '"+obj[i].viewItemURL+"' >View Item Url</a><br/></td></tr>"+
 			
-			"<td><input type='button' text='Enrich Data' onclick=CallDataEnrichmentMethod('"+obj[i].itemId+"','obj[i].itemId','ItemDescription'); value='Product View URL' /></td>" +
+			"<tr><td><input type='button' text='Enrich Data' onclick=CallDataEnrichmentMethod('"+obj[i].itemId+"','obj[i].itemId','ItemDescription','Ebay'); value='Enrich Item' /></td></tr>" +
 			
 			"</table>";
 		//$("#ulItemDetails").append("<li>").append(
@@ -296,7 +285,7 @@ var MapItemDescription = function(objData)
 	}while(i<=count);
 	
 };
-var CallDataEnrichmentMethod = function(psItemID,pstype,psURL)
+var CallDataEnrichmentMethod = function(psItemID,pstype,psURL,psEnrichedfrom)
 {
 	debugger;
 	var jsonData = $("#ebayJsonData").val();
@@ -305,7 +294,7 @@ var CallDataEnrichmentMethod = function(psItemID,pstype,psURL)
 	var enrichDataArr = new Array();
 	i=1;
 	do{
-		if(eval(pstype) ==psItemID)
+		if(eval(pstype) == psItemID)
 		{
 			enrichDataArr.push(obj[i]);
 			break;
@@ -314,23 +303,40 @@ var CallDataEnrichmentMethod = function(psItemID,pstype,psURL)
 		i++;
 	}while(i<=count);
 	
+	var categoryName ="";
+	var images_URL ="";
+	debugger;
+	if(psEnrichedfrom=="Ebay")
+	{
+		var jsonArray = $.parseJSON(enrichDataArr[0].subtitle);
+		if(jsonArray.Item!=undefined && jsonArray!=null)
+		{
+			$("#ebayJsonDataDescr")[0].value = jsonArray.Item.Description;
+			categoryName =jsonArray.Item.PrimaryCategoryName;
+			images_URL =JSON.stringify($.parseJSON(enrichDataArr[0].subtitle).Item.PictureURL);
+		}
+	}else
+	{
+		categoryName ="";
+		images_URL ="";
+	}	
+	
 	var jsonString = JSON.stringify(enrichDataArr[0]);
 	
-	SaveEbayData(jsonString,psURL);
+	SaveEnrichData(jsonString,psURL,categoryName,images_URL);
 	
 };
 
-var SaveEbayData = function (psJsonString,psURL)
-{
-	debugger;
+var SaveEnrichData = function (psJsonString,psURL,psCategoryName,psImages_URL)
+{	
 	$.ajax({
-		url : psURL ,//
+		url : psURL ,
 		type: "POST",		
 		dataType:'json',
-        data:{"psJsonString":psJsonString,"dataID":$("#ebayJsonDataID")[0].value,"dataDescr":$("#ebayJsonDataDescr")[0].value,"dataCode":$("#ebayJsonDataCode")[0].value},
+        data:{"psJsonString":psJsonString,"dataID":$("#ebayJsonDataID")[0].value,"dataDescr":$("#ebayJsonDataDescr")[0].value,"dataCode":$("#ebayJsonDataCode")[0].value,"categoryName":psCategoryName,"images_URL":psImages_URL},//
        
 		success : function(data) {
-			debugger;
+			//debugger;if success Done
 			alert(data+"asdsa");	
 			
 			//method for mapping product details

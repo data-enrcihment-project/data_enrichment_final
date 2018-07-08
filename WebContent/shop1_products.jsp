@@ -1,40 +1,41 @@
-<!DOCTYPE html>
-<html lang="de">
 
+    <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
+    pageEncoding="ISO-8859-1"%>
+    
+<%@ page import="com.models.pkg.DbMethods"%>
+<%@ page import="com.dcommerce.database.DatabaseQuery"%>
+<%@ page import="java.sql.ResultSet"%>
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
 <head>
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
-    <meta charset="utf-8">
-<!--    <meta http-equiv="X-UA-Compatible" content="IE=edge"> -->
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="description" content="">
-    <meta name="author" content="">
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<link rel="stylesheet" type="text/css" href="CSS/jsgrid.css" />
+<link rel="stylesheet" type="text/css" href="CSS/theme.css" />
+<link rel="stylesheet" type="text/css" href="CSS/bootstrap.min.css" />
+<link rel="stylesheet" type="text/css" href="CSS/metisMenu.min.css" />
+<link rel="stylesheet" type="text/css" href="CSS/sb-admin-2.min.css" />
+<link rel="stylesheet" type="text/css" href="CSS/font-awesome.min.css" />
 
-    <title>SB Admin 2 - Bootstrap Admin Theme</title>
+<script src="scripts/jquery-1.11.1.min.js"></script> 
+<script src="scripts/jquery-ui.js"></script> 
+<script src="scripts/jsgrid.min.js"></script>
+<script src="scripts/jsgrid.core.js"></script>
+<script src="scripts/jsgrid.load-indicator.js"></script>
+<script src="scripts/jsgrid.load-strategies.js"></script>
+<script src="scripts/jsgrid.sort-strategies.js"></script>
+<script src="scripts/jsgrid.field.js"></script>
+<script src="scripts/jsgrid.field.text.js"></script>
+<script src="scripts/jsgrid.field.control.js"></script>
+<script src="scripts/CallingServlets.js"></script> 
+<script src="scripts/html5shiv.js"></script>
+<script src="scripts/respond.min.js"></script>
 
-    <!-- Bootstrap Core CSS -->
-    <link href="../vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
 
-    <!-- MetisMenu CSS -->
-    <link href="../vendor/metisMenu/metisMenu.min.css" rel="stylesheet">
-
-    <!-- Custom CSS -->
-    <link href="../dist/css/sb-admin-2.css" rel="stylesheet">
-
-    <!-- Custom Fonts -->
-    <link href="../vendor/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
-
-    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
-    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
-    <!--[if lt IE 9]>
-        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
-        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
-    <![endif]-->
-
+<title>Pricing Module</title>
 </head>
-
 <body>
-
-    <div id="wrapper">
+	 <div id="wrapper">
 
         <!-- Navigation -->
         <nav class="navbar navbar-default navbar-static-top" role="navigation" style="margin-bottom: 0">
@@ -274,84 +275,78 @@
                             <!-- /input-group -->
                         </li>
                         <li>
-                            <a href="MD_test_API_workaround.html"><i class="fa fa-dashboard fa-fw"></i> API Work-around <small>(Amazon and eBay)</small><span class="fa arrow"></span></a>
+                             <a ><i class="fa fa-dashboard fa-fw"></i> API Work-around <small>(Amazon and eBay)</small><span class="fa arrow"></span></a>
 							<ul class="nav nav-second-level">
 							
-								
-									
 							   <li>
-                                    <a href="MD_test_API_workaround.html">API Dashboard</a>
+                                    <a href="index.jsp">API Dashboard</a>
                                 </li>
-                               <!-- <li>
-                                    <a href="morris.html">eBay API</a>
+                               <li>
+                                    <a href="SimilarItemsModule.jsp">Similar Items For Ebay and Amazon</a>
                                 </li>
-								<!-- <li>
-                                    <a href="morris.html">Combined API</a>
-                                </li> -->
+								
                             </ul>
                         </li>
 						
-						 <li>
-                            <a href="#"><i class="fa fa-bar-chart-o fa-fw"></i> Pricing Module<span class="fa arrow"></span></a>
+						<li>
+                            <a href="PricingChart.jsp"><i class="fa fa-bar-chart-o fa-fw"></i> Pricing Module<span class="fa arrow"></span></a>
 							
 							
                             <ul class="nav nav-second-level">
                                 
 								<li>
-                                    <a href="MD_test_Pricing_module.html">Pricing Dashboard</a>
+                                    <a href="price_module.jsp">Pricing Dashboard</a>
                                 </li>
-                               <!--
-							   <li>
-                                    <a href="morris.html">Enriched data reviews</a>
-                                </li>-->
+                               <li>
+                                    <a href="shop1_products.jsp">Pricing Shop 1</a>
+                                </li>
+                                <li>
+                                    <a href="shop2_products.jsp">Pricing Shop 2</a>
+                                </li>
+                                <li>
+                                    <a href="PricingChart.jsp">Pricing Chart</a>
+                                </li>
                             </ul>
                             <!-- /.nav-second-level -->
                         </li>
                         <li>
-                            <a href="#"><i class="fa fa-bar-chart-o fa-fw"></i> Review Module<span class="fa arrow"></span></a>
+                            <a href="ReviewModule.jsp"><i class="fa fa-bar-chart-o fa-fw"></i> Review Module<span class="fa arrow"></span></a>
 							
 							
                             <ul class="nav nav-second-level">
                                 <li>
-                                    <a href="blank.html">Review Dashboard</a>
+                                    <a href="ReviewModule.jsp">Review Dashboard</a>
                                 </li>
                                 
 								
                             </ul>
-                            <!-- /.nav-second-level -->
+                            
                         </li>
                         <li>
-                            <a href="tables.html"><i class="fa fa-table fa-fw"></i> Performed jobs<span class="fa arrow"></span></a>
+                            <a href="Performed_Jobs.jsp"><i class="fa fa-table fa-fw"></i> Performed jobs<span class="fa arrow"></span></a>
 							
 							<ul class="nav nav-second-level">
 							
 								<li>
-                                    <a href="morris.html">All<!-- <span class="fa arrow"> --></span></a>
-									<!-- <ul class="nav nav-second-level">
+                                    <a >All</a>
+								
+                                </li>
+                                <li>
+                                    <a >Today</a>
+                                </li>
+                                <li>
+                                    <a >This week</a>
+                                </li>
+								<li>
+                                    <a >This month</a>								
+                                </li>
+								<li>
+                                    <a>Last 6 months</a>
+                                </li>
+								
+                            </ul>
 							
-									<li>
-                                    <a href="morris.html">Ascending to descending (Year)</a>
-									</li>
-									
-									<li>
-                                    <a href="morris.html">Descending to ascending(Year)</a>
-									</li>
-                                
-								</ul> -->
-                                </li>
-                                <li>
-                                    <a href="flot.html">Today</a>
-                                </li>
-                                <li>
-                                    <a href="morris.html">This week</a>
-                                </li>
-								<li>
-                                    <a href="morris.html">This month</a>								
-                                </li>
-								<li>
-                                    <a href="morris.html">Last 6 months</a>
-                                </li>
-                            </ul>	
+							
                         </li>
                     </ul>
                 </div>
@@ -372,48 +367,48 @@
                 <div class="col-lg-6">
                     <div class="panel panel-default">
                         <div class="panel-heading">
-                             Existing Products
+                            Existing Products
                         </div>
                         <!-- /.panel-heading -->
-                        <?php
-                            include 'database_con.php';
-
-                            $parent_line_no = $_POST['parent_line_no'];
-                            $sql = "SELECT shop_item.item_no, shop_item.description 
-                                    FROM shop_item INNER JOIN shop_category
-                                    ON shop_item.main_category_line_no = shop_category.line_no
-                                    WHERE shop_category.parent_line_no =$parent_line_no";
-                            $result = $conn->query($sql);
-                        ?>
+  						
+                        
                         <div class="panel-body">
                             <div class="table-responsive">
-                                <form action="MD_test_Pricing_module.html">
+                                <form action="price_module.jsp">
                                     <input type="submit" class="btn btn-default" value="Return To Categories" />
                                 </form>
-                                <form action="priceModule.php" method="post">
+                                <form action="smartPricing_shop1.jsp" method="GET">
                                 <table class="table">
                                     <thead>
                                         <tr>
                                             <th>#</th>
                                             <th>Item No</th>
-                                            <th>Descrition</th>
+                                            <th>Description</th>
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        <?php
-                                        while($row = $result->fetch_assoc()) {
-                                            //$item_no = $row['item_no']; 
-                                            echo "<tr>";
-                                            echo "<td>"."<input type='radio' name='item_no' value='".$row['item_no']." ' /></td>";
-                                            echo "<td>".$row['item_no']."</td>";
-                                            echo "<td>".$row['description']."</td>";
-                                            echo "</tr>";
-                                        }
-                                        //mysqli_close($conn);
-                                        ?>                           
+ 									<%
+                                      String line_no = request.getParameter("line_no");
+                                     
+                                      String Statement = "SELECT shop_item.description, shop_item.item_no FROM shop_item INNER JOIN shop_item_has_category "
+													+ "ON shop_item.item_no = shop_item_has_category.item_no "
+													+ "WHERE shop_item_has_category.category_line_no = "+line_no;
+              							//category_line_no ='"+line_no+"'";
+                              		ResultSet rs = DatabaseQuery.returnFrontEnd(Statement);
+                                     
+                                       while (rs.next()) {
+                                        	String description = rs.getString("description");
+                                        	String item_no = rs.getString("item_no");
+                                       %>                                     	
+                                      	<tr>
+                                            	<td><input type='radio' name='item_no' value='<% out.println(item_no); %>' /> </td>
+                                          	<td> <% out.println(item_no); %> </td>
+                                          	<td> <% out.println(description); %></td>    
+                                        	</tr>
+                                      <%  }  %>             
                                     </tbody>
                                 </table>
-                                <button type="submit" class="btn btn-default">Price Model</button> 
+                                <button type="submit" class="btn btn-default">Price Model</button>
                                 </form>
                             </div>
                             <!-- /.table-responsive -->
@@ -428,20 +423,5 @@
         <!-- /#page-wrapper -->
 
     </div>
-    <!-- /#wrapper -->
-
-    <!-- jQuery -->
-    <script src="../vendor/jquery/jquery.min.js"></script>
-
-    <!-- Bootstrap Core JavaScript -->
-    <script src="../vendor/bootstrap/js/bootstrap.min.js"></script>
-
-    <!-- Metis Menu Plugin JavaScript -->
-    <script src="../vendor/metisMenu/metisMenu.min.js"></script>
-
-    <!-- Custom Theme JavaScript -->
-    <script src="../dist/js/sb-admin-2.js"></script>
-
 </body>
-
 </html>

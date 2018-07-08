@@ -52,8 +52,8 @@ public class Performed_Jobs extends HttpServlet {
 		String sqlQuery = "SELECT  enrichment.Item_no,enrichment.Item_title, enrichment.Item_Price, enrichment.Item_Description, enrichment.Type_ID, enrichment.Item_Reviews,enrichment.Item_URL,performed_job.Time_Stamp   " + 
 				"  FROM enrichment_module enrichment   " + 
 				" INNER JOIN performed_jobs_module performed_job  " + 
-				"  ON enrichment.Type_ID = performed_job.Type_ID AND enrichment.Enrich_ID = performed_job.Enrich_ID"+
-				" Where enrichment.Type_ID="+typeID;
+				"  ON enrichment.Type_ID = performed_job.Type_ID "+
+				" Where enrichment.Type_ID ="+typeID;
 		
 		
 		

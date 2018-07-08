@@ -13,15 +13,15 @@ public class Elektro extends Thread {
 	public void run() {
 		
 		//	fetching all the products from the database and saving in a csv file
-		String Statement = "SELECT shop_item.description, shop_item.item_no FROM shop_item INNER JOIN shop_category "
-				+ "ON shop_item.main_category_line_no = shop_category.line_no "
-				+ "WHERE shop_category.parent_line_no = 720000 ";
+		String Statement = "SELECT shop_item2.description, shop_item2.item_no FROM shop_item2 INNER JOIN shop_category2 "
+				+ "ON shop_item2.main_category_line_no = shop_category2.line_no "
+				+ "WHERE shop_category2.parent_line_no = 720000 ";
 		
 		String File = "Elektro.csv";
 		try {
 			DatabaseQuery.returnResult(Statement, File);
 		} catch (IOException e) {
-			System.out.println("Error in fetching data from the database-Eisen!");
+			System.out.println("Error in fetching data from the database-Elektro!");
 			e.printStackTrace();
 		}
 

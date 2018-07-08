@@ -1,4 +1,8 @@
 package com.models.pkg;
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.sql.CallableStatement;
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -11,6 +15,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import org.codehaus.jackson.map.ObjectMapper;
 
 import me.xdrop.fuzzywuzzy.FuzzySearch;
 
@@ -41,7 +47,7 @@ public class DbMethods {
 		
 		try {
 			Class.forName("com.mysql.jdbc.Driver").newInstance();
-			String url = "jdbc:mysql://localhost:3306/enrichment";
+			String url = "jdbc:mysql://localhost:3306/enrichment?autoReconnect=true&useSSL=false";
 			String username = "root";
 			String password = "";
 			
@@ -102,30 +108,10 @@ public class DbMethods {
 		try {
 			PreparedStatement preparedStatement = DBConnection().prepareStatement(sqlStatement);
 			
-			int count = 0;
 			
 			for (Map.Entry<String,String> entry : param.entrySet()) 
 			{
-				count++;
-					System.out.println("Key = " + entry.getKey() +
-				                 ", Value = " + entry.getValue());
-					
-					
-					preparedStatement.setString(count, entry.getValue());
-					//switch(entry.getKey())
-					//{
-					//case "Int":
-					//	preparedStatement.setInt(count, Integer.parseInt(entry.getValue()));
-					//	break;
-					//	
-					//case "String":
-					//	preparedStatement.setString(count, entry.getValue());
-					//	break;
-						
-					//case "Double":
-					//	preparedStatement.setDouble(count, Double.parseDouble(entry.getValue()));
-					//	break;					
-					//}
+				preparedStatement.setString(Integer.parseInt(entry.getKey()), entry.getValue());
 			}
 			
 			preparedStatement.executeUpdate(); 
@@ -152,5 +138,74 @@ public class DbMethods {
 	    }
 	    return rows;
 	}
+	
+	public static Integer GetRecordCount(ResultSet rs)
+	{
+		Integer count= 0;
+		try {
+			 ResultSetMetaData md = rs.getMetaData();
+			 count = md.getColumnCount();
+		}catch(Exception e)
+		{
+			
+		}
+		return count;
+	}
+	
+	@SuppressWarnings("unused")
+	public static String sendGetCallForEnrichment(String URL) throws Exception {// return get url response
 
+		String url = URL;
+		
+		URL obj = new URL(url);
+		HttpURLConnection con = (HttpURLConnection) obj.openConnection();
+
+		// optional default is GET
+		con.setRequestMethod("GET");
+
+		//add request header
+		//con.setRequestProperty("User-Agent", USER_AGENT);
+
+		int responseCode = con.getResponseCode();
+		System.out.println("\nSending 'GET' request to URL : " + url);
+		System.out.println("Response Code : " + responseCode);
+
+		BufferedReader in = new BufferedReader(
+		        new InputStreamReader(con.getInputStream()));
+		String inputLine;
+		StringBuffer response = new StringBuffer();
+
+		while ((inputLine = in.readLine()) != null) {
+			System.out.println(inputLine);
+			response.append(inputLine);
+		}
+		in.close();
+		ObjectMapper mapper = new ObjectMapper();
+		String json = "";
+		try {
+			System.out.println(response.toString());
+		    // convert user object to json string and return it 
+		     json =  response.toString();
+		}catch(Exception e)
+		{
+			
+			throw e;
+		}
+		
+		return json;
+		//print result
+		//
+
+	}
+	
+	public static String GetdateTime()
+	{
+		java.util.Date dt = new java.util.Date();
+
+		java.text.SimpleDateFormat sdf = 
+		     new java.text.SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+
+		String currentTime = sdf.format(dt);
+		return currentTime;
+	}
 }

@@ -1,40 +1,34 @@
-<!DOCTYPE html>
-<html lang="en">
-
+<%@ page language="java" contentType="text/html; charset=ISO-8859-1"
+    pageEncoding="ISO-8859-1"%>
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
 <head>
+	<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+	<link rel="stylesheet" type="text/css" href="CSS/jsgrid.css" />
+	<link rel="stylesheet" type="text/css" href="CSS/theme.css" />
+	<link rel="stylesheet" type="text/css" href="CSS/bootstrap.min.css" />
+	<link rel="stylesheet" type="text/css" href="CSS/metisMenu.min.css" />
+	<link rel="stylesheet" type="text/css" href="CSS/sb-admin-2.min.css" />
+	<link rel="stylesheet" type="text/css" href="CSS/font-awesome.min.css" />
+	
+	<script src="scripts/jquery-1.11.1.min.js"></script> 
+	<script src="scripts/jquery-ui.js"></script> 
+	<script src="scripts/jsgrid.min.js"></script>
+	<script src="scripts/jsgrid.core.js"></script>
+	<script src="scripts/jsgrid.load-indicator.js"></script>
+	<script src="scripts/jsgrid.load-strategies.js"></script>
+	<script src="scripts/jsgrid.sort-strategies.js"></script>
+	<script src="scripts/jsgrid.field.js"></script>
+	<script src="scripts/jsgrid.field.text.js"></script>
+	<script src="scripts/jsgrid.field.control.js"></script>
+	<script src="scripts/CallingServlets.js"></script> 
+	<script src="scripts/html5shiv.js"></script>
+	<script src="scripts/respond.min.js"></script>
 
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="description" content="">
-    <meta name="author" content="">
-
-    <title>SB Admin 2 - Bootstrap Admin Theme</title>
-
-    <!-- Bootstrap Core CSS -->
-    <link href="../vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
-
-    <!-- MetisMenu CSS -->
-    <link href="../vendor/metisMenu/metisMenu.min.css" rel="stylesheet">
-
-    <!-- Custom CSS -->
-    <link href="../dist/css/sb-admin-2.css" rel="stylesheet">
-
-    <!-- Custom Fonts -->
-    <link href="../vendor/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
-
-    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
-    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
-    <!--[if lt IE 9]>
-        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
-        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
-    <![endif]-->
-
+	<title>Pricing Module</title>
 </head>
-
 <body>
-
-    <div id="wrapper">
+	<div id="wrapper">
 
         <!-- Navigation -->
         <nav class="navbar navbar-default navbar-static-top" role="navigation" style="margin-bottom: 0">
@@ -274,84 +268,78 @@
                             <!-- /input-group -->
                         </li>
                         <li>
-                            <a href="MD_test_API_workaround.html"><i class="fa fa-dashboard fa-fw"></i> API Work-around <small>(Amazon and eBay)</small><span class="fa arrow"></span></a>
+                            <a><i class="fa fa-dashboard fa-fw"></i> API Work-around <small>(Amazon and eBay)</small><span class="fa arrow"></span></a>
 							<ul class="nav nav-second-level">
 							
-								
-									
 							   <li>
-                                    <a href="MD_test_API_workaround.html">API Dashboard</a>
+                                    <a href="index.jsp">API Dashboard</a>
                                 </li>
-                               <!-- <li>
-                                    <a href="morris.html">eBay API</a>
+                               <li>
+                                    <a href="SimilarItemsModule.jsp">Similar Items For Ebay and Amazon</a>
                                 </li>
-								<!-- <li>
-                                    <a href="morris.html">Combined API</a>
-                                </li> -->
+								
                             </ul>
                         </li>
 						
-						 <li>
-                            <a href="#"><i class="fa fa-bar-chart-o fa-fw"></i> Pricing Module<span class="fa arrow"></span></a>
+						  <li>
+                            <a href="PricingChart.jsp"><i class="fa fa-bar-chart-o fa-fw"></i> Pricing Module<span class="fa arrow"></span></a>
 							
 							
                             <ul class="nav nav-second-level">
                                 
 								<li>
-                                    <a href="MD_test_Pricing_module.html">Pricing Dashboard</a>
+                                    <a href="price_module.jsp">Pricing Dashboard</a>
                                 </li>
-                               <!--
-							   <li>
-                                    <a href="morris.html">Enriched data reviews</a>
-                                </li>-->
+                               <li>
+                                    <a href="shop1_products.jsp">Pricing Shop 1</a>
+                                </li>
+                                <li>
+                                    <a href="shop2_products.jsp">Pricing Shop 2</a>
+                                </li>
+                                <li>
+                                    <a href="PricingChart.jsp">Pricing Chart</a>
+                                </li>
                             </ul>
                             <!-- /.nav-second-level -->
                         </li>
-                        <li>
-                            <a href="#"><i class="fa fa-bar-chart-o fa-fw"></i> Review Module<span class="fa arrow"></span></a>
+                       <li>
+                            <a href="ReviewModule.jsp"><i class="fa fa-bar-chart-o fa-fw"></i> Review Module<span class="fa arrow"></span></a>
 							
 							
                             <ul class="nav nav-second-level">
                                 <li>
-                                    <a href="blank.html">Review Dashboard</a>
+                                    <a href="ReviewModule.jsp">Review Dashboard</a>
                                 </li>
                                 
 								
                             </ul>
-                            <!-- /.nav-second-level -->
+                            
                         </li>
-                        <li>
-                            <a href="tables.html"><i class="fa fa-table fa-fw"></i> Performed jobs<span class="fa arrow"></span></a>
+                            <li>
+                            <a href="Performed_Jobs.jsp"><i class="fa fa-table fa-fw"></i> Performed jobs<span class="fa arrow"></span></a>
 							
 							<ul class="nav nav-second-level">
 							
 								<li>
-                                    <a href="morris.html">All<!-- <span class="fa arrow"> --></span></a>
-									<!-- <ul class="nav nav-second-level">
+                                    <a >All</a>
+								
+                                </li>
+                                <li>
+                                    <a >Today</a>
+                                </li>
+                                <li>
+                                    <a >This week</a>
+                                </li>
+								<li>
+                                    <a >This month</a>								
+                                </li>
+								<li>
+                                    <a>Last 6 months</a>
+                                </li>
+								
+                            </ul>
 							
-									<li>
-                                    <a href="morris.html">Ascending to descending (Year)</a>
-									</li>
-									
-									<li>
-                                    <a href="morris.html">Descending to ascending(Year)</a>
-									</li>
-                                
-								</ul> -->
-                                </li>
-                                <li>
-                                    <a href="flot.html">Today</a>
-                                </li>
-                                <li>
-                                    <a href="morris.html">This week</a>
-                                </li>
-								<li>
-                                    <a href="morris.html">This month</a>								
-                                </li>
-								<li>
-                                    <a href="morris.html">Last 6 months</a>
-                                </li>
-                            </ul>	
+							
                         </li>
                     </ul>
                 </div>
@@ -367,151 +355,83 @@
                 </div>
                 <!-- /.col-lg-12 -->
             </div>
-        
+            
             <div class="row">
-                <div class="col-lg-6">
+                <div class="col-lg-12">
                     <div class="panel panel-default">
                         <div class="panel-heading">
-                            Smart Pricing
+                            Existing Categories
                         </div>
                         <!-- /.panel-heading -->
-                        <?php
-                        include 'database_con.php';
-
-                        $item_no = $_POST['item_no'];
-
-                        $sql = "SELECT description, base_price, discount_price
-                                FROM pricing_module 
-                                WHERE item_no= '".$item_no."'";
-                        
-                        $sql2 = "SELECT description, base_price, retail_price
-                                FROM shop_item
-                                WHERE item_no= '".$item_no."'";
-                        
-                        //$price = [];
-                        //$result = $conn->query($sql);
-                        //while($row = $result->fetch_assoc()) {
-                        //    $price[] = $row['base_price'];
-                        //}
-                    
-                        //sort the array
-                        $highest = "Blah";
-                        $cheapest = "Blah";
-                        $avg = "Blah";
-                        $smart = "Blah";
-                            
-                        ?>
-                        <div class="panel-body">
-                            <div class="table-responsive">
-                                <form action="MD_test_Pricing_module.html">
-                                    <input type="submit" class="btn btn-default" value="Return To Categories" />
+                    <div class="panel-body">
+                        <div class="row">
+                            <div class="col-lg-6">
+                                <form action="shop1_products.jsp" method="GET">
+                                    <div class="form-group">
+                                        <label>Select A Category From Shop-1</label>
+                                        <select name="line_no" class="form-control">
+                                            <option disabled>Category</option>
+                                            <option value="22500">Eisen</option>
+                                            <option value="23750">Driver</option>
+                                            <option value="24375">Fairways</option>
+                                            <option value="24843">Wedges</option>
+                                            <option value="24687">Hybrids</option>
+                                            <option value="24921">Putter</option>
+                                            <option value="27500">Komplettsets</option>
+                                            <option value="28750">Halbsets</option>
+                                            <option value="30000">Bag &amp; Trolleys</option>
+                                            <option value="32421">GPS &amp; Messtechnik</option>
+                                            <option value="32500">Golfbälle</option>
+                                            <option value="42500">Handschuhe</option>
+                                            <option value="44843">Golfschuhe Damen</option>
+                                            <option value="44921">Golfschuhe Herren</option>
+                                            <option value="44960">Schuhpflege</option>
+                                            <option value="65000">Golfoutfits für Ihn</option>
+                                            <option value="55000">Golfoutfits für Sie</option>
+                                            <option value="75000">Accessories</option>
+                                        </select>
+                                    </div>
+                                    <button type="submit" class="btn btn-default">Show Products</button>
+                                    <button type="reset" class="btn btn-default">Reset</button>
                                 </form>
-                                <table class="table">
-                                    <thead>
-                                        <tr>
-                                            <th>Product Name</th>
-                                            <th>Base Price</th>
-                                            <th>Retail Price</th>
-                                            <th>Cheapest Competitor</th>
-                                            <th>Average</th>
-                                            <th>Highest Competitor</th>
-                                            <th>Smart Price</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <?php
-                                        
-                                        $result = $conn->query($sql2) or die($conn->error);
-                                            while($row = $result->fetch_assoc()) {
-                                                echo "<tr>";
-                                                echo "<td>".$row['description']."</td>";
-                                                echo "<td>".$row['base_price']."</td>";
-                                                echo "<td>".$row['retail_price']."</td>";
-                                                echo "<td>".$cheapest."</td>";
-                                                echo "<td>".$avg."</td>";
-                                                echo "<td>".$highest."</td>";
-                                                echo "<td>".$smart."</td>";
-                                                echo "</tr>";
-                                            }
-                                        /*
-                                                echo "<tr>";
-                                                echo "<td>".."</td>";
-                                                echo "<td>".."</td>";
-                                                echo "<td>".$cheapest."</td>";
-                                                echo "<td>".$highest."</td>";
-                                                echo "</tr>";
-                                            }
-                                        //mysqli_close($conn);
-                                        */
-                                        ?>                          
-                                    </tbody>
-                                </table>
                             </div>
-                            <!-- /.table-responsive -->
                         </div>
-                        <!-- /.panel-body -->
-                    </div>
-                    <!-- /.panel -->
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-lg-6">
-                    <div class="panel panel-default">
-                        <div class="panel-heading">
-                            Similar Products Found for "NAME":
-                        </div>
-                        <!-- /.panel-heading -->
-                        <div class="panel-body">
-                            <div class="table-responsive">
-                                <table class="table">
-                                    <thead>
-                                        <tr>
-                                            <th>Product Name</th>
-                                            <th>Base Price</th>
-                                            <th>Discounted Price</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <?php
-                                        $result = $conn->query($sql) or die($conn->error);
-                                            while($row = $result->fetch_assoc()) {
-                                                echo "<tr>";
-                                                echo "<td>".$row['description']."</td>";
-                                                echo "<td>".$row['base_price']."</td>";
-                                                echo "<td>".$row['discount_price']."</td>";
-                                                echo "</tr>";
-                                            }
-                                        //mysqli_close($conn);
-                                        ?>                          
-                                    </tbody>
-                                </table>
+                        <br/><br/><br/><br/><br/>
+                        <div class="row">
+                            <div class="col-lg-6">
+                                <form action="shop2_products.jsp" method="GET">
+                                    <div class="form-group">
+                                        <label>Select A Category From Shop-2</label>
+                                        <select name="parent_line_no" class="form-control">
+                                            <option disabled>Category</option>
+                                            <option value="30000">Zelte</option>
+                                            <option value="125000">Möbel</option>
+                                            <option value="255000">Haushalt</option>
+                                            <option value="310000">Grillen</option>
+                                            <option value="490000">Heizen</option>
+                                            <option value="540000">Kühlen</option>
+                                            <option value="720000">Elektro</option>
+                                            <option value="805156">Sanitär</option>
+                                            <option value="945000">Outdoor &amp; Trekking</option>
+                                            <option value="1192500">Fahrzeugzubehör</option>
+                                            <option value="1410000">Kinderwelt</option>
+                                        </select>
+                                    </div>
+                                    <button type="submit" class="btn btn-default">Show Products</button>
+                                    <button type="reset" class="btn btn-default">Reset</button>
+                                </form>
                             </div>
-                            <!-- /.table-responsive -->
                         </div>
-                        <!-- /.panel-body -->
                     </div>
-                    <!-- /.panel -->
+                    <!-- /.panel-body -->
                 </div>
+                <!-- /.panel -->
             </div>
+        </div>
             
         </div>
         <!-- /#page-wrapper -->
 
     </div>
-    <!-- /#wrapper -->
-
-    <!-- jQuery -->
-    <script src="../vendor/jquery/jquery.min.js"></script>
-
-    <!-- Bootstrap Core JavaScript -->
-    <script src="../vendor/bootstrap/js/bootstrap.min.js"></script>
-
-    <!-- Metis Menu Plugin JavaScript -->
-    <script src="../vendor/metisMenu/metisMenu.min.js"></script>
-
-    <!-- Custom Theme JavaScript -->
-    <script src="../dist/js/sb-admin-2.js"></script>
-
 </body>
-
 </html>

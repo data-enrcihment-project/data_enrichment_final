@@ -35,7 +35,7 @@ var MapItemReviewGrid = function(data)
         data: data,
         
         fields: [
-            {title:"Item No", name: "Item_ID", type: "text", width: 150 },
+            {title:"Item No", name: "Item_no", type: "text", width: 150 },
             { title: "Title" ,name: "Item_title", type: "text", width: 200 },
             { title: "Item Price", name: "Item_Price", type: "text", width: 200 },
             { title: "Type", type: "Type_ID", width: 100,
@@ -52,10 +52,15 @@ var MapItemReviewGrid = function(data)
             { title: "Reviews", type: "Item_Reviews", width: 100,
             	itemTemplate: function(ret, data) {
             		
-            		data.Item_Reviews
-            		return $("<a>").on("click", onItemReviewSelected(data.Item_ID,data.Type_ID,data.Item_Reviews))
-                    .attr("target", "_blank")
-                    .text("Show Reviews");
+            		var self = this;
+                    var $customButton = $("<button>")
+                            .text("Get Selected Reviews")
+                            .click(function (e) {
+                            	onItemReviewSelected(data.Item_no,data.Type_ID,data.Item_Reviews);
+                                e.stopPropagation();
+                            });
+                    return $customButton;
+            		
                 }            
             }
         ]
@@ -66,6 +71,31 @@ var MapItemReviewGrid = function(data)
 var onItemReviewSelected = function(psItem_No,ps_Type,psEmbedReviewUrl)
 {
 	debugger;
-	$("embedReviewUrl")[0].scr = "";
-	$("embedReviewUrl")[0].scr = psEmbedReviewUrl;//showing reviews
-}
+	
+	$("#divReviewModule").html("");
+	embedReviewUrl.src = "";
+	if(ps_Type==2)
+	{	
+		embedReviewUrl.src = psEmbedReviewUrl;//showing reviews
+		
+	}else{
+		//map to table
+		//divReviewModule append
+		var sellerRating = $.parseJSON(psEmbedReviewUrl);
+		var topRated = "Yes";
+		if(!eval(sellerRating.topRatedSeller))
+		{
+			topRated ="No";
+		}
+		
+		var sellerRatingDet = "<table class='table table-bordered table-striped'>" +
+				"<tr><td><h1>FeedBack Rating Star :"+ sellerRating.feedbackRatingStar+"</h1><br/></td></tr>" +
+		"<tr><td><h1>Feedback Score : " + sellerRating.feedbackScore + "</td></tr>"+
+			"<tr><td> Poisitice Feedback Percentage: "+ sellerRating.positiveFeedbackPercent+" % <br/></td></tr>"+
+
+			"<tr><td></br> Seller Name :"+ sellerRating.sellerUserName +"<br/></td></tr>"+
+			"<tr><td>Top rated Seller : " +topRated +"<br/></td></tr>"+			
+			"</table>";
+		$("#divReviewModule").append(sellerRatingDet);
+	}
+};

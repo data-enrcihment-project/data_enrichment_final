@@ -86,11 +86,6 @@ public class AmazonCall {
 
 		ItemSearchResponse response = port.itemSearch(ItemElement);
 		
-
-		//ItemAttribute.getFeatures
-		////////
-		//System.out.println(response);
-		
 		 List<Items> items = response.getItems(); 
 		 
 		
@@ -113,7 +108,7 @@ public class AmazonCall {
 	}
 	
 	
-	public static String CallItemLookUp(String psResponseGroup,String asin)//String psDescription,String globalID,String asin
+	public static Map<Integer, Object> CallItemLookUp(String asin,String type)
 	{
 		///for related or similar items
 		String awsAccessKeyID = "AKIAJGNN4WCXDEYYLG6A";
@@ -122,93 +117,62 @@ public class AmazonCall {
 		AWSECommerceService service = new AWSECommerceService();
 		service.setHandlerResolver(new AwsHandlerResolver("in+WiNhkEcTJY8NF1rozgORBiE4VdgUnrx7dSWhw"));
 
-		AWSECommerceServicePortType port = null;
-		
-		/*if(globalID.equals("AMAZON-DE"))
-		{
-			System.out.println("For DE");
-			port = service.getAWSECommerceServicePortDE();			
-		}
-		else if(globalID.equals("AMAZON-US"))
-		{
-			System.out.println("FOR US");
-			port = service.getAWSECommerceServicePort();
-		}*/
+		AWSECommerceServicePortType port = null;		
 		port = service.getAWSECommerceServicePortDE();
 		
-		
+		//for discover similarities
 		ItemLookupRequest lookupReq = new ItemLookupRequest();
-		//lookupReq.setSearchIndex(psDescription);
-		//lookupReq.getItemId().add(asin);
-		lookupReq.setSearchIndex("All");
-		lookupReq.setIdType("ASIN");
-		lookupReq.getItemId().add(asin);
-		//lookupReq.getResponseGroup().add("Small");
-		//lookupReq.getResponseGroup().add("Offers");
-		lookupReq.getResponseGroup().add(psResponseGroup);//ItemLookup Discover incl. related item and similar items
 		
+		if(type.equals("DiscoverSimilarItems"))//discover similar items 
+		{ 
+			System.out.println("Similarity");
+			lookupReq.getResponseGroup().add("Similarities"); 
+			lookupReq.setSearchIndex("All");
+			lookupReq.setIdType("UPC");//UPC for discover similar items
+			lookupReq.getItemId().add(asin);
+			
+		}				
+		else if(type.equals("RelatedItems"))//for relateItems also this one
+		{
+			System.out.println("Called Related Items");
+			lookupReq.getResponseGroup().add("RelatedItem,Small");
+			lookupReq.setIdType("ASIN");
+			lookupReq.getItemId().add(asin);
+		}
+		
+		/*lookupReq.getResponseGroup().add("ItemAttributes");
+		lookupReq.getResponseGroup().add("Offers");
+		lookupReq.getResponseGroup().add("Images");
+		lookupReq.getResponseGroup().add("Reviews");*/
 		
 		ItemLookup lookupitem = new ItemLookup();
 		lookupitem.setAWSAccessKeyId(awsAccessKeyID);
 		lookupitem.setAssociateTag(test);
+		
 		lookupitem.getRequest().add(lookupReq);
 		
 		ItemLookupResponse responseLook =port.itemLookup(lookupitem);
-		 
-		System.out.println(responseLook);
-		int count = responseLook.getItems().size();
-		List<Items> itemsLookUp = responseLook.getItems();
 		
-			System.out.println(itemsLookUp);
-		Map<Integer, Object> row = null;
+		System.out.println(responseLook.getItems().size());		
 		
-		//try {
-			//row = resultSetToList(itemsLookUp,count,psDescription);
-		//} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			//e.printStackTrace();
-		//}
-		List<Object> obj = new ArrayList<Object>();
-		///////////////
+		System.out.println(responseLook.getItems());
+		//int count = responseLook.getItems().size();
+		Map<Integer, Object> similarRow = new HashMap<Integer, Object>();
 		
-		for (Items itemList : itemsLookUp) {
-			
-			System.out.println(itemList.getItem().toString());
-		    for (Item itemObj : itemList.getItem()) {
-		        
-		    
-		        System.out.println(itemObj.getCustomerReviews());
-		        
-		        obj.add(itemObj);
-		    }
+		Integer rowCount = 0;
+		for(Items itemsLookUp: responseLook.getItems())
+		{
+			System.out.println("GOT SMT RELATED");
+			rowCount++;
+			similarRow.put(rowCount, itemsLookUp);
 		}
 		
-		ObjectMapper mapper = new ObjectMapper();
-		String json = "";
-		
-		    // convert user object to json string and return it 
-		     try {
-				json =  mapper.writeValueAsString(row);
-				System.out.println(json);
-				return json;
-			} catch (JsonGenerationException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			} catch (JsonMappingException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-		
-		
+		similarRow.put(0,rowCount);
 		     
-		     
-		return json;
+		return similarRow;
 	}
 	
-	public static String CallItemSimilarLookUp(String psResponseGroup,String asin)//String psDescription,String globalID,String asin
+	public static Map<Integer, Object> CallItemSimilarLookUp(String asin,String type,String globalID)//String psDescription,String globalID,String asin
 	{
 		///for related or similar items
 		String awsAccessKeyID = "AKIAJGNN4WCXDEYYLG6A";
@@ -219,25 +183,25 @@ public class AmazonCall {
 
 		AWSECommerceServicePortType port = null;
 		
-		/*if(globalID.equals("AMAZON-DE"))
+		if(globalID.equals("AMAZON-DE"))
 		{
-			System.out.println("For DE");
 			port = service.getAWSECommerceServicePortDE();			
 		}
 		else if(globalID.equals("AMAZON-US"))
 		{
-			System.out.println("FOR US");
 			port = service.getAWSECommerceServicePort();
-		}*/
-		port = service.getAWSECommerceServicePort();
+		}
 		
+		//for similarities
 		SimilarityLookupRequest simlarReq = new SimilarityLookupRequest();
-		//simlarReq.setIdType("ASIN");
-		simlarReq.getItemId().add(asin);
+		//simlarReq. setIdType("ASIN");
 		simlarReq.getResponseGroup().add("Small");
-		//lookupReq.getResponseGroup().add("Offers");
-		//lookupReq.getResponseGroup().add(psResponseGroup);//ItemLookup Discover incl. related item and similar items
+		simlarReq.getResponseGroup().add("ItemAttributes");
+		simlarReq.getResponseGroup().add("Offers");
+		simlarReq.getResponseGroup().add("Images");
+		simlarReq.getResponseGroup().add("Reviews");
 		
+		simlarReq.getItemId().add(asin);
 		
 		SimilarityLookup lookupitem = new SimilarityLookup();
 		lookupitem.setAWSAccessKeyId(awsAccessKeyID);
@@ -245,58 +209,24 @@ public class AmazonCall {
 		lookupitem.getRequest().add(simlarReq);
 		
 		SimilarityLookupResponse responseLook =port.similarityLookup(lookupitem);
-		 
-		System.out.println(responseLook);
-		int count = responseLook.getItems().size();
-		List<Items> itemsLookUp = responseLook.getItems();
+		System.out.println("Called SimilarityLookUP");
+		System.out.println(responseLook.getItems());
 		
-			System.out.println(itemsLookUp);
-		Map<Integer, Object> row = null;
 		
-		//try {
-			//row = resultSetToList(itemsLookUp,count,psDescription);
-		//} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			//e.printStackTrace();
-		//}
-		List<Object> obj = new ArrayList<Object>();
-		///////////////
+		//int count = responseLook.getItems().size();
+		Map<Integer, Object> similarityRow = new HashMap<Integer, Object>();
 		
-		for (Items itemList : itemsLookUp) {
-			
-			System.out.println(itemList.getItem().toString());
-		    for (Item itemObj : itemList.getItem()) {
-		        
-		    
-		        System.out.println(itemObj.getCustomerReviews());
-		        
-		        obj.add(itemObj);
-		    }
+		Integer rowCount = 0;
+		for(Items itemsLookUp: responseLook.getItems())
+		{
+			rowCount++;
+			System.out.println("GOT SMT");
+			similarityRow.put(rowCount, itemsLookUp);
 		}
 		
-		ObjectMapper mapper = new ObjectMapper();
-		String json = "";
-		
-		    // convert user object to json string and return it 
-		     try {
-				json =  mapper.writeValueAsString(row);
-				System.out.println(json);
-				return json;
-			} catch (JsonGenerationException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			} catch (JsonMappingException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-		
-		
+		similarityRow.put(0,rowCount);
 		     
-		     
-		return json;
+		return similarityRow;
 	}
 	
 	public static List<Items> GetAmazonItemObject(String psDescription,String globalID)

@@ -114,6 +114,21 @@ public class EbayCallService {
 		return null;
 	}
 	
+	private static String GetItemDescription(String itemId)
+	{
+		
+		String URL = "http://open.api.ebay.com/shopping?callname=GetSingleItem&appid=AmirMans-DataEnri-PRD-32cc7bc3a-9d32c231&version=517&responseencoding=JSON&itemid="+ itemId +"&IncludeSelector=Details,Description,Variations,Compatibility";
+		String json = "";
+		try {
+			json = DbMethods.sendGetCallForEnrichment(URL);
+			return json;
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return json;
+	}
+	
 	public static List<SearchItem> GetEbayItemObjectFast()
 	{
 		 ClientConfig config = new ClientConfig();         
@@ -232,8 +247,11 @@ public class EbayCallService {
 	        	
 	        	//itemID
 	        	//req.setItemID(item.getItemId());
-
-	        	
+	        	///
+	        	///Setting Description
+				 String descr = GetItemDescription(item.getItemId().toString());
+				
+				 item.setSubtitle(descr);
 	        	//for categories of this item
 	        	//CategoryHistogram ch = new CategoryHistogram();
 	        	//ch.set
@@ -265,6 +283,8 @@ public class EbayCallService {
 	            	details.put(filteredListCount,item);
 	            	row.put(filteredListCount, item);
 	            }
+	        	System.out.println(item.getSubtitle());
+	        	
 	            //Writing to xml
 	           //if more than 70 percent we will send data to client and show them in list
 	        }
