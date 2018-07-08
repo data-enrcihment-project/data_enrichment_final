@@ -143,8 +143,11 @@ public class DbMethods {
 	{
 		Integer count= 0;
 		try {
-			 ResultSetMetaData md = rs.getMetaData();
-			 count = md.getColumnCount();
+				
+			rs.last();
+				
+			count = rs.getRow();
+			 
 		}catch(Exception e)
 		{
 			

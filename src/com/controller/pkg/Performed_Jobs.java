@@ -51,11 +51,13 @@ public class Performed_Jobs extends HttpServlet {
 		*/
 		String sqlQuery = "SELECT  enrichment.Item_no,enrichment.Item_title, enrichment.Item_Price, enrichment.Item_Description, enrichment.Type_ID, enrichment.Item_Reviews,enrichment.Item_URL,performed_job.Time_Stamp   " + 
 				"  FROM enrichment_module enrichment   " + 
-				" INNER JOIN performed_jobs_module performed_job  " + 
-				"  ON enrichment.Type_ID = performed_job.Type_ID "+
-				" Where enrichment.Type_ID ="+typeID;
-		
-		
+				" INNER JOIN performed_jobs_module performed_job ON enrichment.Type_ID=performed_job.Type_ID ";
+				
+		System.out.println(typeID);
+		if(typeID != "" && typeID!=null)
+		{
+			sqlQuery +=" Where enrichment.Type_ID ="+typeID;
+		}
 		
 		/*if(!duration.isEmpty())
 		{
@@ -72,7 +74,7 @@ public class Performed_Jobs extends HttpServlet {
 		
 		ResultSet rs = DbMethods.QueryStatement(sqlQuery);
 		
-		
+		System.out.println(DbMethods.GetRecordCount(rs));
 		
 		List<Map<String, Object>> rows = null;
 		try {

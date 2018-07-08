@@ -71,7 +71,7 @@ var DisplayProductDetails = function(details)
                     var $customButton = $("<button>")
                             .text("Get Selected Amazon Items")
                             .click(function (e) {
-                            	GetDetailsforItems("AmazonItemDescription","GET",data.id,data.shop_code,data.description,"Amazon");
+                            	GetDetailsforItems("AmazonItemDescription","GET",data.item_no,data.shop_code,data.description,"Amazon");
                                 e.stopPropagation();
                             });
                     return $customButton;
@@ -104,7 +104,7 @@ var DisplayProductDetails = function(details)
                     var $customButton = $("<button>")
                             .text("Get Selected Ebay Items")
                             .click(function (e) {
-                            	GetDetailsforItems("ItemDescription","GET",data.id,data.shop_code,data.description,"Ebay");//item_no
+                            	GetDetailsforItems("ItemDescription","GET",data.item_no,data.shop_code,data.description,"Ebay");//item_no
                                 e.stopPropagation();
                             });
                     return $customButton;

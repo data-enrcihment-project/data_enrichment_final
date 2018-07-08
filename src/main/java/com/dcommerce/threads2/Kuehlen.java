@@ -29,6 +29,6 @@ public class Kuehlen extends Thread {
 			ArrayList<Entry> entry = new ArrayList<Entry>();
 			
 			//	similarity checking, sorting & taking first 5 items 
-			SmartPricing.compareSimilarity(entry,File);
+			SmartPricing.compareSimilarityShop2(entry,File);
 	}
 }

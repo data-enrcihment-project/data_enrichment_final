@@ -125,7 +125,54 @@ public class DatabaseQuery {
 				double base_price = str.getPrice1();
 				double discount_price = str.getPrice2();
 				//add the column in the database and change the statement
-				String Statement = "INSERT INTO pricing_module (item_no, description, base_price, discount_price) VALUES ('"+item_no+"','"+title+"', '"+base_price+"', '"+discount_price+"')"; 
+				String Statement = "INSERT INTO pricing_shop1(item_no, description, base_price, discount_price) VALUES ('"+item_no+"','"+title+"', '"+base_price+"', '"+discount_price+"')"; 
+				pstmtObj = connObj.prepareStatement(Statement);
+				pstmtObj.executeUpdate();
+			}
+		} catch (Exception sqlException) {
+			sqlException.printStackTrace();
+		} finally {
+			try {
+				// closing PreparedStatement object
+				if (pstmtObj != null) {
+					pstmtObj.close();
+				}
+				// closing Connection object
+				if (connObj != null) {
+					connObj.close();
+				}
+			} catch (Exception sqlException) {
+				sqlException.printStackTrace();
+			}
+		}
+	}
+	
+	public static void insertDataShop2(ArrayList<Entry> entry, String item_no) throws IOException {
+		Connection connObj = null;
+		PreparedStatement pstmtObj = null;
+		ConnectionPool jdbcObj = new ConnectionPool();
+
+		try {
+			DataSource dataSource = jdbcObj.setUpPool();
+
+			connObj = dataSource.getConnection();
+
+			// sorting the product list according to their similarity score
+			Collections.sort(entry, Entry.ScoreDiff);
+			
+			//taking the first 5 similar items.
+			int max = 5;
+			if(entry.size()<5) {
+				max = entry.size();
+			}
+			for (int i = 0; i < max ; i++) {
+				Entry str = entry.get(i);
+				//System.out.println(str.getTitle() + " " + str.getScore() + " " + str.getPrice1() + " " + str.getPrice2());
+				String title = str.getTitle();
+				double base_price = str.getPrice1();
+				double discount_price = str.getPrice2();
+				//add the column in the database and change the statement
+				String Statement = "INSERT INTO pricing_shop2(item_no, description, base_price, discount_price) VALUES ('"+item_no+"','"+title+"', '"+base_price+"', '"+discount_price+"')"; 
 				pstmtObj = connObj.prepareStatement(Statement);
 				pstmtObj.executeUpdate();
 			}

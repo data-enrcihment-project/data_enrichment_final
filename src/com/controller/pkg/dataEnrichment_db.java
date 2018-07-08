@@ -77,6 +77,7 @@ public class dataEnrichment_db extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
 		//DbMethods method = new DbMethods();
+		//App.CallPricing();
 		
 		ResultSet rs = DbMethods.QueryStatement("Select id,item_no,company,description,language_code,shop_code from shop_item");
 		  

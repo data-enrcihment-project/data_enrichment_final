@@ -56,7 +56,17 @@ var DisplayProductDetails = function(details)
             { title: "Price" ,name: "Item_Price", type: "text", width: 200 },
             { title: "Item URL", name: "Item_URL", type: "text", width: 200 },
             { title: "Enriched Time", name: "Time_Stamp", type: "text", width: 200 },
-            
+            { title: "Type", type: "Type_ID", width: 100,
+            	itemTemplate: function(ret, data) {
+            		
+            		var type = "Amazon";
+            		if(data.Type_ID==1)
+            		{
+            			type = "Ebay"
+            		}
+            		return type;
+                }            
+            }
         ]
     });
 };

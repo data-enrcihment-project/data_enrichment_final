@@ -115,9 +115,9 @@ public class AmazonItemDescription extends HttpServlet {
 		
 		obj =  (Item) mapper.readValue(jsonData,Item.class);
 		
-		ResultSet rsetCount = DbMethods.QueryStatement("Select E_ID from enrichment_module where Enrich_ID="+ dataId +" AND Item_no='"+obj.getASIN()+"'");
+		ResultSet rsetCount = DbMethods.QueryStatement("Select E_ID from enrichment_module where Enrich_ID='"+ dataId +"' AND Item_no='"+obj.getASIN()+"'");
 		
-		String sqlUpdateQuery =  "UPDATE enrichment_module SET Item_title = ?, Item_Image = ?, Item_Description = ?, Item_Price = ?, Item_URL = ?, Item_Reviews = ?, JSON_Text = ?,CategoryName = ?,Images_URL = ? WHERE Enrich_ID ="+dataId +"&Item_no="+obj.getASIN();
+		String sqlUpdateQuery =  "UPDATE enrichment_module SET Item_title = ?, Item_Image = ?, Item_Description = ?, Item_Price = ?, Item_URL = ?, Item_Reviews = ?, JSON_Text = ?,CategoryName = ?,Images_URL = ? WHERE Enrich_ID ='"+dataId +"' AND Item_no='"+obj.getASIN()+"'";
 		
 		//Calling Save method over here
 		//ArrayList<String> paramsArray = new ArrayList<String>();
@@ -228,7 +228,9 @@ public class AmazonItemDescription extends HttpServlet {
 				
 				DbMethods.SaveUpdateQueryStatement(sqlUpdateQuery,paramsArrayUpdate);
 				
-				DbMethods.QueryStatement(sqlSavePerformedUpdate);
+				Map<String, String> paramsArrayPerformedModuleUpdate  = new HashMap<String, String>();
+				paramsArrayPerformedModuleUpdate.put("1", DbMethods.GetdateTime());
+				DbMethods.SaveUpdateQueryStatement(sqlSavePerformedUpdate,paramsArrayPerformedModuleUpdate);
 			}
 			System.out.println("Done");
 			

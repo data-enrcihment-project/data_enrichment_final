@@ -106,9 +106,6 @@ public class ItemDescription extends HttpServlet {
 		String dataCode = request.getParameter("dataCode");
 		String categoryName = request.getParameter("categoryName");
 		String images_Json = request.getParameter("images_URL");
-		 
-		
-		System.out.println(jsonData); 
 		
 		String sqlSave = "INSERT INTO enrichment_module (Enrich_ID, Item_no,Item_title,Item_Image,Item_Description,Item_Price,Item_URL,Item_Reviews,Type_ID,JSON_Text,CategoryName,Images_URL) " +
 		        "VALUES (?, ?, ?,?, ?, ?,?, ?, ?, ?, ?, ?)";
@@ -120,9 +117,12 @@ public class ItemDescription extends HttpServlet {
 		    // convert user object to json string and return it 
 			obj =  (SearchItem) mapper.readValue(jsonData,SearchItem.class);
 			
-			ResultSet rsetCount = DbMethods.QueryStatement("Select E_ID from enrichment_module where Enrich_ID="+dataId +"&Item_no="+obj.getItemId());
+			String sqlCount = "Select E_ID from enrichment_module where Enrich_ID='"+ dataId.toString() +"' AND Item_no='"+ obj.getItemId().toString()+"'";
+			System.out.println(sqlCount); 
+			
+			ResultSet rsetCount = DbMethods.QueryStatement(sqlCount);
 					
-			String sqlUpdateQuery =  ("UPDATE enrichment_module SET Item_title = ?, Item_Image = ?, Item_Description = ?, Item_Price = ?, Item_URL = ?, Item_Reviews = ?, JSON_Text = ?,CategoryName = ?,Images_URL = ? WHERE Enrich_ID ="+dataId +"&Item_no="+obj.getItemId());
+			String sqlUpdateQuery =  ("UPDATE enrichment_module SET Item_title = ?, Item_Image = ?, Item_Description = ?, Item_Price = ?, Item_URL = ?, Item_Reviews = ?, JSON_Text = ?,CategoryName = ?,Images_URL = ? WHERE Enrich_ID ='"+dataId +"' AND Item_no='"+obj.getItemId()+"'");
 			//Calling Save method over here
 			
 			Map<String, String> paramsArray  = new HashMap<String, String>();
@@ -164,9 +164,11 @@ public class ItemDescription extends HttpServlet {
 			paramsArrayUpdate.put("8", categoryName);//category name
 			paramsArrayUpdate.put("9",images_Json);//images json
 			
+			System.out.println(DbMethods.GetRecordCount(rsetCount));
+			
 			try {
 				
-				if(DbMethods.GetRecordCount(rsetCount)>0)
+				if(DbMethods.GetRecordCount(rsetCount)==0)
 				{
 					Map<String, String> paramsArrayPerformedModule  = new HashMap<String, String>();
 					
@@ -175,7 +177,7 @@ public class ItemDescription extends HttpServlet {
 					        "  VALUES (?,?,?,?)";		
 					
 					paramsArrayPerformedModule.put("1", obj.getItemId());
-					paramsArrayPerformedModule.put("2", dataId);
+					paramsArrayPerformedModule.put("2", dataId.toString());
 					paramsArrayPerformedModule.put("3", "1");
 					paramsArrayPerformedModule.put("4", DbMethods.GetdateTime());
 					
@@ -186,11 +188,15 @@ public class ItemDescription extends HttpServlet {
 				else {
 					//update
 					System.out.println("Update Query");
-					String sqlSavePerformedUpdate = "UPDATE performed_jobs_module SET Time_Stamp='"+ZonedDateTime.now()+"' where Item_no="+obj.getItemId()+ "  AND Enrich_ID="+dataId;
+					//String sqlCount = "Select E_ID from enrichment_module where Enrich_ID='"+ dataId.toString() +"' AND Item_no='"+ obj.getItemId().toString()+"'";
+					
+					String sqlSavePerformedUpdate = "UPDATE performed_jobs_module SET Time_Stamp=? where Item_no='"+obj.getItemId().toString()+ "'  AND Enrich_ID='"+dataId.toString()+"'";
 					
 					DbMethods.SaveUpdateQueryStatement(sqlUpdateQuery,paramsArrayUpdate);
 					
-					DbMethods.QueryStatement(sqlSavePerformedUpdate);
+					Map<String, String> paramsArrayPerformedModuleUpdate  = new HashMap<String, String>();
+					paramsArrayPerformedModuleUpdate.put("1", DbMethods.GetdateTime());
+					DbMethods.SaveUpdateQueryStatement(sqlSavePerformedUpdate,paramsArrayPerformedModuleUpdate);
 				}
 				System.out.println("Done");
 				
