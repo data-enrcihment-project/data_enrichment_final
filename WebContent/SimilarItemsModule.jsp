@@ -34,6 +34,15 @@
 
 <script src="scripts/SimilaritemModule.js"></script> 
 
+<style>
+
+.makeScroll{
+overflow-y: scroll;
+min-width: 200px;
+height: 600px;
+}
+
+</style>
 <title>Insert title here</title>
 </head>
 <body>
@@ -194,7 +203,7 @@
 								<div id="divPerformedSimilarItems">
 
 								</div>
-								<div id="divSimilarItemsDetail">
+								<div id="divSimilarItemsDetail" class="makeScroll">
 
 									
 								</div>

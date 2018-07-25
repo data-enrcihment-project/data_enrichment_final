@@ -57,7 +57,7 @@ var DisplayProductDetails = function(details)
             {title:"Company", name: "company", type: "text", width: 150 },
             { title: "Description" ,name: "description", type: "text", width: 200 },
             { title: "Shop Code", name: "shop_code", type: "text", width: 200 },
-            { title: "Enrich Data Using", type: "control", width: 100,
+            { title: "Enrich Data Using",  width: 100,
             	itemTemplate: function(ret, data) {
             		
                     var $result = jsGrid.fields.control.prototype.itemTemplate.apply(this, arguments);
@@ -79,27 +79,11 @@ var DisplayProductDetails = function(details)
               
                 }
             },
-            { title: "Enrich Data Using", type: "control", width: 100,
+            { title: "Enrich Data Using",  width: 100,
             	itemTemplate: function(ret, data) {
             		
                     var $result = jsGrid.fields.control.prototype.itemTemplate.apply(this, arguments);
                    
-                    //var customHref = $("<a>").attr("href","itemDescription.jsp").text("Go To Item")                  
-                   // debugger;
-                   /*return $("<a>").on("click", GetDetailsforItems("ItemDescription","POST",data.id,data.shop_code,data.description,"Ebay"))
-                   .attr("target", "_blank")
-                   .text("Get Ebay Details");
-                  */
-                   
-                   /*return $("<a>").attr("href",  function(e){
-                	debugger;
-                	   GetDetailsforItems("dataEnrichment_db","POST",data.id,data.shop_code,data.description,"Ebay");
-                	   
-                   	})
-                   .attr("target", "_blank")
-                   .text("Get Ebay Details");*/
-                   //  "ItemDescription.jsp?psDescr="+data.Ebay Item Description")
-                    
                     var self = this;
                     var $customButton = $("<button>")
                             .text("Get Selected Ebay Items")
@@ -112,11 +96,6 @@ var DisplayProductDetails = function(details)
                    
                 }
             },
-            //onclick='GetEbayDetailsforItems(id,code);'
-            
-            //{ title: "Check for product details", type: "text" , template: "<a type='button' href='ItemDescription?psDescr=' text='Get Ebay Details' ></a>", width: 200 }
-            //{ name: "Married", type: "checkbox", title: "Is Married", sorting: false },
-            //{ type: "control" }
         ]
     });
 };
@@ -125,8 +104,6 @@ var DisplayProductDetails = function(details)
 var GetEbayDetailsforItems = function(psId,pscode,psDescr)
 {
 	////Post method have to be changed to get and itemdescription
-	alert('asdsdCall');
-	debugger;
 	$("#ebayJsonDataID")[0].value =psId;
 	$("#ebayJsonDataDescr")[0].value =psDescr;
 	$("#ebayJsonDataCode")[0].value =pscode;
@@ -159,17 +136,13 @@ var GetDetailsforItems = function(psURL,urlType,psId,pscode,psDescr,type)
 		type: urlType,
 		data: {"psDescr" : psDescr},
 		success : function(data) {
-			//debugger;
-			
-					if(type=="Amazon")
+				if(type=="Amazon")
 					{
 						MapAmazonItemDescription(data);
 					}else{
 						
 						MapItemDescription(data);							
 					}
-			
-			alert(data+"asdsa");	
 		}
 	});
 };
@@ -178,7 +151,7 @@ var GetDetailsforItems = function(psURL,urlType,psId,pscode,psDescr,type)
 var GetAmazonDetailsforItems = function(psId,pscode,psDescr)
 {
 	////Post method have to be changed to get and itemdescription
-	alert('asdsdCall');
+	
 	//debugger;
 	$("#ebayJsonDataID")[0].value =psId;
 	$("#ebayJsonDataDescr")[0].value =psDescr;
@@ -190,16 +163,8 @@ var GetAmazonDetailsforItems = function(psId,pscode,psDescr)
 		type: "GET",
 		success : function(data) {
 			//debugger;
-			
-					
-					alert('asd');
-					
-			//$("#divProductItemDetails").append("<a type='button' href='ItemDescription?psDescr=1212' text='Get Ebay Details' ></a>")
-//			document.navigate.action="/ItemDescriptipn.jsp?psDescr="+psDescr;
-//			document.navigate.submit();
-			
 					MapAmazonItemDescription((data));
-			alert(data+"asdsa");	
+			
 		}
 	});
 };
@@ -287,7 +252,10 @@ var MapItemDescription = function(objData)
 };
 var CallDataEnrichmentMethod = function(psItemID,pstype,psURL,psEnrichedfrom)
 {
-	debugger;
+	//debugger;
+	//SaveEnrichDataDetail(psItemID);
+	///
+	
 	var jsonData = $("#ebayJsonData").val();
 	var obj= $.parseJSON(jsonData);
 	var count = obj[0];
@@ -329,6 +297,7 @@ var CallDataEnrichmentMethod = function(psItemID,pstype,psURL,psEnrichedfrom)
 
 var SaveEnrichData = function (psJsonString,psURL,psCategoryName,psImages_URL)
 {	
+	debugger;
 	$.ajax({
 		url : psURL ,
 		type: "POST",		
@@ -336,8 +305,8 @@ var SaveEnrichData = function (psJsonString,psURL,psCategoryName,psImages_URL)
         data:{"psJsonString":psJsonString,"dataID":$("#ebayJsonDataID")[0].value,"dataDescr":$("#ebayJsonDataDescr")[0].value,"dataCode":$("#ebayJsonDataCode")[0].value,"categoryName":psCategoryName,"images_URL":psImages_URL},//
        
 		success : function(data) {
-			//debugger;if success Done
-			alert(data+"asdsa");	
+			debugger;//if success Done
+			alert(data);	
 			
 			//method for mapping product details
 			//DisplayProductDetails($.parseJSON(data));
@@ -346,4 +315,23 @@ var SaveEnrichData = function (psJsonString,psURL,psCategoryName,psImages_URL)
 	
 };
 
+var SaveEnrichDataDetail = function (itemId)
+{	
+	debugger;
+	$.ajax({
+		url : "http://open.api.ebay.com/shopping?callname=GetSingleItem&appid=AmirMans-DataEnri-PRD-32cc7bc3a-9d32c231&version=517&responseencoding=JSON&itemid="+ itemId +"&IncludeSelector=Details,Description,Variations,Compatibility" ,
+		type: "GET",
+       
+		success : function(data) {
+			debugger;//if success Done
+			alert(data);	
+			
+			//method for mapping product details
+			//DisplayProductDetails($.parseJSON(data));
+		}
+	});
+	
+};
+
+//
 

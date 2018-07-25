@@ -49,7 +49,7 @@ public class AmazonCall {
 		service.setHandlerResolver(new AwsHandlerResolver("in+WiNhkEcTJY8NF1rozgORBiE4VdgUnrx7dSWhw"));
 
 		AWSECommerceServicePortType port = null;
-		System.out.println(globalID.equals("AMAZON-DE")+"a22");
+		
 		if(globalID.equals("AMAZON-DE"))
 		{
 			port = service.getAWSECommerceServicePortDE();			
@@ -62,11 +62,8 @@ public class AmazonCall {
 		ItemSearchRequest itemRequest = new ItemSearchRequest();
 
 		// Fill in the request object:
-		itemRequest.setSearchIndex("All");//Should be defined
-		itemRequest.setKeywords(psDescription);//Should be defined
-		//itemRequest.setTitle(psDescription);
-		//SearchIndex=Apparel
-		//itemRequest.setAvailability("Availability");//for available item
+		itemRequest.setSearchIndex("All");
+		itemRequest.setKeywords(psDescription);
 		itemRequest.getResponseGroup().add("Small");
 		itemRequest.getResponseGroup().add("ItemAttributes");
 		itemRequest.getResponseGroup().add("Offers");
@@ -75,25 +72,21 @@ public class AmazonCall {
 		itemRequest.getResponseGroup().add("EditorialReview");//ItemLookup
 		//itemRequest.getResponseGroup().add("Similarities");//ItemLookup Discover
 		//itemRequest.getResponseGroup().add("RelatedItems");//ItemLookup Related items
-		itemRequest.setItemPage(BigInteger.valueOf(1L));
+		itemRequest.setItemPage(BigInteger.valueOf(1L));		
 		
-		//SimilarityLookup for similar item
-
 		ItemSearch ItemElement = new ItemSearch();
 		ItemElement.setAWSAccessKeyId(awsAccessKeyID);
 		ItemElement.setAssociateTag(test);
 		ItemElement.getRequest().add(itemRequest);
 
 		ItemSearchResponse response = port.itemSearch(ItemElement);
-		
-		 List<Items> items = response.getItems(); 
-		 
-		
+		System.out.println("ItemSearch Check");
+		 List<Items> items = response.getItems(); 	
 		 
 		 int count = response.getItems().size();
 		System.out.println(count);
 		 
-		Map<Integer, Object> row = null;
+		Map<Integer, Object> row = new HashMap<Integer, Object>();
 		 
 		try {
 			row = resultSetToList(items,count,psDescription);
@@ -101,9 +94,6 @@ public class AmazonCall {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		 
-		
-		
 		 return row;
 	}
 	
@@ -273,27 +263,7 @@ public class AmazonCall {
 		ItemElement.getRequest().add(itemRequest);
 
 		ItemSearchResponse response = port.itemSearch(ItemElement);
-		
-/*
-		ItemLookupRequest lookupReq = new ItemLookupRequest();
-		lookupReq.setSearchIndex("MSI");
-		//lookupReq.setCondition("New");
-		lookupReq.getResponseGroup().add("ItemAttributes");
-		lookupReq.getResponseGroup().add("Offers");
-		
-		
-		ItemLookup lookupitem = new ItemLookup();
-		lookupitem.setAWSAccessKeyId(awsAccessKeyID);
-		lookupitem.setAssociateTag(test);
-		lookupitem.getRequest().add(lookupReq);
-		
-		ItemLookupResponse response =port.itemLookup(lookupitem);
-		
-		*/
-		
-		
-		
-		
+
 		System.out.println(response);
 		
 		 return response.getItems(); 
@@ -372,7 +342,7 @@ public class AmazonCall {
 		    	System.out.println("ItemLookUpEnded");
 		    	
 		        Double  ratio= FuzzyWuzzyMining.GetItemDescrRatio(psDescr,itemObj.getItemAttributes().getTitle().toString());
-		        if(ratio >= 65)
+		        if(ratio >= 60)
 	            {	
 		        	filteredListCount++;
 	            	row.put(filteredListCount, itemObj);

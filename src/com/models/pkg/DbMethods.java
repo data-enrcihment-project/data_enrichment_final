@@ -46,12 +46,13 @@ public class DbMethods {
 	{	
 		
 		try {
+			Connection conn = null;
 			Class.forName("com.mysql.jdbc.Driver").newInstance();
-			String url = "jdbc:mysql://localhost:3306/enrichment?autoReconnect=true&useSSL=false";
+			String url = "jdbc:mysql://localhost:3306/enrichment";//?autoReconnect=true&useSSL=false
 			String username = "root";
 			String password = "";
 			
-			Connection conn = DriverManager.getConnection(url,username,password);
+			conn = DriverManager.getConnection(url,username,password);
 			
 			///calling stored procedure
 			
@@ -89,10 +90,10 @@ public class DbMethods {
 	{
 		ResultSet rs;
 		try {
-			Statement st = DBConnection().createStatement();
 			
+			//PreparedStatement st = DBConnection().prepareStatement(query);
+			Statement st = DBConnection().createStatement();
 			rs = st.executeQuery(query);
-			DBConnection().close();
 			return rs;
 			
 		} catch (SQLException e) {
@@ -132,6 +133,8 @@ public class DbMethods {
 	    while (rs.next()){
 	        Map<String, Object> row = new HashMap<String, Object>(columns);
 	        for(int i = 1; i <= columns; ++i){
+	        	
+	        	
 	            row.put(md.getColumnName(i), rs.getObject(i));
 	        }
 	        rows.add(row);

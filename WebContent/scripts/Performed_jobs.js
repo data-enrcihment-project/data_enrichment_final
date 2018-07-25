@@ -7,8 +7,7 @@ var CallPerformedJobs = function (psDuration)
 		data : {duration : psDuration},
 		success : function(data) {
 			debugger;
-			alert(data+"asdsa");	
-			
+		
 			//method for mapping product details
 			DisplayProductDetails($.parseJSON(data));
 		}

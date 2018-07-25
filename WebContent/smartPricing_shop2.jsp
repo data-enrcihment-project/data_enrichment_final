@@ -173,7 +173,7 @@
 			<div class="row">
 				<div class="col-lg-6">
 					<div class="panel panel-default">
-						<div class="panel-heading">Existing Products</div>
+						<div class="panel-heading">Similar Products</div>
 						<!-- /.panel-heading -->
 
 
@@ -186,45 +186,127 @@
 								<table class="table">
 									<thead>
 										<tr>
-											<th>Product Name</th>
+											<th>Similar Products</th>
 											<th>Base Price</th>
 											<th>Discount Price</th>
 										</tr>
 									</thead>
 									<tbody>
-										<%
-                                  	String item_no = request.getParameter("item_no");
- 									
-                                 	String Statement = "SELECT description, base_price, discount_price FROM pricing_shop2 WHERE item_no = '"+item_no+"'";
-              						
-                              		ResultSet rs = DatabaseQuery.returnFrontEnd(Statement);
-                              		
-                              		while (rs.next()) {
-                                        	String similarProduct = rs.getString("description");
-                                        	String similarBase = rs.getString("base_price");
-                                        	String similarDiscount = rs.getString("discount_price");
-                                        	//i++;
+									<%
+										Gson gsonObj = new Gson();
+										Map<Object, Object> map = null;
+										List<Map<Object, Object>> list = new ArrayList<Map<Object, Object>>();
+										String dataPoints = null;
+										
+	                                  	String item_no = request.getParameter("item_no");
+	 									
+	                                 	String Statement = "SELECT description, base_price, discount_price FROM pricing_shop2 WHERE item_no = '"+item_no+"'";
+	              						
+	                              		ResultSet rs = DatabaseQuery.returnFrontEnd(Statement);
+	                              		
+	                              		List<Double> base = new ArrayList<Double>(); 
+	                              		
+	                              		while (rs.next()) {
+	                                        	String similarProduct = rs.getString("description");
+	                                        	String similarBase = rs.getString("base_price");
+	                                        	base.add(Double.parseDouble(similarBase));
+	                                        	String similarDiscount = rs.getString("discount_price");
+	                                        	map = new HashMap<Object, Object>();
+											map.put("label", similarProduct);
+											map.put("y", Double.parseDouble(similarBase));
+											list.add(map);
+											dataPoints = gsonObj.toJson(list);
                                        %>
 										<tr>
 											<td>
-												<% out.println(similarProduct); %>
+												<% out.print(similarProduct); %>
 											</td>
 											<td>
-												<% out.println(similarBase); %>
+												<% out.print(similarBase); %>
 											</td>
 											<td>
-												<% out.println(similarDiscount); %>
+												<% out.print(similarDiscount); %>
 											</td>
 										</tr>
 										<%  }  %>
-
 									</tbody>
 								</table>
-								<button type="submit" class="btn btn-default" onclick="showChart()">See
-									Charts</button>
-								</form>
 							</div>
 							<!-- /.table-responsive -->
+							<div class="table-responsive">
+								<table class="table">
+									<thead>
+										<tr>
+											<th>Highest Price</th>
+											<th>Cheapest Price</th>
+											<th>Smart Price</th>
+										</tr>
+									</thead>
+									<tbody>
+										<%
+										if (!base.isEmpty()) {
+											Collections.sort(base);
+											double cheapest = base.get(0);
+											double highest = base.get(base.size() - 1);
+
+											double sum = 0;
+											for (int j = 0; j < base.size(); j++) {
+												sum = sum + base.get(j);
+											}
+											double average = 1.0d * sum / base.size();
+								
+										%>
+										<tr>
+											<td>
+												<%
+													out.print(highest);
+												%>
+											</td>
+											<td>
+												<%
+													out.print(cheapest);
+												%>
+											</td>
+											<td>
+												<%
+													out.print(average);
+												%>
+											</td>
+										</tr>
+										<%
+											}
+										%>
+									</tbody>
+								</table>
+							</div>
+							<script type="text/javascript">
+								window.onload = function() {
+							<%if (dataPoints != null) {%>
+								var chart = new CanvasJS.Chart(
+											"chartContainer",
+											{
+												title : {
+													text : "Visualization"
+												},
+												axisX : {
+													title : "Similar Products"
+												},
+												axisY : {
+													title : "Prices (in Euro)"
+												},
+												data : [ {
+													type : "column",
+													yValueFormatString : "#,##0.0# euros",
+													dataPoints :
+							<%out.print(dataPoints);%>
+								} ]
+											});
+									chart.render();
+							<%}%>
+								}
+							</script>
+							<div id="chartContainer" style="height: 370px; width: 100%;"></div>
+							<script src="https://canvasjs.com/assets/script/canvasjs.min.js"></script>
 						</div>
 						<!-- /.panel-body -->
 					</div>

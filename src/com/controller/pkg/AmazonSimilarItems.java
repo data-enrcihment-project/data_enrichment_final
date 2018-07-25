@@ -13,9 +13,6 @@ import javax.servlet.http.HttpServletResponse;
 import org.codehaus.jackson.map.ObjectMapper;
 
 import com.models.pkg.AmazonCall;
-import com.models.pkg.DbMethods;
-import com.models.pkg.EbayCallService;
-
 /**
  * Servlet implementation class AmazonSimilarItems
  */

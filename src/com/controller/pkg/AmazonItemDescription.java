@@ -59,15 +59,17 @@ public class AmazonItemDescription extends HttpServlet {
 		
 		
 		for (Map.Entry<Integer, Object> entry : dictionary.entrySet()) {
-			System.out.println(isEmpty+ " 222Final");
+			
+			System.out.println(entry.getValue().toString());
+			
 			String val = entry.getValue().toString();
 			if(Integer.parseInt(val) > 0)
 			{
 				System.out.println(isEmpty+ " 2332Final");
-				
 				break;
 			}else {
 				isEmpty = true ;//false;
+				break;
 			}
 		}		
 		
@@ -107,20 +109,25 @@ public class AmazonItemDescription extends HttpServlet {
 		
 		System.out.println(jsonData); 
 		
+		////Inserting data
 		String sql = "INSERT INTO enrichment_module (Enrich_ID, Item_no,Item_title,Item_Image,Item_Description,Item_Price,Item_URL,Item_Reviews,Type_ID,JSON_Text,CategoryName,Images_URL)" +
 		        "VALUES (?, ?, ?,?, ?, ?,?, ?, ?, ?, ?, ?)";
 		
 		ObjectMapper mapper = new ObjectMapper();
 		Item obj = null;
 		
+		//Get Amazon data Object
 		obj =  (Item) mapper.readValue(jsonData,Item.class);
 		
-		ResultSet rsetCount = DbMethods.QueryStatement("Select E_ID from enrichment_module where Enrich_ID='"+ dataId +"' AND Item_no='"+obj.getASIN()+"'");
+		//Get Previous same Asin No count if available
+		ResultSet rsetCount = DbMethods.QueryStatement("Select E_ID from enrichment_module where Item_no='"+obj.getASIN()+"'");
 		
+		//Update record if necessary
 		String sqlUpdateQuery =  "UPDATE enrichment_module SET Item_title = ?, Item_Image = ?, Item_Description = ?, Item_Price = ?, Item_URL = ?, Item_Reviews = ?, JSON_Text = ?,CategoryName = ?,Images_URL = ? WHERE Enrich_ID ='"+dataId +"' AND Item_no='"+obj.getASIN()+"'";
 		
 		//Calling Save method over here
 		//ArrayList<String> paramsArray = new ArrayList<String>();
+		//Insert parameter Array
 		Map<String, String> paramsArray  = new HashMap<String, String>();
 		paramsArray.put("1", dataId);
 		paramsArray.put("2", obj.getASIN());
@@ -164,7 +171,7 @@ public class AmazonItemDescription extends HttpServlet {
 		
 		
 		
-		///sqlUpdate
+		///sqlUpdate Parameter Array
 		Map<String, String> paramsArrayUpdate  = new HashMap<String, String>();
 		
 		paramsArrayUpdate.put("1", obj.getItemAttributes().getTitle());
@@ -204,8 +211,9 @@ public class AmazonItemDescription extends HttpServlet {
 		paramsArrayUpdate.put("9",mapper.writeValueAsString(imagesUpdate));
 		
 		try {
-			if(DbMethods.GetRecordCount(rsetCount)>0)
+			if(DbMethods.GetRecordCount(rsetCount)==0)
 			{
+				//Insert value into Perform module Table
 				Map<String, String> paramsArrayPerformedModule  = new HashMap<String, String>();
 				
 				System.out.println("Insert Query");
@@ -224,7 +232,8 @@ public class AmazonItemDescription extends HttpServlet {
 			else {
 				//update
 				System.out.println("Update Query");
-				String sqlSavePerformedUpdate = "UPDATE performed_jobs_module SET Time_Stamp="+DbMethods.GetdateTime()+" where Item_no='"+obj.getASIN()+ "'  AND Enrich_ID="+dataId;
+				//Update value into Perform module Table
+				String sqlSavePerformedUpdate = "UPDATE performed_jobs_module SET Time_Stamp=? where Item_no='"+obj.getASIN()+ "' AND Enrich_ID='"+dataId+"'";
 				
 				DbMethods.SaveUpdateQueryStatement(sqlUpdateQuery,paramsArrayUpdate);
 				
@@ -232,7 +241,8 @@ public class AmazonItemDescription extends HttpServlet {
 				paramsArrayPerformedModuleUpdate.put("1", DbMethods.GetdateTime());
 				DbMethods.SaveUpdateQueryStatement(sqlSavePerformedUpdate,paramsArrayPerformedModuleUpdate);
 			}
-			System.out.println("Done");
+			System.out.println("Done: " +"Item NO. "+obj.getASIN()+ " - having title - "+ obj.getItemAttributes().getTitle());
+			response.getWriter().write("Item NO. "+obj.getASIN()+ " - having title - "+ obj.getItemAttributes().getTitle());
 			
 		}catch(Exception e)
 		{

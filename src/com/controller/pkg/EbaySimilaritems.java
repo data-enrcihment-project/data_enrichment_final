@@ -51,16 +51,6 @@ public class EbaySimilaritems extends HttpServlet {
 					"REST-PAYLOAD&" + 
 					"maxResults=3&" + 
 					"itemId="+itemId;
-			
-		/*	URL = "http://svcs.ebay.com/MerchandisingService?" + 
-					"OPERATION-NAME="+typefunction+"&" + 
-					"SERVICE-NAME=MerchandisingService&" + 
-					"SERVICE-VERSION=1.1.0&" + 
-					"CONSUMER-ID=AmirMans-DataEnri-PRD-32cc7bc3a-9d32c231&" + 
-					"RESPONSE-DATA-FORMAT=XML&" + 
-					"REST-PAYLOAD&" + 
-					"maxResults=3" + 
-					"itemId="+itemId;*/
 		}
 
 		String json = "";

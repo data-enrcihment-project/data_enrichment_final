@@ -62,15 +62,9 @@ public class dataEnrichment_db extends HttpServlet {
     
     public void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
     	
-    	
-		//this.getServletContext().getRequestDispatcher("ItemDescription.jsp").include(request, response);
 		//request.getRequestDispatcher("ItemDescription.jsp").forward(request, response);
     }
-    
-   
-    
-	
-    
+        
 	/**
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */

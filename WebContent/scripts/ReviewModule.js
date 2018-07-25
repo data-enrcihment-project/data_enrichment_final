@@ -1,8 +1,6 @@
 var OnChangeReviewCombo = function (obj)
 {
-//ajax and map grid
-	
-	debugger;
+	embedReviewUrl.style.display="none";
 	
 	$.ajax({
 		url : 'Performed_Jobs',
@@ -10,8 +8,6 @@ var OnChangeReviewCombo = function (obj)
 		//dataType:'json',
 		data : {type_Id: cboProdReview.selectedIndex},
 		success : function(data) {
-			debugger;
-			alert(data+"asdsa");	
 			
 			//method for mapping product details
 			MapItemReviewGrid($.parseJSON(data));
@@ -21,7 +17,6 @@ var OnChangeReviewCombo = function (obj)
 
 var MapItemReviewGrid = function(data)
 {
-	debugger;
 ///grid method including click event	
 	$("#divPerformedJobsReview").jsGrid({
         width: "100%",
@@ -38,7 +33,7 @@ var MapItemReviewGrid = function(data)
             {title:"Item No", name: "Item_no", type: "text", width: 150 },
             { title: "Title" ,name: "Item_title", type: "text", width: 200 },
             { title: "Item Price", name: "Item_Price", type: "text", width: 200 },
-            { title: "Type", type: "Type_ID", width: 100,
+            { title: "Type",  width: 100,
             	itemTemplate: function(ret, data) {
             		
             		var type = "Amazon";
@@ -49,7 +44,7 @@ var MapItemReviewGrid = function(data)
             		return type;
                 }            
             },
-            { title: "Reviews", type: "Item_Reviews", width: 100,
+            { title: "Reviews",  width: 100,
             	itemTemplate: function(ret, data) {
             		
             		var self = this;
@@ -76,6 +71,7 @@ var onItemReviewSelected = function(psItem_No,ps_Type,psEmbedReviewUrl)
 	embedReviewUrl.src = "";
 	if(ps_Type==2)
 	{	
+		embedReviewUrl.style.display="";
 		embedReviewUrl.src = psEmbedReviewUrl;//showing reviews
 		
 	}else{

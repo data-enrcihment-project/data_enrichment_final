@@ -31,19 +31,17 @@ public class Bag extends Thread {
 		//	web-scraping
 		ArrayList<Entry> entry = new ArrayList<Entry>();
 		try {
-			entry = Golflaedchen.getProducts("https://www.golflaedchen.de/Herren-Eisen/?p=1");
+			entry = Golflaedchen.getProducts("https://www.golflaedchen.de/Golfbags/?p=2");
 
-			entry.addAll(Golflaedchen.getProducts("https://www.golflaedchen.de/Herren-Eisen/?p=2"));
+			entry.addAll(Golflaedchen.getProducts("https://www.golflaedchen.de/Golf-Trolleys/?p=2"));
 
-			entry.addAll(BestPreisGolf.getProducts("https://www.best-preis-golf.de/golfschlaeger/eisensaetze/?p=1"));
+			entry.addAll(BestPreisGolf.getProducts("https://www.best-preis-golf.de/bags/?p=1"));
+			
+			entry.addAll(BestPreisGolf.getProducts("https://www.best-preis-golf.de/trolleys/"));
 
-			entry.addAll(GolfUndGuenstig.getProducts("https://www.golfundguenstig.de/Golfschlaeger/Einzeleisen/"));
+			entry.addAll(GolfUndGuenstig.getProducts("https://www.golfundguenstig.de/Bags/4/"));
 			
-			entry.addAll(GolfUndGuenstig.getProducts("https://www.golfundguenstig.de/Golfschlaeger/Einzeleisen/2/"));
-			
-			entry.addAll(GolfUndGuenstig.getProducts("https://www.golfundguenstig.de/Golfschlaeger/Einzeleisen/3/"));
-			
-			entry.addAll(GolfUndGuenstig.getProducts("https://www.golfundguenstig.de/Golfschlaeger/Einzeleisen/4/"));
+			entry.addAll(GolfUndGuenstig.getProducts("https://www.golfundguenstig.de/Trolleys/4/"));
 			
 		} catch (IOException e) {
 			System.out.println("Error in webscrapping-Eisen!");

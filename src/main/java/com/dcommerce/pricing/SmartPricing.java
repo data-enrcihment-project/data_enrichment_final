@@ -31,7 +31,7 @@ public class SmartPricing {
 				
 				String psDescription = text1;
 				String globalID = "EBAY-DE";
-				entry = EbayCallService.GetEbayPrice(psDescription, globalID);
+				entry.addAll(EbayCallService.GetEbayPrice(psDescription, globalID));
 					
 				for (int i = 0; i < entry.size(); i++) {
 					Entry st = entry.get(i);
@@ -66,7 +66,7 @@ public class SmartPricing {
 				
 				String psDescription = text1;
 				String globalID = "EBAY-DE";
-				entry = EbayCallService.GetEbayPrice(psDescription, globalID);
+				entry.addAll(EbayCallService.GetEbayPrice(psDescription, globalID));
 					
 				for (int i = 0; i < entry.size(); i++) {
 					Entry st = entry.get(i);

@@ -49,16 +49,19 @@ public class Performed_Jobs extends HttpServlet {
 				" INNER JOIN performed_jobs_project performed_job  " + 
 				"  ON enrichment.Type_ID = performed_job.Type_ID AND enrichment.Enrich_ID = performed_job.Enrich_ID";
 		*/
-		String sqlQuery = "SELECT  enrichment.Item_no,enrichment.Item_title, enrichment.Item_Price, enrichment.Item_Description, enrichment.Type_ID, enrichment.Item_Reviews,enrichment.Item_URL,performed_job.Time_Stamp   " + 
-				"  FROM enrichment_module enrichment   " + 
-				" INNER JOIN performed_jobs_module performed_job ON enrichment.Type_ID=performed_job.Type_ID ";
-				
+		String sqlQuery = "SELECT enrichment.Item_no,enrichment.Item_title, enrichment.Item_Price, enrichment.Item_Description, enrichment.Type_ID, enrichment.Item_Reviews,enrichment.Item_URL,performed_job.Time_Stamp FROM enrichment_module enrichment INNER JOIN performed_jobs_module performed_job ON enrichment.Type_ID = performed_job.Type_ID ";
+			
 		System.out.println(typeID);
-		if(typeID != "" && typeID!=null)
+		if(typeID==null || typeID == "null")
 		{
+			//sqlQuery +=" Where enrichment.Type_ID = 1 OR enrichment.Type_ID =2";
+			
+		}else {
 			sqlQuery +=" Where enrichment.Type_ID ="+typeID;
 		}
-		
+		sqlQuery +=" GROUP BY enrichment.Item_no";
+	
+		System.out.println(sqlQuery);
 		/*if(!duration.isEmpty())
 		{
 			switch (duration) {
@@ -73,12 +76,13 @@ public class Performed_Jobs extends HttpServlet {
 		}*/
 		
 		ResultSet rs = DbMethods.QueryStatement(sqlQuery);
-		
-		System.out.println(DbMethods.GetRecordCount(rs));
+	
+		//System.out.println(DbMethods.GetRecordCount(rs));
 		
 		List<Map<String, Object>> rows = null;
 		try {
 			rows = DbMethods.resultSetToList(rs);
+			System.out.println(rows);
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

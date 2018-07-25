@@ -197,15 +197,8 @@ public class EbayCallService {
 		 int count = res.getSearchResult().getCount();
 		 
 		 Map<Integer, Object> row=resultSetToList(items,count,psDescription);
-		 
-		 //Feedback
-		 
-		 
-		 ////
-		 //FindItemsByProductRequest prodReq = new FindItemsByProductRequest();
-		 
-		 
 		 return row;
+		 
 		}catch(Exception e)
 		{
 			
@@ -218,64 +211,21 @@ public class EbayCallService {
 	@SuppressWarnings("null")
 	public static Map<Integer, Object> resultSetToList(List<SearchItem> searchItems,int count, String psDescr) throws SQLException {
 	    
-		////Feedback Object
-		
-		ClientConfig config = new ClientConfig();         
-		 config.setApplicationId("AmirMans-DataEnri-PRD-32cc7bc3a-9d32c231");
-		 
-		//create a service client       
-		 
-		
-		//GetFeedbackRequestType req = new GetFeedbackRequestType();
-		 
-		///
-	    List<Map<String, Object>> rows = new ArrayList<Map<String, Object>>();
-	    
-	    List<Map<Double, Object>> ratioRow = new ArrayList<Map<Double, Object>>();
-	    
-	    int filteredListCount=0;
-	    
-	    List<HashMap<Integer, Object>> rowsadded=null;//adding to list
+		////Feedback Object		
+	    int filteredListCount=0;	    
 	    
 	    //for snding to client
 	    Map<Integer, Object> row  = new HashMap<Integer, Object>();
 	    
-	    //List<SearchItem> details = searchItems;
 	    Map<Integer, Object> details = new HashMap<Integer, Object>();
     	
 	        for (SearchItem item : searchItems) {
-	        	
-	        	//itemID
-	        	//req.setItemID(item.getItemId());
-	        	///
-	        	///Setting Description
+	        
 				 String descr = GetItemDescription(item.getItemId().toString());
 				
 				 item.setSubtitle(descr);
-	        	//for categories of this item
-	        	//CategoryHistogram ch = new CategoryHistogram();
-	        	//ch.set
-	           //String a = item.getSellerInfo().getFeedbackRatingStar();
-	        	//new object for every item
-	        	//Ebay Feedback from ebay sdk but in another .java file Trading api. GetFeedback
-	        	//Send Description of item to fuzzy mining and if it is more than 70 percent ratio then add to array list
-	        	Double  ratio= FuzzyWuzzyMining.GetItemDescrRatio(psDescr,item.getTitle().toString());
-	        	///or may be can which one i highest and select that and save those details to DB
-	        	/*
-	        	
-	        	try {
-	        		System.out.println("Calling Feedback");
-					EbayFeedback.getFeedback(item.getItemId());
-				} catch (ApiException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				} catch (SdkException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				} catch (Exception e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}*/
+	    
+	        	Double  ratio= FuzzyWuzzyMining.GetItemDescrRatio(psDescr,item.getTitle().toString());        	
 	        	
 	        	if(ratio >= 69)
 	            {
@@ -284,18 +234,13 @@ public class EbayCallService {
 	            	row.put(filteredListCount, item);
 	            }
 	        	System.out.println(item.getSubtitle());
-	        	
-	            //Writing to xml
-	           //if more than 70 percent we will send data to client and show them in list
 	        }
-	        //TODO: setting this List item to get highest item and the object
-	        //Object getObject = Collection.max(ratioRow);
-	        
+	        	        
 	        System.out.println(filteredListCount);
 	        try {
-	        	//details.put(0,count);
-	        	row.put(0,filteredListCount);//filtered
-	        	WriteSearchItemToXML(details, psDescr +filteredListCount+".xml");//WriteSearchItemToXML(details, psDescr +count1+".xml");
+	        	
+	        	row.put(0,filteredListCount);
+	        	WriteSearchItemToXML(details, psDescr +filteredListCount+".xml");
 			} catch (Exception e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();

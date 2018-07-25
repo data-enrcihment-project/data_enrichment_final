@@ -11,8 +11,6 @@ var OnChangesimilarItemCombo = function (obj)
 		data : {type_Id: cboProdReview.selectedIndex},
 		success : function(data) {
 			debugger;
-			alert(data+"asdsa");	
-			
 			//method for mapping product details
 			MapSimilarItemGrid($.parseJSON(data));
 		}
@@ -49,7 +47,7 @@ var MapSimilarItemGrid = function(data)
             		return type;
                 }            
             },
-            { title: "Reviews", width: 100,
+            { title: "Similar Items", width: 100,
             	itemTemplate: function(ret, data) {
             		debugger;
             		var psCallFrom = "EbaySimilaritems";
@@ -68,7 +66,7 @@ var MapSimilarItemGrid = function(data)
                     return $customButton;
                 }            
             },
-            { title: "Reviews", width: 100,
+            { title: "Related Category Items", width: 100,
             	itemTemplate: function(ret, data) {
             		var psCallFrom = "EbaySimilaritems";
             		if(data.Type_ID==2)
@@ -101,10 +99,9 @@ var onItemselectedSimilarItem = function(psItemId,psItemType,psURL,psTypeFunctio
 		data : {item_Id: psItemId,type_Id:psItemType,typefunction:psTypeFunction},
 		success : function(data) {
 			debugger;
-			alert(data+"asdsa");	
 			$("#divSimilarItemsDetail").html("");
 			//method for mapping product details
-			MapSimilarItemdetails($.parseJSON(data),psItemType);
+			MapSimilarItemdetails($.parseJSON(data),psItemType,psTypeFunction);
 		}
 	});
 };
@@ -115,35 +112,45 @@ var MapSimilarItemdetails = function(psObjdata,psItemType,psTypeFunction)
 	$("#divSimilarItemsDetail").html("");
 	if(psItemType==1)
 	{
+		var similarRelatedItemObject;
+		if(psTypeFunction=="getRelatedCategoryItems")
+		{
+			similarRelatedItemObject = psObjdata.getRelatedCategoryItemsResponse.itemRecommendations;
+		}else if(psTypeFunction=="getSimilarItems")
+		{
+			similarRelatedItemObject= psObjdata.getSimilarItemsResponse.itemRecommendations;
+		}
+		
+		var itemLength = similarRelatedItemObject.item.length;
 		var count = 0;
 		//EbayItems
 		do{
-			if(count>0)
+			if(itemLength>0)
 				{
 				
 				var price =0;
-				if(psTypeFunction=="getSimilarItems")
+				if(psTypeFunction=="getRelatedCategoryItems")
 				{
-					price = psObjdata.itemRecommendations[count].item.currentPrice;
+					price = similarRelatedItemObject.item[count].currentPrice.__value__;
 				}else if(psTypeFunction=="getSimilarItems")
 				{
-					price = psObjdata.itemRecommendations.item.buyItNowPrice;
+					price = similarRelatedItemObject.item[count].buyItNowPrice.__value__;
 				}
 				 
 				
-				var sti = "<table class='table table-bordered table-striped'><tr><td><h1>Title :"+ psObjdata.itemRecommendations[count].item.title+"</h1><br/></td></tr>" +
+				var sti = "<table class='table table-bordered table-striped'><tr><td><h1>Title :"+ similarRelatedItemObject.item[count].title+"</h1><br/></td></tr>" +
 				
-				"</tr></td> Item Image: <img src='"+ psObjdata.itemRecommendations[count].item.imageURL+"' /><br/></label><br/></td></tr>"+
+				"</tr></td> Item Image: <img src='"+ similarRelatedItemObject.item[count].imageURL+"' /><br/></label><br/></td></tr>"+
 					
 					"<tr><td></br> Selling Price :"+ price +"<br/></td></tr>"+
 					 
 					
-					"<tr><td><a href= '"+psObjdata.itemRecommendations[count].item.viewItemURL+"' >View Item Url</a><br/></td></tr>"+
+					"<tr><td><a href= '"+similarRelatedItemObject.item[count].viewItemURL+"' >View Item Url</a><br/></td></tr>"+
 					
 					"</table>";
 				}
 			count++;
-		}while(count<psObjdata.itemRecommendations.length);
+		}while(count<itemLength);
 		
 		//$("#ulItemDetails").append("<li>").append(
 		$("#divSimilarItemsDetail").append(sti);
@@ -185,7 +192,7 @@ var MapSimilarItemdetails = function(psObjdata,psItemType,psTypeFunction)
 			
 			
 			i++;
-		}while(i<=count);
+		}while(i<count);
 		
 	}
 };

@@ -198,7 +198,7 @@ embed:focus {
 							 
 <div id="divPerformedJobsReview">
 </div>
-<iframe id="embedReviewUrl" width="100%" height="500"  ></iframe>
+<iframe id="embedReviewUrl" style="display:none;" width="100%" height="500"  ></iframe>
 							 
 <div id="divReviewModule">
 
