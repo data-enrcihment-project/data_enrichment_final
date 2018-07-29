@@ -1,5 +1,8 @@
 package com.models.pkg;
 import java.io.BufferedReader;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
@@ -15,6 +18,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Properties;
 
 import org.codehaus.jackson.map.ObjectMapper;
 
@@ -24,8 +28,8 @@ public class DbMethods {
 	
 	CallableStatement statement = null;
 	
+	
 	public static void main(String[] args) {
-		// TODO Auto-generated method stub
 
 	}
 	
@@ -46,12 +50,17 @@ public class DbMethods {
 	{	
 		
 		try {
+			
 			Connection conn = null;
 			Class.forName("com.mysql.jdbc.Driver").newInstance();
-			String url = "jdbc:mysql://localhost:3306/enrichment";//?autoReconnect=true&useSSL=false
-			String username = "root";
-			String password = "";
 			
+			
+			String url = GetConfigProperty("dbURl"); //"jdbc:mysql://localhost:3306/enrichment";//?autoReconnect=true&useSSL=false
+			String username = GetConfigProperty("dbuser");
+			String password = "";//GetConfigProperty("");
+			
+			
+			System.out.println(url +"----"+username);
 			conn = DriverManager.getConnection(url,username,password);
 			
 			///calling stored procedure
@@ -214,4 +223,29 @@ public class DbMethods {
 		String currentTime = sdf.format(dt);
 		return currentTime;
 	}
+	
+	public static InputStream GetInputStream()
+	{
+		InputStream resourceStream = DbMethods.class.getClassLoader().getResourceAsStream("/config.properties");
+		return resourceStream;
+	}
+	
+	
+	public static String GetConfigProperty(String propertName) throws IOException
+	{
+		Properties props = new Properties();
+	    try {	    
+	    		
+	    	props.load(GetInputStream());
+	    	
+	    } catch (IOException ex) {
+	        ex.printStackTrace();
+	    } finally {
+	       
+	    }
+	    // get the property value and return it
+	    System.out.println(props.getProperty(propertName));
+	    return props.getProperty(propertName);
+	}
+	
 }
