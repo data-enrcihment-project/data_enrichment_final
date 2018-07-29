@@ -5,6 +5,7 @@
         <wb-resource deploy-path="/WEB-INF/classes" source-path="/Files"/>
         <wb-resource deploy-path="/WEB-INF/classes" source-path="/src/main/java"/>
         <wb-resource deploy-path="/WEB-INF/classes" source-path="/src/test/java"/>
+        <wb-resource deploy-path="/WEB-INF/classes" source-path="/WebContent/WEB-INF/classes"/>
         <property name="context-root" value="Data_Enrichment_final"/>
         <property name="java-output-path" value="/Data_Enrichment_final/build/classes"/>
     </wb-module>
