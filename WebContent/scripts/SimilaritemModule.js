@@ -7,7 +7,6 @@ var OnChangesimilarItemCombo = function (obj)
 	$.ajax({
 		url : 'Performed_Jobs',
 		type: "GET",
-		//dataType:'json',
 		data : {type_Id: cboProdReview.selectedIndex},
 		success : function(data) {
 			debugger;
@@ -19,7 +18,6 @@ var OnChangesimilarItemCombo = function (obj)
 
 var MapSimilarItemGrid = function(data)
 {
-	debugger;
 ///grid method including click event	
 	$("#divPerformedSimilarItems").jsGrid({
         width: "100%",
@@ -95,7 +93,7 @@ var onItemselectedSimilarItem = function(psItemId,psItemType,psURL,psTypeFunctio
 	$.ajax({
 		url : psURL,//URl
 		type: "GET",
-		//dataType:'json',
+		
 		data : {item_Id: psItemId,type_Id:psItemType,typefunction:psTypeFunction},
 		success : function(data) {
 			debugger;
@@ -108,7 +106,6 @@ var onItemselectedSimilarItem = function(psItemId,psItemType,psURL,psTypeFunctio
 
 var MapSimilarItemdetails = function(psObjdata,psItemType,psTypeFunction)
 {
-	debugger;
 	$("#divSimilarItemsDetail").html("");
 	if(psItemType==1)
 	{
@@ -152,7 +149,6 @@ var MapSimilarItemdetails = function(psObjdata,psItemType,psTypeFunction)
 			count++;
 		}while(count<itemLength);
 		
-		//$("#ulItemDetails").append("<li>").append(
 		$("#divSimilarItemsDetail").append(sti);
 		
 	}else if(psItemType==2){
@@ -184,13 +180,9 @@ var MapSimilarItemdetails = function(psObjdata,psItemType,psTypeFunction)
 				"<tr><td>Ship To Location : " +shipLoc+"<br/></td></tr>"+
 				"<tr><td><a href= '"+obj[i].detailPageURL+"' >View Item Url</a><br/></td></tr>"+
 				
-				//"<tr><td><input type='button' onclick=CallDataEnrichmentMethod('"+obj[i].asin+"','obj[i].asin','AmazonItemDescription','Amazon'); value='Product View URL' /></td></tr>"
-				//+"<td><embed src='"+obj[i].customerReviews.iframeURL+"' width='400' height='200'  /></td>"+
+				
 				+"</table>";
-			//$("#ulItemDetails").append("<li>").append(
-			$("#divSimilarItemsDetail").append(sti);//.append("</li>");
-			
-			
+			$("#divSimilarItemsDetail").append(sti);
 			i++;
 		}while(i<count);
 		

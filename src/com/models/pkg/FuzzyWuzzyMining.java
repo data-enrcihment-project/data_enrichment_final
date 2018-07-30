@@ -13,16 +13,12 @@ public class FuzzyWuzzyMining {
 	{
 		double getRatio = FuzzySearch.tokenSortPartialRatio(dbItemDescr, ebayItemDescr);
 		
-		System.out.println(dbItemDescr +"-----"+ebayItemDescr); 
-		System.out.println(getRatio); 
-		
 		return getRatio;
 	}
 	
 	public static void CheckRationSaveItem()
 	{
-		//Check for ration and the return true to save or not
-		
+		//Check for ration and the return true to save or not		
 	}
 
 }

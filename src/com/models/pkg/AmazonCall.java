@@ -39,14 +39,14 @@ public class AmazonCall {
 		// TODO Auto-generated method stub
 
 	}
-	public static Map<Integer, Object> CallAmazonApi(String psDescription,String globalID)
+	public static Map<Integer, Object> CallAmazonApi(String psDescription,String globalID) throws IOException
 	{
 
-		String awsAccessKeyID = "AKIAJGNN4WCXDEYYLG6A";
-		String test = "md074c-21"; 
+		String awsAccessKeyID = DbMethods.GetConfigProperty("awsAccessKeyID");
+		String test = DbMethods.GetConfigProperty(DbMethods.GetConfigProperty("awsAssociationtag"));
 
 		AWSECommerceService service = new AWSECommerceService();
-		service.setHandlerResolver(new AwsHandlerResolver("in+WiNhkEcTJY8NF1rozgORBiE4VdgUnrx7dSWhw"));
+		service.setHandlerResolver(new AwsHandlerResolver(DbMethods.GetConfigProperty("awsSecretKey")));
 
 		AWSECommerceServicePortType port = null;
 		
@@ -70,8 +70,6 @@ public class AmazonCall {
 		itemRequest.getResponseGroup().add("Images");
 		itemRequest.getResponseGroup().add("Reviews");//ItemLookup
 		itemRequest.getResponseGroup().add("EditorialReview");//ItemLookup
-		//itemRequest.getResponseGroup().add("Similarities");//ItemLookup Discover
-		//itemRequest.getResponseGroup().add("RelatedItems");//ItemLookup Related items
 		itemRequest.setItemPage(BigInteger.valueOf(1L));		
 		
 		ItemSearch ItemElement = new ItemSearch();
@@ -98,14 +96,14 @@ public class AmazonCall {
 	}
 	
 	
-	public static Map<Integer, Object> CallItemLookUp(String asin,String type)
+	public static Map<Integer, Object> CallItemLookUp(String asin,String type) throws IOException
 	{
 		///for related or similar items
-		String awsAccessKeyID = "AKIAJGNN4WCXDEYYLG6A";
-		String test = "md074c-21"; 
+		String awsAccessKeyID = DbMethods.GetConfigProperty("awsAccessKeyID");
+		String test = DbMethods.GetConfigProperty(DbMethods.GetConfigProperty("awsAssociationtag"));
 
 		AWSECommerceService service = new AWSECommerceService();
-		service.setHandlerResolver(new AwsHandlerResolver("in+WiNhkEcTJY8NF1rozgORBiE4VdgUnrx7dSWhw"));
+		service.setHandlerResolver(new AwsHandlerResolver(DbMethods.GetConfigProperty("awsSecretKey")));
 
 		AWSECommerceServicePortType port = null;		
 		port = service.getAWSECommerceServicePortDE();
@@ -129,12 +127,6 @@ public class AmazonCall {
 			lookupReq.setIdType("ASIN");
 			lookupReq.getItemId().add(asin);
 		}
-		
-		/*lookupReq.getResponseGroup().add("ItemAttributes");
-		lookupReq.getResponseGroup().add("Offers");
-		lookupReq.getResponseGroup().add("Images");
-		lookupReq.getResponseGroup().add("Reviews");*/
-		
 		ItemLookup lookupitem = new ItemLookup();
 		lookupitem.setAWSAccessKeyId(awsAccessKeyID);
 		lookupitem.setAssociateTag(test);
@@ -162,14 +154,14 @@ public class AmazonCall {
 		return similarRow;
 	}
 	
-	public static Map<Integer, Object> CallItemSimilarLookUp(String asin,String type,String globalID)//String psDescription,String globalID,String asin
+	public static Map<Integer, Object> CallItemSimilarLookUp(String asin,String type,String globalID) throws IOException//String psDescription,String globalID,String asin
 	{
 		///for related or similar items
-		String awsAccessKeyID = "AKIAJGNN4WCXDEYYLG6A";
-		String test = "md074c-21"; 
+		String awsAccessKeyID = DbMethods.GetConfigProperty("awsAccessKeyID");
+		String test = DbMethods.GetConfigProperty(DbMethods.GetConfigProperty("awsAssociationtag"));
 
 		AWSECommerceService service = new AWSECommerceService();
-		service.setHandlerResolver(new AwsHandlerResolver("in+WiNhkEcTJY8NF1rozgORBiE4VdgUnrx7dSWhw"));
+		service.setHandlerResolver(new AwsHandlerResolver(DbMethods.GetConfigProperty("awsSecretKey")));
 
 		AWSECommerceServicePortType port = null;
 		
@@ -219,13 +211,13 @@ public class AmazonCall {
 		return similarityRow;
 	}
 	
-	public static List<Items> GetAmazonItemObject(String psDescription,String globalID)
+	public static List<Items> GetAmazonItemObject(String psDescription,String globalID) throws IOException
 	{
-		String awsAccessKeyID = "AKIAJGNN4WCXDEYYLG6A";
-		String test = "md074c-21"; 
+		String awsAccessKeyID = DbMethods.GetConfigProperty("awsAccessKeyID");
+		String test = DbMethods.GetConfigProperty(DbMethods.GetConfigProperty("awsAssociationtag"));
 
 		AWSECommerceService service = new AWSECommerceService();
-		service.setHandlerResolver(new AwsHandlerResolver("in+WiNhkEcTJY8NF1rozgORBiE4VdgUnrx7dSWhw"));
+		service.setHandlerResolver(new AwsHandlerResolver(DbMethods.GetConfigProperty("awsSecretKey")));
 
 		AWSECommerceServicePortType port = null;
 		System.out.println(globalID.equals("AMAZON-DE"));
@@ -243,9 +235,6 @@ public class AmazonCall {
 		// Fill in the request object:
 		itemRequest.setSearchIndex("All");//Should be defined
 		itemRequest.setKeywords("MSI");//Should be defined
-		//itemRequest.setTitle(psDescription);
-		//SearchIndex=Apparel
-		//itemRequest.setAvailability("Availability");//for available item
 		itemRequest.getResponseGroup().add("Small");
 		itemRequest.getResponseGroup().add("ItemAttributes");
 		itemRequest.getResponseGroup().add("Offers");
@@ -269,7 +258,7 @@ public class AmazonCall {
 		 return response.getItems(); 
 	}
 	
-	public static Map<String, Double> GetAmazonItemPrice(String psDescription,String globalID) {
+	public static Map<String, Double> GetAmazonItemPrice(String psDescription,String globalID) throws IOException {
 		
 		Double previousRatio=0.0;
 		List<Items> itemLists = GetAmazonItemObject(psDescription,globalID);
@@ -286,16 +275,7 @@ public class AmazonCall {
 					 { 
 						 previousRatio = ratio; 
 						 pricingRow.put(Integer.toString(rowCount++), Double.parseDouble(itemObj.getOfferSummary().getLowestNewPrice().getFormattedPrice()));
-					 }
-			        /*if(previousRatio==0.0)
-					 { 
-						 previousRatio = ratio; 
-					 }
-			        else if(previousRatio < ratio)
-					 {
-						 previousRatio = ratio;
-						 selectedItem = itemObj;//itemObj.getOfferSummary().getLowestNewPrice().getFormattedPrice() 
-					 }*/			        
+					 }		        
 			    }
 			}
 		return pricingRow;
@@ -324,23 +304,7 @@ public class AmazonCall {
 			System.out.println(itemList.getItem().toString());
 		    for (Item itemObj : itemList.getItem()) {
 		    	
-		    	
-		        /*System.out.println(itemObj.getItemAttributes().getBrand());
-		        System.out.println(itemObj.getItemAttributes().getIssuesPerYear());
-		        
-		        System.out.println(itemObj.getItemAttributes().getColor());
-		        System.out.println(itemObj.getItemAttributes().getItemPartNumber());
-		        System.out.println(itemObj.getItemAttributes().getModel().toString());
-		        System.out.println(itemObj.getItemAttributes().getIssuesPerYear());
-		        System.out.println(itemObj.getItemAttributes().getTitle());
-		        */
-		    	 System.out.println(itemObj.getASIN());
-		    	 System.out.println(itemObj.getCustomerReviews());
-		    	 System.out.println("ItemLookUpStarted");
-		    	
-		    	//CallItemLookUp(psDescr,"AMAZON-DE",itemObj.getASIN());
-		    	System.out.println("ItemLookUpEnded");
-		    	
+		   
 		        Double  ratio= FuzzyWuzzyMining.GetItemDescrRatio(psDescr,itemObj.getItemAttributes().getTitle().toString());
 		        if(ratio >= 60)
 	            {	

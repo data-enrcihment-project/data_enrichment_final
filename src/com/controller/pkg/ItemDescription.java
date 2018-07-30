@@ -90,8 +90,6 @@ public class ItemDescription extends HttpServlet {
         request.setAttribute("dictionary", json);
 		
 		response.getWriter().write(json);
-		
-		//response.getWriter().append("Served at: ").append(request.getContextPath());
 	}
 
 	/**

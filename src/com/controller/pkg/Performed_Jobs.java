@@ -3,6 +3,7 @@ package com.controller.pkg;
 import java.io.IOException;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -39,17 +40,7 @@ public class Performed_Jobs extends HttpServlet {
 		//String psduration = request.getParameter("duration");
 		String typeID = request.getParameter("type_Id");
 		
-		System.out.println("Called");
-		//System.out.println(psduration);
-		
-		///query change a liitle for review grid to fetch with type ID 1 and 2
-		
-		/*String sqlQuery = "SELECT  enrichment.Item_ID,enrichment.Item_title, enrichment.Item_Price, enrichment.Description, enrichment.Type_ID, enrichment.Item_Reviews,enrichment.Item_URL,performed_job.Time_Stamp   " + 
-				"  FROM enrichment_project enrichment   " + 
-				" INNER JOIN performed_jobs_project performed_job  " + 
-				"  ON enrichment.Type_ID = performed_job.Type_ID AND enrichment.Enrich_ID = performed_job.Enrich_ID";
-		*/
-		String sqlQuery = "SELECT enrichment.Item_no,enrichment.Item_title, enrichment.Item_Price, enrichment.Item_Description, enrichment.Type_ID, enrichment.Item_Reviews,enrichment.Item_URL,performed_job.Time_Stamp FROM enrichment_module enrichment INNER JOIN performed_jobs_module performed_job ON enrichment.Type_ID = performed_job.Type_ID ";
+		String sqlQuery = "SELECT enrichment.E_ID,enrichment.Enrich_ID,enrichment.Item_no,enrichment.Item_title, enrichment.Item_Price, enrichment.Item_Description, enrichment.Type_ID, enrichment.Item_Reviews,enrichment.Item_URL,performed_job.Time_Stamp FROM enrichment_module enrichment INNER JOIN performed_jobs_module performed_job ON enrichment.Type_ID = performed_job.Type_ID ";
 			
 		System.out.println(typeID);
 		if(typeID==null || typeID == "null")
@@ -62,23 +53,9 @@ public class Performed_Jobs extends HttpServlet {
 		sqlQuery +=" GROUP BY enrichment.Item_no";
 	
 		System.out.println(sqlQuery);
-		/*if(!duration.isEmpty())
-		{
-			switch (duration) {
-			case "All":
-				sqlQuery+= " WHERE Time_Stamp <"+duration;
-				break;
-
-			default:
-				break;
-			}
-			
-		}*/
 		
 		ResultSet rs = DbMethods.QueryStatement(sqlQuery);
 	
-		//System.out.println(DbMethods.GetRecordCount(rs));
-		
 		List<Map<String, Object>> rows = null;
 		try {
 			rows = DbMethods.resultSetToList(rs);
@@ -103,5 +80,17 @@ public class Performed_Jobs extends HttpServlet {
 		// TODO Auto-generated method stub
 		doGet(request, response);
 	}
-
+	
+	protected void doDelete(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		// TODO Auto-generated method stub
+		
+		String itemID = request.getParameter("E_ID");
+		
+		System.out.println(itemID);
+		String sqlQuery = "DELETE from enrichment_module WHERE E_ID = "+itemID;
+		
+		System.out.println(sqlQuery);
+	
+		DbMethods.QueryStatementDelete(sqlQuery);
+	}
 }

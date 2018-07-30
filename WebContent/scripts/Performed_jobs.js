@@ -65,10 +65,37 @@ var DisplayProductDetails = function(details)
             		}
             		return type;
                 }            
+            },
+            { title: "Remove Item",  width: 100,
+            	itemTemplate: function(ret, data) {
+            		
+                    var $result = jsGrid.fields.control.prototype.itemTemplate.apply(this, arguments);
+                   
+                    var self = this;
+                    var $customButton = $("<button>")
+                            .text("Delete Selected Items")
+                            .click(function (e) {
+                            	DeleteSelectedJobs(data.E_ID);
+                                e.stopPropagation();
+                            });
+                    return $customButton;
+                }
             }
         ]
     });
 };
 
+var DeleteSelectedJobs = function (psItemId)
+{
+	$.ajax({
+		url : 'Performed_Jobs?E_ID='+psItemId,
+		type: "DELETE",
+		data : {E_ID : psItemId},
+		success : function(data) {
+			CallPerformedJobs();
+		}
+	});
+	
+};
 
 

@@ -5,7 +5,6 @@ var OnChangeReviewCombo = function (obj)
 	$.ajax({
 		url : 'Performed_Jobs',
 		type: "GET",
-		//dataType:'json',
 		data : {type_Id: cboProdReview.selectedIndex},
 		success : function(data) {
 			

@@ -3,7 +3,6 @@ var CallCanvasChart = function (psType)
 	$.ajax({
 		url : 'PricingChart',
 		type: "GET",
-		//dataType:'json',
 		data : {selectTypeNo: psType},
 		success : function(data) {
 			

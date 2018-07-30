@@ -57,7 +57,7 @@ public class DbMethods {
 			
 			String url = GetConfigProperty("dbURl"); //"jdbc:mysql://localhost:3306/enrichment";//?autoReconnect=true&useSSL=false
 			String username = GetConfigProperty("dbuser");
-			String password = "";//GetConfigProperty("");
+			String password = GetConfigProperty("dbpassword");
 			
 			
 			System.out.println(url +"----"+username);
@@ -103,6 +103,24 @@ public class DbMethods {
 			//PreparedStatement st = DBConnection().prepareStatement(query);
 			Statement st = DBConnection().createStatement();
 			rs = st.executeQuery(query);
+			return rs;
+			
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		return null;
+	}
+	
+	public static Integer QueryStatementDelete(String query)
+	{
+		Integer rs;
+		try {
+			
+			//PreparedStatement st = DBConnection().prepareStatement(query);
+			Statement st = DBConnection().createStatement();
+			rs = st.executeUpdate(query);
 			return rs;
 			
 		} catch (SQLException e) {
@@ -226,7 +244,8 @@ public class DbMethods {
 	
 	public static InputStream GetInputStream()
 	{
-		InputStream resourceStream = DbMethods.class.getClassLoader().getResourceAsStream("/config.properties");
+		ClassLoader loader = Thread.currentThread().getContextClassLoader();		
+		InputStream resourceStream = loader.getResourceAsStream("config.properties");
 		return resourceStream;
 	}
 	
@@ -244,7 +263,6 @@ public class DbMethods {
 	       
 	    }
 	    // get the property value and return it
-	    System.out.println(props.getProperty(propertName));
 	    return props.getProperty(propertName);
 	}
 	

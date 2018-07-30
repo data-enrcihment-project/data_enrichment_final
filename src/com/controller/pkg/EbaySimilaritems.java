@@ -33,10 +33,13 @@ public class EbaySimilaritems extends HttpServlet {
 		String typefunction = request.getParameter("typefunction");
 		//Usage in future related category Items
 		String URL = "";
+		String applicationID = DbMethods.GetConfigProperty("ebayApplicationID");
+		
 		if(typefunction.equals("getSimilarItems"))
 		{
 			System.out.println("Started similar");
-			URL = "http://svcs.ebay.com/MerchandisingService?OPERATION-NAME=getSimilarItems&SERVICE-NAME=MerchandisingService&SERVICE-VERSION=1.1.0&CONSUMER-ID=AmirMans-DataEnri-PRD-32cc7bc3a-9d32c231&RESPONSE-DATA-FORMAT=JSON&REST-PAYLOAD&itemId="+itemId;
+			
+			URL = "http://svcs.ebay.com/MerchandisingService?OPERATION-NAME=getSimilarItems&SERVICE-NAME=MerchandisingService&SERVICE-VERSION=1.1.0&CONSUMER-ID="+applicationID+"&RESPONSE-DATA-FORMAT=JSON&REST-PAYLOAD&itemId="+itemId;
 			
 		}//  
 		else if(typefunction.equals("getRelatedCategoryItems")) {
@@ -46,7 +49,7 @@ public class EbaySimilaritems extends HttpServlet {
 					"OPERATION-NAME=getRelatedCategoryItems&" + 
 					"SERVICE-NAME=MerchandisingService&" + 
 					"SERVICE-VERSION=1.1.0&" + 
-					"CONSUMER-ID=AmirMans-DataEnri-PRD-32cc7bc3a-9d32c231&" + 
+					"CONSUMER-ID=" + applicationID +
 					"RESPONSE-DATA-FORMAT=JSON&" + 
 					"REST-PAYLOAD&" + 
 					"maxResults=3&" + 
