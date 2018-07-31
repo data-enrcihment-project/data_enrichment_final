@@ -204,17 +204,12 @@ public class ItemDescription extends HttpServlet {
 					DbMethods.SaveUpdateQueryStatement(sqlSavePerformedUpdate,paramsArrayPerformedModuleUpdate);
 				}
 				System.out.println("Done");
-				response.getWriter().write("Item NO. "+obj.getItemId()+ " - having title -"+obj.getTitle());
 				
-			}catch(Exception e)
+				response. getWriter().write("Item NO. "+obj.getItemId()+ " - having title -"+obj.getTitle());
+				
+			}catch(Exception ex)
 			{
-				
-				try {
-					throw e;
-				} catch (Exception e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
-				}
+				throw ex;
 			}
 			 
 		}

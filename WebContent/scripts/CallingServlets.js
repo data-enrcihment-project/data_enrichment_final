@@ -1,15 +1,12 @@
 var CallConnection = function (psType)
 {
-	debugger;
-	
 	$.ajax({
 		url : 'dataEnrichment_db',
 		type: "GET",
 		//dataType:'json',
 		//data : {type: psType},
 		success : function(data) {
-			//debugger;
-		
+			
 			//method for mapping product details
 			DisplayProductDetails($.parseJSON(data));
 		}
@@ -43,8 +40,6 @@ var DisplayProductDetails = function(details)
         width: "100%",
         height: "400px",
  
-        //inserting: true,
-        //editing: true,
         sorting: true,
         paging: true,
  
@@ -59,7 +54,6 @@ var DisplayProductDetails = function(details)
             		
                     var $result = jsGrid.fields.control.prototype.itemTemplate.apply(this, arguments);
                 
-                    debugger;
                     var self = this;
                     var $customButton = $("<button>")
                             .text("Get Selected Amazon Items")
@@ -122,7 +116,6 @@ var GetDetailsforItems = function(psURL,urlType,psId,pscode,psDescr,type)
 	$("#ebayJsonDataDescr")[0].value =psDescr;
 	$("#ebayJsonDataCode")[0].value =pscode;
 	
-	debugger;
 	$.ajax({
 		url : psURL,
 		type: urlType,
@@ -259,7 +252,6 @@ var CallDataEnrichmentMethod = function(psItemID,pstype,psURL,psEnrichedfrom)
 	
 	var categoryName ="";
 	var images_URL ="";
-	debugger;
 	if(psEnrichedfrom=="Ebay")
 	{
 		var jsonArray = $.parseJSON(enrichDataArr[0].subtitle);
@@ -286,11 +278,12 @@ var SaveEnrichData = function (psJsonString,psURL,psCategoryName,psImages_URL)
 	$.ajax({
 		url : psURL ,
 		type: "POST",		
-		dataType:'json',
+		//dataType:'json',
         data:{"psJsonString":psJsonString,"dataID":$("#ebayJsonDataID")[0].value,"dataDescr":$("#ebayJsonDataDescr")[0].value,"dataCode":$("#ebayJsonDataCode")[0].value,"categoryName":psCategoryName,"images_URL":psImages_URL},//
        
 		success : function(data) {
-			alert('Done Saving');
+			
+			alert(data);
 		}
 	});
 	
@@ -304,7 +297,6 @@ var SaveEnrichDataDetail = function (itemId)
        
 		success : function(data) {
 			alert('Done Saving');
-			//alert(data);
 		}
 	});
 	

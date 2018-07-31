@@ -84,13 +84,20 @@ public class Performed_Jobs extends HttpServlet {
 	protected void doDelete(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
 		
-		String itemID = request.getParameter("E_ID");
+		String enrich_ID = request.getParameter("enrich_ID");
+		String item_no = request.getParameter("item_no");
 		
-		System.out.println(itemID);
-		String sqlQuery = "DELETE from enrichment_module WHERE E_ID = "+itemID;
+		System.out.println(enrich_ID+"----"+enrich_ID);
+		String sqlQuery = "DELETE from enrichment_module WHERE Enrich_ID = '"+enrich_ID+"' AND Item_no='"+item_no+"'";
+		String sqlQueryPerfJobs = "DELETE from performed_jobs_module WHERE Enrich_ID = '"+enrich_ID+"' AND Item_no='"+item_no+"'";
 		
-		System.out.println(sqlQuery);
-	
-		DbMethods.QueryStatementDelete(sqlQuery);
+		try {
+			DbMethods.QueryStatementDelete(sqlQuery);
+			DbMethods.QueryStatementDelete(sqlQueryPerfJobs);
+		}
+		catch(Exception ex)
+		{
+			throw ex;
+		}
 	}
 }

@@ -75,7 +75,7 @@ var DisplayProductDetails = function(details)
                     var $customButton = $("<button>")
                             .text("Delete Selected Items")
                             .click(function (e) {
-                            	DeleteSelectedJobs(data.E_ID);
+                            	DeleteSelectedJobs(data.E_ID,data.Enrich_ID,data.Item_no);
                                 e.stopPropagation();
                             });
                     return $customButton;
@@ -85,12 +85,12 @@ var DisplayProductDetails = function(details)
     });
 };
 
-var DeleteSelectedJobs = function (psItemId)
+var DeleteSelectedJobs = function (psItemId,psEnrichId,psItemno)
 {
 	$.ajax({
-		url : 'Performed_Jobs?E_ID='+psItemId,
+		url : 'Performed_Jobs'+ '?' + $.param({'enrich_ID':psEnrichId,'item_no': psItemno}),
 		type: "DELETE",
-		data : {E_ID : psItemId},
+		//data : {'enrich_ID':psEnrichId,'item_no': psItemno},//'E_ID' : psItemId,
 		success : function(data) {
 			CallPerformedJobs();
 		}
