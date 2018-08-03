@@ -190,17 +190,17 @@
 										</thead>
 										<tbody>
 											<%
-                                      String parent_line_no = request.getParameter("parent_line_no");
-                                      
-                                      String Statement = "SELECT shop_item2.description, shop_item2.item_no FROM shop_item2 INNER JOIN shop_category2 "
-                              						+ "ON shop_item2.main_category_line_no = shop_category2.line_no "
-                              						+ "WHERE shop_category2.parent_line_no = "+parent_line_no;
-                              		ResultSet rs = DatabaseQuery.returnFrontEnd(Statement);
-                                     
-                                       while (rs.next()) {
-                                        	String description = rs.getString("description");
-                                        	String item_no = rs.getString("item_no");
-                                       %>
+												String parent_line_no = request.getParameter("parent_line_no");
+											                                      
+											                                      String Statement = "SELECT shop_item2.description, shop_item2.item_no FROM shop_item2 INNER JOIN shop_category2 "
+											                              						+ "ON shop_item2.main_category_line_no = shop_category2.line_no "
+											                              						+ "WHERE shop_category2.parent_line_no = "+parent_line_no;
+											                              		ResultSet rs = DatabaseQuery.showProductsOfSpecificCategory(Statement);
+											                                     
+											                                       while (rs.next()) {
+											                                        	String description = rs.getString("description");
+											                                        	String item_no = rs.getString("item_no");
+											%>
 											<tr>
 												<td><input type='radio' name='item_no'
 													value='<%out.print(item_no);%>' /></td>

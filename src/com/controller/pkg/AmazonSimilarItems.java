@@ -45,6 +45,7 @@ public class AmazonSimilarItems extends HttpServlet {
 		try {
 			if(typefunction.equals("getSimilarItems"))
 			{
+				//dictionary = AmazonCall.CallItemLookUp(asinId,"DiscoverSimilarItems");
 				dictionary = AmazonCall.CallItemSimilarLookUp(asinId, "", "AMAZON-DE");
 			}
 			else if(typefunction.equals("getRelatedCategoryItems"))
@@ -60,6 +61,7 @@ public class AmazonSimilarItems extends HttpServlet {
 		{			
 			throw e;
 		}
+		//response.getWriter().write(json);
 	}
 
 	/**

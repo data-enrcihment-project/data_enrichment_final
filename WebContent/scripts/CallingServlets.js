@@ -1,12 +1,15 @@
 var CallConnection = function (psType)
 {
+	debugger;
+	
 	$.ajax({
 		url : 'dataEnrichment_db',
 		type: "GET",
 		//dataType:'json',
 		//data : {type: psType},
 		success : function(data) {
-			
+			//debugger;
+		
 			//method for mapping product details
 			DisplayProductDetails($.parseJSON(data));
 		}
@@ -17,6 +20,8 @@ var CallConnection = function (psType)
 //divProductDetailSelect
 var OnChangeProdCombo = function(obj)
 {
+	//debugger;
+	//obj.options[el.selectedIndex].value]();
 	if(obj.value == "")
 		return;
 	
@@ -36,10 +41,13 @@ var OnChangeProdCombo = function(obj)
 
 var DisplayProductDetails = function(details)
 {
+	//debugger;
 	$("#divProductDetails").jsGrid({
         width: "100%",
         height: "400px",
  
+        //inserting: true,
+        //editing: true,
         sorting: true,
         paging: true,
  
@@ -53,7 +61,12 @@ var DisplayProductDetails = function(details)
             	itemTemplate: function(ret, data) {
             		
                     var $result = jsGrid.fields.control.prototype.itemTemplate.apply(this, arguments);
-                
+                   
+                  
+                    /*return $("<a>").attr("href", "AmazonItemDescription.jsp?psDescr="+data.description+"&shop_code="+data.shop_code+"&id="+data.id)
+                    .attr("target", "_blank")
+                    .text("Get Amazon Details");*/
+                    debugger;
                     var self = this;
                     var $customButton = $("<button>")
                             .text("Get Selected Amazon Items")
@@ -90,17 +103,17 @@ var DisplayProductDetails = function(details)
 
 var GetEbayDetailsforItems = function(psId,pscode,psDescr)
 {
-	////Post method have to be changed to get and item description
+	////Post method have to be changed to get and itemdescription
 	$("#ebayJsonDataID")[0].value =psId;
 	$("#ebayJsonDataDescr")[0].value =psDescr;
 	$("#ebayJsonDataCode")[0].value =pscode;
 	
-	
+	//debugger;
 	$.ajax({
-		url : 'dataEnrichment_db?psDescr='+psDescr,
+		url : 'dataEnrichment_db?psDescr='+psDescr,//'ItemDescription.jsp?psDescr='+psDescr,//
 		type: "POST",
 		success : function(data) {
-			
+			//debugger;
 			MapItemDescription((data));
 		}
 	});
@@ -110,14 +123,16 @@ var GetEbayDetailsforItems = function(psId,pscode,psDescr)
 ////////
 var GetDetailsforItems = function(psURL,urlType,psId,pscode,psDescr,type)
 {
-	////Post method have to be changed to get and item description	
+	////Post method have to be changed to get and itemdescription	
 	
 	$("#ebayJsonDataID")[0].value =psId;
 	$("#ebayJsonDataDescr")[0].value =psDescr;
 	$("#ebayJsonDataCode")[0].value =pscode;
 	
+	debugger;
 	$.ajax({
-		url : psURL,
+		url : psURL,//'ItemDescription.jsp?psDescr='+psDescr,//
+		//data: JSON.stringify({ psDescr: psDescr}) ,
 		type: urlType,
 		data: {"psDescr" : psDescr},
 		success : function(data) {
@@ -137,16 +152,18 @@ var GetAmazonDetailsforItems = function(psId,pscode,psDescr)
 {
 	////Post method have to be changed to get and itemdescription
 	
+	//debugger;
 	$("#ebayJsonDataID")[0].value =psId;
 	$("#ebayJsonDataDescr")[0].value =psDescr;
 	$("#ebayJsonDataCode")[0].value =pscode;
 	
+	//debugger;
 	$.ajax({
-		url : 'AmazonItemDescription?psDescr='+psDescr,
+		url : 'AmazonItemDescription?psDescr='+psDescr,//'ItemDescription.jsp?psDescr='+psDescr,//
 		type: "GET",
 		success : function(data) {
-			
-			MapAmazonItemDescription((data));
+			//debugger;
+					MapAmazonItemDescription((data));
 			
 		}
 	});
@@ -155,7 +172,7 @@ var GetAmazonDetailsforItems = function(psId,pscode,psDescr)
 var MapAmazonItemDescription = function(objData)
 {
 	$("#divProductItemDetails").html("");
-	
+	//debugger;
 	$("#ebayJsonData").val(objData);
 	var obj= $.parseJSON(objData)
 	var count = obj[0];
@@ -181,10 +198,10 @@ var MapAmazonItemDescription = function(objData)
 			"<tr><td><a href= '"+obj[i].detailPageURL+"' >View Item Url</a><br/></td></tr>"+
 			
 			"<tr><td><input type='button' onclick=CallDataEnrichmentMethod('"+obj[i].asin+"','obj[i].asin','AmazonItemDescription','Amazon'); value='Product View URL' /></td></tr>"
-			
+			//+"<td><embed src='"+obj[i].customerReviews.iframeURL+"' width='400' height='200'  /></td>"+
 			+"</table>";
-		
-		$("#divProductItemDetails").append(sti);
+		//$("#ulItemDetails").append("<li>").append(
+		$("#divProductItemDetails").append(sti);//.append("</li>");
 		
 		
 		i++;
@@ -194,7 +211,7 @@ var MapAmazonItemDescription = function(objData)
 
 var MapItemDescription = function(objData)
 {
-	
+	//debugger;
 	$("#divProductItemDetails").html("");
 	$("#ebayJsonData").val(objData);
 	var obj= $.parseJSON(objData)
@@ -225,7 +242,8 @@ var MapItemDescription = function(objData)
 			"<tr><td><input type='button' text='Enrich Data' onclick=CallDataEnrichmentMethod('"+obj[i].itemId+"','obj[i].itemId','ItemDescription','Ebay'); value='Enrich Item' /></td></tr>" +
 			
 			"</table>";
-		$("#divProductItemDetails").append(sti);
+		//$("#ulItemDetails").append("<li>").append(
+		$("#divProductItemDetails").append(sti);//.append("</li>");
 		
 		
 		i++;
@@ -234,6 +252,9 @@ var MapItemDescription = function(objData)
 };
 var CallDataEnrichmentMethod = function(psItemID,pstype,psURL,psEnrichedfrom)
 {
+	//debugger;
+	//SaveEnrichDataDetail(psItemID);
+	///
 	
 	var jsonData = $("#ebayJsonData").val();
 	var obj= $.parseJSON(jsonData);
@@ -252,6 +273,7 @@ var CallDataEnrichmentMethod = function(psItemID,pstype,psURL,psEnrichedfrom)
 	
 	var categoryName ="";
 	var images_URL ="";
+	debugger;
 	if(psEnrichedfrom=="Ebay")
 	{
 		var jsonArray = $.parseJSON(enrichDataArr[0].subtitle);
@@ -275,15 +297,19 @@ var CallDataEnrichmentMethod = function(psItemID,pstype,psURL,psEnrichedfrom)
 
 var SaveEnrichData = function (psJsonString,psURL,psCategoryName,psImages_URL)
 {	
+	debugger;
 	$.ajax({
 		url : psURL ,
 		type: "POST",		
-		//dataType:'json',
+		dataType:'json',
         data:{"psJsonString":psJsonString,"dataID":$("#ebayJsonDataID")[0].value,"dataDescr":$("#ebayJsonDataDescr")[0].value,"dataCode":$("#ebayJsonDataCode")[0].value,"categoryName":psCategoryName,"images_URL":psImages_URL},//
        
 		success : function(data) {
+			debugger;//if success Done
+			alert(data);	
 			
-			alert(data);
+			//method for mapping product details
+			//DisplayProductDetails($.parseJSON(data));
 		}
 	});
 	
@@ -291,12 +317,17 @@ var SaveEnrichData = function (psJsonString,psURL,psCategoryName,psImages_URL)
 
 var SaveEnrichDataDetail = function (itemId)
 {	
+	debugger;
 	$.ajax({
 		url : "http://open.api.ebay.com/shopping?callname=GetSingleItem&appid=AmirMans-DataEnri-PRD-32cc7bc3a-9d32c231&version=517&responseencoding=JSON&itemid="+ itemId +"&IncludeSelector=Details,Description,Variations,Compatibility" ,
 		type: "GET",
        
 		success : function(data) {
-			alert('Done Saving');
+			debugger;//if success Done
+			alert(data);	
+			
+			//method for mapping product details
+			//DisplayProductDetails($.parseJSON(data));
 		}
 	});
 	

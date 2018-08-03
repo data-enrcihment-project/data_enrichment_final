@@ -90,6 +90,8 @@ public class ItemDescription extends HttpServlet {
         request.setAttribute("dictionary", json);
 		
 		response.getWriter().write(json);
+		
+		//response.getWriter().append("Served at: ").append(request.getContextPath());
 	}
 
 	/**
@@ -204,12 +206,17 @@ public class ItemDescription extends HttpServlet {
 					DbMethods.SaveUpdateQueryStatement(sqlSavePerformedUpdate,paramsArrayPerformedModuleUpdate);
 				}
 				System.out.println("Done");
+				response.getWriter().write("Item NO. "+obj.getItemId()+ " - having title -"+obj.getTitle());
 				
-				response. getWriter().write("Item NO. "+obj.getItemId()+ " - having title -"+obj.getTitle());
-				
-			}catch(Exception ex)
+			}catch(Exception e)
 			{
-				throw ex;
+				
+				try {
+					throw e;
+				} catch (Exception e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
 			}
 			 
 		}

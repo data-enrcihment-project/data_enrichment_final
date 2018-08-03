@@ -194,29 +194,29 @@
 									<tbody>
 										<%
 											Gson gsonObj = new Gson();
-											Map<Object, Object> map = null;
-											List<Map<Object, Object>> list = new ArrayList<Map<Object, Object>>();
-											String dataPoints = null;
+																			Map<Object, Object> map = null;
+																			List<Map<Object, Object>> list = new ArrayList<Map<Object, Object>>();
+																			String dataPoints = null;
 
-											String item_no = request.getParameter("item_no");
+																			String item_no = request.getParameter("item_no");
 
-											String Statement = "SELECT description, base_price, discount_price FROM pricing_shop1 WHERE item_no = '"
-													+ item_no + "'";
+																			String Statement = "SELECT description, base_price, discount_price FROM pricing_shop1 WHERE item_no = '"
+																					+ item_no + "'";
 
-											ResultSet rs = DatabaseQuery.returnFrontEnd(Statement);
-											
-											List<Double> base = new ArrayList<Double>(); 
-											
-											while (rs.next()) {
-												String similarProduct = rs.getString("description");
-												String similarBase = rs.getString("base_price");
-												base.add(Double.parseDouble(similarBase));
-												String similarDiscount = rs.getString("discount_price");
-												map = new HashMap<Object, Object>();
-												map.put("label", similarProduct);
-												map.put("y", Double.parseDouble(similarBase));
-												list.add(map);
-												dataPoints = gsonObj.toJson(list);
+																			ResultSet rs = DatabaseQuery.showProductsOfSpecificCategory(Statement);
+																			
+																			List<Double> base = new ArrayList<Double>(); 
+																			
+																			while (rs.next()) {
+																				String similarProduct = rs.getString("description");
+																				String similarBase = rs.getString("base_price");
+																				base.add(Double.parseDouble(similarBase));
+																				String similarDiscount = rs.getString("discount_price");
+																				map = new HashMap<Object, Object>();
+																				map.put("label", similarProduct);
+																				map.put("y", Double.parseDouble(similarBase));
+																				list.add(map);
+																				dataPoints = gsonObj.toJson(list);
 										%>
 										<tr>
 											<td>

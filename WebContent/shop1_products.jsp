@@ -190,18 +190,18 @@
 										</thead>
 										<tbody>
 											<%
-                                      String line_no = request.getParameter("line_no");
-                                     
-                                      String Statement = "SELECT shop_item.description, shop_item.item_no FROM shop_item INNER JOIN shop_item_has_category "
-													+ "ON shop_item.item_no = shop_item_has_category.item_no "
-													+ "WHERE shop_item_has_category.category_line_no = "+line_no;
-              							//category_line_no ='"+line_no+"'";
-                              		ResultSet rs = DatabaseQuery.returnFrontEnd(Statement);
-                                     
-                                       while (rs.next()) {
-                                        	String description = rs.getString("description");
-                                        	String item_no = rs.getString("item_no");
-                                       %>
+												String line_no = request.getParameter("line_no");
+											                                     
+											                                      String Statement = "SELECT shop_item.description, shop_item.item_no FROM shop_item INNER JOIN shop_item_has_category "
+																						+ "ON shop_item.item_no = shop_item_has_category.item_no "
+																						+ "WHERE shop_item_has_category.category_line_no = "+line_no;
+											              							//category_line_no ='"+line_no+"'";
+											                              		ResultSet rs = DatabaseQuery.showProductsOfSpecificCategory(Statement);
+											                                     
+											                                       while (rs.next()) {
+											                                        	String description = rs.getString("description");
+											                                        	String item_no = rs.getString("item_no");
+											%>
 											<tr>
 												<td><input type="radio" name="item_no"
 													value="<%out.print(item_no);%>" /></td>

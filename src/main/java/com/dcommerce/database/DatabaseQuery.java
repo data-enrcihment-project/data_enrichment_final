@@ -14,7 +14,7 @@ import com.dcommerce.scrapper.Entry;
 
 /**
  * This class takes a connection from the connection pool and performs 
- * database queries
+ * database queries. 
  * 
  * @author Mushfiqul Huda
  */

@@ -52,6 +52,7 @@ public class AmazonItemDescription extends HttpServlet {
 
 		/////////Amazon Calling Start
 		
+		
 		Map<Integer, Object> dictionary = AmazonCall.CallAmazonApi(descr,"AMAZON-DE");
 		
 		boolean isEmpty = false;
@@ -67,7 +68,7 @@ public class AmazonItemDescription extends HttpServlet {
 				System.out.println(isEmpty+ " 2332Final");
 				break;
 			}else {
-				isEmpty = true ;
+				isEmpty = true ;//false;
 				break;
 			}
 		}		
@@ -89,6 +90,10 @@ public class AmazonItemDescription extends HttpServlet {
         request.setAttribute("dictionary", json);
 		
 		response.getWriter().write(json);
+		
+		
+		/////////Calling End
+		
 	}
 
 	/**
@@ -235,7 +240,8 @@ public class AmazonItemDescription extends HttpServlet {
 				Map<String, String> paramsArrayPerformedModuleUpdate  = new HashMap<String, String>();
 				paramsArrayPerformedModuleUpdate.put("1", DbMethods.GetdateTime());
 				DbMethods.SaveUpdateQueryStatement(sqlSavePerformedUpdate,paramsArrayPerformedModuleUpdate);
-			}			
+			}
+			System.out.println("Done: " +"Item NO. "+obj.getASIN()+ " - having title - "+ obj.getItemAttributes().getTitle());
 			response.getWriter().write("Item NO. "+obj.getASIN()+ " - having title - "+ obj.getItemAttributes().getTitle());
 			
 		}catch(Exception e)
