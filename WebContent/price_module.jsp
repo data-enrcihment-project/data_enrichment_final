@@ -173,7 +173,7 @@
                     <div class="panel-body">
                         <div class="row">
                             <div class="col-lg-6">
-                                <form action="shop1_products.jsp" method="GET">
+                                <form action="/Data_Enrichment_Project/ShowProducts" method="POST">
                                     <div class="form-group">
                                         <label>Select A Category From Shop-1</label>
                                         <select name="line_no" class="form-control">
@@ -187,7 +187,7 @@
                                             <option value="27500">Komplettsets</option>
                                             <option value="28750">Halbsets</option>
                                             <option value="30000">Bag &amp; Trolleys</option>
-                                            <option value="32421">GPS &amp; Messtechnik</option>
+                                            <option value="35000">GPS &amp; Messtechnik</option>
                                             <option value="32500">Golfbälle</option>
                                             <option value="42500">Handschuhe</option>
                                             <option value="44843">Golfschuhe Damen</option>
@@ -204,31 +204,6 @@
                             </div>
                         </div>
                         <br/><br/><br/><br/><br/>
-                        <div class="row">
-                            <div class="col-lg-6">
-                                <form action="shop2_products.jsp" method="GET">
-                                    <div class="form-group">
-                                        <label>Select A Category From Shop-2</label>
-                                        <select name="parent_line_no" class="form-control">
-                                            <option disabled>Category</option>
-                                            <option value="30000">Zelte</option>
-                                            <option value="125000">Möbel</option>
-                                            <option value="255000">Haushalt</option>
-                                            <option value="310000">Grillen</option>
-                                            <option value="490000">Heizen</option>
-                                            <option value="540000">Kühlen</option>
-                                            <option value="720000">Elektro</option>
-                                            <option value="805156">Sanitär</option>
-                                            <option value="945000">Outdoor &amp; Trekking</option>
-                                            <option value="1192500">Fahrzeugzubehör</option>
-                                            <option value="1410000">Kinderwelt</option>
-                                        </select>
-                                    </div>
-                                    <button type="submit" class="btn btn-default">Show Products</button>
-                                    <button type="reset" class="btn btn-default">Reset</button>
-                                </form>
-                            </div>
-                        </div>
                     </div>
                     <!-- /.panel-body -->
                 </div>

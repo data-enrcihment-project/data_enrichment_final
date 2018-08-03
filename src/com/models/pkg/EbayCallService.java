@@ -5,6 +5,7 @@ import java.beans.XMLEncoder;
 import java.io.BufferedOutputStream;
 import java.io.FileOutputStream;
 import java.io.FileWriter;
+import java.io.IOException;
 import java.lang.reflect.Type;
 import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
@@ -51,10 +52,10 @@ public class EbayCallService {
 
 	}
 	
-	public static List<SearchItem> GetEbayItemObject(String psDescription,String globalID)
+	public static List<SearchItem> GetEbayItemObject(String psDescription,String globalID) throws IOException
 	{
 		 ClientConfig config = new ClientConfig();         
-		 config.setApplicationId("AmirMans-DataEnri-PRD-32cc7bc3a-9d32c231");
+		 config.setApplicationId(DbMethods.GetConfigProperty("ebayApplicationID"));
 		 config.setGlobalId(globalID);
 		//create a service client       
 		 FindingServicePortType serviceClient = FindingServiceClientFactory.getServiceClient(config);    
@@ -75,7 +76,7 @@ public class EbayCallService {
 		try {
 		// initialize service end-point configuration 
 		 ClientConfig config = new ClientConfig();         
-		 config.setApplicationId("AmirMans-DataEnri-PRD-32cc7bc3a-9d32c231");
+		 config.setApplicationId(DbMethods.GetConfigProperty("ebayApplicationID"));
 		 config.setGlobalId("EBAY-DE");
 		//create a service client       
 		 FindingServicePortType serviceClient = FindingServiceClientFactory.getServiceClient(config);    
@@ -129,10 +130,10 @@ public class EbayCallService {
 		return json;
 	}
 	
-	public static List<SearchItem> GetEbayItemObjectFast()
+	public static List<SearchItem> GetEbayItemObjectFast() throws IOException
 	{
 		 ClientConfig config = new ClientConfig();         
-		 config.setApplicationId("AmirMans-DataEnri-PRD-32cc7bc3a-9d32c231");
+		 config.setApplicationId(DbMethods.GetConfigProperty("ebayApplicationID"));
 		 config.setGlobalId("EBAY-US");
 		//create a service client       
 		 FindingServicePortType serviceClient = FindingServiceClientFactory.getServiceClient(config);    
@@ -179,7 +180,7 @@ public class EbayCallService {
 		try {
 		// initialize service end-point configuration 
 		 ClientConfig config = new ClientConfig();         
-		 config.setApplicationId("AmirMans-DataEnri-PRD-32cc7bc3a-9d32c231");
+		 config.setApplicationId(DbMethods.GetConfigProperty("ebayApplicationID"));
 		 config.setGlobalId(globalID);
 		//create a service client       
 		 FindingServicePortType serviceClient = FindingServiceClientFactory.getServiceClient(config);    
@@ -272,19 +273,11 @@ public class EbayCallService {
 		 writer.write(json);
 		 writer.close();
 		 System.out.println(json);
-//		 XMLEncoder encoder =
-//	           new XMLEncoder(
-//	              new BufferedOutputStream(
-//	                new FileOutputStream(filename)));
-//	        
-//	        encoder.writeObject(item);
-//	        encoder.close();
-//	        System.out.println(item.getSellingStatus().getCurrentPrice());
 	    }
 	
 	
 	@SuppressWarnings("unused")
-	public static Map<String, Double> GetEbayItemPrice(String psDescription,String globalID) {
+	public static Map<String, Double> GetEbayItemPrice(String psDescription,String globalID) throws IOException {
 		
 		Double previousRatio=0.0;
 		List<SearchItem> itemList = GetEbayItemObject(psDescription,globalID);
@@ -295,9 +288,7 @@ public class EbayCallService {
 		Double selectedItem = null;
 		Integer rowCount = 0;
 		for(SearchItem item : itemList) {           
-			 System.out.println(item.getItemId()); 
-			 System.out.println(item.getSellingStatus().getCurrentPrice().getCurrencyId().toString());
-			 //System.out.println(item.getSellingStatus().getCurrentPrice().getValue());
+			
 			 item.getSellingStatus().getCurrentPrice().getValue();
 			 
 			 Double  ratio= FuzzyWuzzyMining.GetItemDescrRatio(psDescription,item.getTitle().toString());
